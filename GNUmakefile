@@ -1,7 +1,7 @@
 #
 #	GNUmakefile
 #
-#	Makefile for Frameworks
+#	Makefile for Etoile
 #
 #	Copyright (C) 2005 Quentin Mathe <qmathe@club-internet.fr>
 #
@@ -54,6 +54,7 @@ ifeq ($(etoile), yes)
     #
 
     export desktop-base ?= yes
+    export user-base ?= yes
     export etoile-extensions ?= yes
     export workspace ?= yes
     
@@ -74,7 +75,6 @@ ifeq ($(etoile-extensions), yes)
     export lucenekit ?= yes
     export servicesbarkit ?= yes
     export trackerkit ?= yes
-    
     export servicesbar ?= yes
     
 endif
@@ -83,6 +83,12 @@ ifeq ($(developer-base), yes)
 
     export unitkit ?= yes
     export unittests ?= yes
+    
+endif
+
+ifeq ($(user-base), yes)
+
+    export installer ?= yes
     
 endif
 
