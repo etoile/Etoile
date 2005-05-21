@@ -83,6 +83,7 @@ ifeq ($(developer-base), yes)
 
     export unitkit ?= yes
     export unittests ?= yes
+    export examples ?= yes
     
 endif
 
@@ -96,6 +97,6 @@ endif
 # Subprojects choice
 #
 
-SUBPROJECTS = Frameworks Bundles Services #Documentation
+SUBPROJECTS = Frameworks Bundles Services Developer #Documentation
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
