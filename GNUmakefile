@@ -87,6 +87,14 @@ ifeq ($(developer-base), yes)
     
 endif
 
+ifeq ($(test), yes)
+
+    export unitkit ?= yes
+    export unittests ?= yes
+    export examples ?= yes
+    
+endi
+
 ifeq ($(user-base), yes)
 
     export installer ?= yes
