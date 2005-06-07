@@ -93,7 +93,7 @@ ifeq ($(test), yes)
     export unittests ?= yes
     export examples ?= yes
     
-endi
+endif
 
 ifeq ($(user-base), yes)
 
