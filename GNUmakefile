@@ -43,6 +43,7 @@ ifeq ($(etoile), no)
     export desktop-base ?= yes
     export developer-base ?= yes
     export etoile-extensions ?= no
+    export user-base ?= no
     export workspace ?= no
 
 endif
@@ -50,13 +51,15 @@ endif
 ifeq ($(etoile), yes)
 
     #
-    # "make etoile=yes" is the verbose equivalent for "make"
+	# "make etoile=yes" is the verbose equivalent for "make" except it doesn't
+	# include developer stuff.
     #
 
     export desktop-base ?= yes
-    export user-base ?= yes
     export etoile-extensions ?= yes
+    export user-base ?= yes
     export workspace ?= yes
+    export developer-base ?= no
     
 endif 
 
