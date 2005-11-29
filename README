@@ -1,0 +1,88 @@
+==========
+Etoile 0.1
+==========
+
+Etoile intends to be an innovative GNUstep based user environnement built from the ground up on highly modular and light components with project and document orientation in mind, in order to allow users to create their own workflow by reshaping or recombining provided Services (aka Applications), Components etc. Flexibility and modularity on both User Interface and code level should allow us to scale from PDA to computer environment.
+
+Various licenses are used, they are specific to each module, but BSD and LGPL licenses are the most widely used.
+
+Maintainers: Quentin Mathe, Nicolas Roard
+Authors: Jesse Ross, Nicolas Roard, Quentin Mathe, Uli Kusterer, Yen-Ju Chen
+
+To know more about Etoile: 
+<http://www.etoile-project.org>
+
+
+Build and Install
+-----------------
+
+Read INSTALL document.
+
+
+Mac OS X support
+----------------
+
+Various modules are compatible with Cocoa (Xcode project are usually included).
+
+Here are modules with supported Cocoa compatibility:
+
+    * IconKit
+    
+    * LuceneKit
+    
+    * PreferencesKit
+
+
+
+Developer notes
+===============
+
+Tests suite
+-----------
+
+UnitKit (bundled with Etoile) is required.
+
+   Steps to produce test bundles for every modules which supports it in the repository and run tests suites:
+
+    * make test=yes 
+
+    * make check (not yet implemented)
+
+
+Dependency
+----------
+
+Unless you only build Cocoa compatible modules on Mac OS X, you have to install GNUstep, this is the only mandatory dependency. To set up GNUstep with its related dependencies, you should read about GNUstep install on <http://www.gnustep.org>
+
+    * gnustep-make
+    
+    * gnustep-base
+    
+    * gnustep-gui
+    
+    * gnustep-back
+    
+    For IconKit (built by default)
+    
+    * libpng
+    
+    For LuceneKit (built by default)
+
+    * zlib: compression/decompression
+    
+    For OgreKit (built by default)
+    
+    * OniGuruma
+    
+    For SQLiteClient (not built by default)
+    
+    * sqlite3
+    
+    * SQLClient (on GNUstep)
+
+
+Contribute 
+----------
+
+Read this link <http://www.dromasoftware.com/etoile/mediawiki/index.php?title=Participate>
+
