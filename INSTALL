@@ -1,0 +1,113 @@
+==============
+Etoile INSTALL
+==============
+
+Required software
+-----------------
+
+You need to have the GNUstep core libraries installed in order to
+compile and use Etoile. The core packages are, at a minimum:
+
+   * gnustep-make 1.11 or higher
+
+   * gnustep-base 1.11 or higher
+
+   * gnustep-gui 0.10 or higher
+
+   * gnustep-back 0.10 or higher
+
+   See <http://www.gnustep.org/> for further information.
+   
+   
+You need some extra libraries if you intend to build a complete Etoile environment or the whole repository:
+    
+    * libpng (IconKit)
+
+    * zlib (LuceneKit)
+    
+    See <http://www.zlib.net/> for further information.
+    
+    * OniGuruma 3.8.6 or higher (OgreKit)
+    
+    See <http://www.geocities.jp/kosako3/oniguruma/> for further information. 
+    
+    * sqlite3 (SQLiteClient)
+    
+    See <http://www.sqlite3.org> for further information. 
+    
+    * SQLClient (SQLiteClient)
+    
+    See <http://www.gnustep.org/> for further information.
+
+
+Build and Install
+-----------------
+
+   Steps to build:
+
+   * make
+   * sudo make install
+   
+
+Custom Build and Install
+------------------------
+
+Basically to build and install the whole repository (but developers related stuff is not included in such build), you just do in the root directory named Etoile:
+    
+    * make
+    * [sudo] make install
+    
+    Note: brackets means the term is optional.
+    
+    Previous instructions will be in fact translated into:
+    
+    * make etoile=yes
+    * [sudo] make etoile=yes install
+
+To build only a specific module, you can follow 'make' command with its name in lowercase as an option with the 'yes' value. For example:
+    
+    * make camaelon=yes
+    * make camaelon=yes install
+
+    Each time you have added at least one option (except for 'test' option), then 'make' isn't translated into 'make etoile=yes', which means only camaelon is build in our last example.
+
+    You can put several options together like:
+    
+    * make camaelon=yes lucenekit=yes
+
+You can have a more fine grained control by using special options which represent custom module sets. Here are module sets actually defined:
+    
+    * desktop-base --> camaelon, bookmarkkit, iconkit, preferenceskit
+    
+    * user-base --> installer (for now that's all)
+    
+    * developer-base --> unitkit, unittests, examples
+    
+    * etoile-extensions --> lucenekit, extendedworkspacekit, trackerkit, servicesbarkit, servicesbar
+
+    Here is 'etoile' option semantic which is a bit special:
+
+    * etoile=yes --> desktop-base, user-base, etoile-extensions, workspace
+    
+    * etoile=no --> desktop-base, developer-base // everything which is not bound to Étoilé itself
+
+Finally you can combine these module sets with previous specific module options like:
+
+    * make developer-base=yes camaelon=yes // build developer-base and camaelon
+    
+    * make desktop-base=no camaelon=yes // build user-base, etoile-extensions, workspace and camaelon (but not other desktop-base stuff)
+    
+     * make etoile=no etoile-extensions=yes extendedworkspacekit=no
+
+
+'make' command is possible to use with any avaiblable options in every project directories.
+
+
+You can also build test bundles for any specified modules by adding an option 'test=yes', in future you should be able to run every test bundles with 'make check' but this not implemented currently.
+
+
+Trouble
+-------
+
+   Give us feedback! Tell us what you like; tell us what you think
+could be better. Send bug reports and patches to <etoile-track@gna.org>.
