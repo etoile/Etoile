@@ -40,6 +40,12 @@ You need some extra libraries if you intend to build a complete Etoile environme
     See <http://www.gnustep.org/> for further information.
 
 
+Notation
+--------
+
+   In the following text, square brackets "[ ]" are used to indicate an optional parameter, while "*"
+   at the beginning of a line indicate a command.
+
 Build and Install
 -----------------
 
@@ -52,59 +58,52 @@ Build and Install
 Custom Build and Install
 ------------------------
 
-Basically to build and install the whole repository (but developers related stuff is not included in such build), you just do in the root directory named Etoile:
-    
+In order to build and install the whole project (with the exception of developers tools
+like UnitKit), you can just type in the root directory (named Etoile):
+
     * make
     * [sudo] make install
-    
-    Note: brackets means the term is optional.
-    
-    Previous instructions will be in fact translated into:
-    
+
+Which is the equivalent for the build system of asking to build the etoile module:
+
     * make etoile=yes
     * [sudo] make etoile=yes install
 
-To build only a specific module, you can follow 'make' command with its name in lowercase as an option with the 'yes' value. For example:
-    
+Indeed, you can choose to build only a specific module. Simply follow 'make' with
+the module's name (in lowercase) set to yes. For example:
+
     * make camaelon=yes
     * make camaelon=yes install
 
-    Each time you have added at least one option (except for 'test' option), then 'make' isn't translated into 'make etoile=yes', which means only camaelon is build in our last example.
+Will only build and install Camaelon.
 
-    You can put several options together like:
-    
+You can combine more than one module:
+
     * make camaelon=yes lucenekit=yes
 
-You can have a more fine grained control by using special options which represent custom module sets. Here are module sets actually defined:
-    
+And even use custom set of modules, like desktop-base. Here is a list of the current
+sets of modules:
+
     * desktop-base --> camaelon, bookmarkkit, iconkit, preferenceskit
-    
     * user-base --> installer (for now that's all)
-    
     * developer-base --> unitkit, unittests, examples
-    
     * etoile-extensions --> lucenekit, extendedworkspacekit, trackerkit, servicesbarkit, servicesbar
 
-    Here is 'etoile' option semantic which is a bit special:
+The 'etoile' option semantic is a bit special:
 
     * etoile=yes --> desktop-base, user-base, etoile-extensions, workspace
-    
-    * etoile=no --> desktop-base, developer-base // everything which is not bound to ƒtoilŽ itself
+    * etoile=no --> desktop-base, developer-base // everything which is not bound to Etoile itself
 
-Finally you can combine these module sets with previous specific module options like:
+Finally you can combine these module sets with specific module options, like:
 
     * make developer-base=yes camaelon=yes // build developer-base and camaelon
-    
     * make desktop-base=no camaelon=yes // build user-base, etoile-extensions, workspace and camaelon (but not other desktop-base stuff)
-    
      * make etoile=no etoile-extensions=yes extendedworkspacekit=no
 
 
-'make' command is possible to use with any avaiblable options in every project directories.
-
+You can use the 'make' command with all the available options from every projects directory.
 
 You can also build test bundles for any specified modules by adding an option 'test=yes', in future you should be able to run every test bundles with 'make check' but this not implemented currently.
-
 
 Trouble
 -------
