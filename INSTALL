@@ -8,18 +8,19 @@ Required software
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
-   * gnustep-make 1.11 or higher
+    * gnustep-make 1.11 or higher
 
-   * gnustep-base 1.11 or higher
+    * gnustep-base 1.11 or higher
 
-   * gnustep-gui 0.10 or higher
+    * gnustep-gui 0.10 or higher
 
-   * gnustep-back 0.10 or higher
+    * gnustep-back 0.10 or higher
 
-   See <http://www.gnustep.org/> for further information.
+See <http://www.gnustep.org/> for further information.
    
    
-You need some extra libraries if you intend to build a complete Etoile environment or the whole repository:
+You need some extra libraries if you intend to build a complete Etoile
+environment or the whole repository:
     
     * libpng (IconKit)
 
@@ -43,34 +44,37 @@ You need some extra libraries if you intend to build a complete Etoile environme
 Notation
 --------
 
-   In the following text, square brackets "[ ]" are used to indicate an optional parameter, while "*"
-   at the beginning of a line indicate a command.
+    In the following text, square brackets "[ ]" are used to indicate an
+    optional parameter, while "*" at the beginning of a line indicate a 
+    command.
 
 Build and Install
 -----------------
 
-   Steps to build:
+Steps to build:
 
-   * make
-   * sudo make install
-   
+    * make
+    * sudo make install
+    
 
 Custom Build and Install
 ------------------------
 
-In order to build and install the whole project (with the exception of developers tools
-like UnitKit), you can just type in the root directory (named Etoile):
+In order to build and install the whole project (with the exception of
+developers tools like UnitKit), you can just type in the root directory (named
+Etoile):
 
     * make
     * [sudo] make install
 
-Which is the equivalent for the build system of asking to build the etoile module:
+Which is the equivalent for the build system of asking to build the etoile
+module:
 
     * make etoile=yes
     * [sudo] make etoile=yes install
 
-Indeed, you can choose to build only a specific module. Simply follow 'make' with
-the module's name (in lowercase) set to yes. For example:
+Indeed, you can choose to build only a specific module. Simply follow 'make'
+with the module's name (in lowercase) set to yes. For example:
 
     * make camaelon=yes
     * make camaelon=yes install
@@ -81,32 +85,38 @@ You can combine more than one module:
 
     * make camaelon=yes lucenekit=yes
 
-And even use custom set of modules, like desktop-base. Here is a list of the current
-sets of modules:
+And even use custom set of modules, like desktop-base. Here is a list of the
+current sets of modules:
 
     * desktop-base --> camaelon, bookmarkkit, iconkit, preferenceskit
     * user-base --> installer (for now that's all)
     * developer-base --> unitkit, unittests, examples
-    * etoile-extensions --> lucenekit, extendedworkspacekit, trackerkit, servicesbarkit, servicesbar
+    * etoile-extensions --> lucenekit, extendedworkspacekit, trackerkit,
+    servicesbarkit, servicesbar
 
 The 'etoile' option semantic is a bit special:
 
     * etoile=yes --> desktop-base, user-base, etoile-extensions, workspace
-    * etoile=no --> desktop-base, developer-base // everything which is not bound to Etoile itself
+    * etoile=no --> desktop-base, developer-base // everything which is not
+    bound to Etoile itself
 
 Finally you can combine these module sets with specific module options, like:
 
     * make developer-base=yes camaelon=yes // build developer-base and camaelon
-    * make desktop-base=no camaelon=yes // build user-base, etoile-extensions, workspace and camaelon (but not other desktop-base stuff)
-     * make etoile=no etoile-extensions=yes extendedworkspacekit=no
+    * make desktop-base=no camaelon=yes // build user-base, etoile-extensions,
+    workspace and camaelon (but not other desktop-base stuff)
+    * make etoile=no etoile-extensions=yes extendedworkspacekit=no
 
 
-You can use the 'make' command with all the available options from every projects directory.
+You can use the 'make' command with all the available options from every
+projects directory.
 
-You can also build test bundles for any specified modules by adding an option 'test=yes', in future you should be able to run every test bundles with 'make check' but this not implemented currently.
+You can also build test bundles for any specified modules by adding an option
+'test=yes', in future you should be able to run every test bundles with 'make
+check' but this not implemented currently.
 
 Trouble
 -------
 
-   Give us feedback! Tell us what you like; tell us what you think
+Give us feedback! Tell us what you like; tell us what you think
 could be better. Send bug reports and patches to <etoile-track@gna.org>.

@@ -2,12 +2,19 @@
 Etoile 0.1
 ==========
 
-Etoile intends to be an innovative GNUstep based user environnement built from the ground up on highly modular and light components with project and document orientation in mind, in order to allow users to create their own workflow by reshaping or recombining provided Services (aka Applications), Components etc. Flexibility and modularity on both User Interface and code level should allow us to scale from PDA to computer environment.
+Etoile intends to be an innovative GNUstep based user environnement built from
+the ground up on highly modular and light components with project and document
+orientation in mind, in order to allow users to create their own workflow by
+reshaping or recombining provided Services (aka Applications), Components etc.
+Flexibility and modularity on both User Interface and code level should allow us
+to scale from PDA to computer environment.
 
-Various licenses are used, they are specific to each module, but BSD and LGPL licenses are the most widely used.
+Various licenses are used, they are specific to each module, but BSD and LGPL
+licenses are the most widely used.
 
 Maintainers: Quentin Mathe, Nicolas Roard
-Authors: Jesse Ross, Nicolas Roard, Quentin Mathe, Uli Kusterer, Yen-Ju Chen
+Authors: Jesse Ross, Nicolas Roard, Quentin Mathe, Uli Kusterer, Yen-Ju Chen,
+Michael Hanni
 
 To know more about Etoile: 
 <http://www.etoile-project.org>
@@ -42,7 +49,8 @@ Tests suite
 
 UnitKit (bundled with Etoile) is required.
 
-   Steps to produce test bundles for every modules which supports it in the repository and run tests suites:
+Steps to produce test bundles for every modules which supports it in the
+repository and run tests suites:
 
     * make test=yes 
 
@@ -52,7 +60,10 @@ UnitKit (bundled with Etoile) is required.
 Dependency
 ----------
 
-Unless you only build Cocoa compatible modules on Mac OS X, you have to install GNUstep, this is the only mandatory dependency. To set up GNUstep with its related dependencies, you should read about GNUstep install on <http://www.gnustep.org>
+Unless you only build Cocoa compatible modules on Mac OS X, you have to install
+GNUstep, this is the only mandatory dependency. To set up GNUstep with its
+related dependencies, you should read about GNUstep install on
+<http://www.gnustep.org>
 
     * gnustep-make
     
@@ -84,5 +95,5 @@ Unless you only build Cocoa compatible modules on Mac OS X, you have to install 
 Contribute 
 ----------
 
-Read this link <http://www.dromasoftware.com/etoile/mediawiki/index.php?title=Participate>
-
+Read this link
+<http://www.dromasoftware.com/etoile/mediawiki/index.php?title=Participate>
