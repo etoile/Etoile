@@ -1,33 +1,3 @@
-#
-#	GNUmakefile
-#
-#	Makefile for Etoile
-#
-#	Copyright (C) 2005 Quentin Mathe <qmathe@club-internet.fr>
-#
-#	This Makefile is free software; you can redistribute it and/or
-#	modify it under the terms of the GNU General Public License
-#	as published by the Free Software Foundation; either version 2
-#	of the License, or (at your option) any later version.
-#
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-#
-#	See the GNU General Public License for more details.
-#
-#	You should have received a copy of the GNU General Public License
-#	along with this program; if not, write to:
-#
-#		Free Software Foundation, Inc.
-#		59 Temple Place - Suite 330
-#		Boston, MA  02111-1307, USA
-#
-
-# When pmk will work :
-# Template file !
-# Use pmkfile first !
-
 include $(GNUSTEP_MAKEFILES)/common.make
 
 PACKAGE_NAME = Etoile
@@ -51,8 +21,8 @@ endif
 ifeq ($(etoile), yes)
 
     #
-	# "make etoile=yes" is the verbose equivalent for "make" except it doesn't
-	# include developer stuff.
+    # "make etoile=yes" is the verbose equivalent for "make" except it doesn't
+    # include developer stuff.
     #
 
     export desktop-base ?= yes
