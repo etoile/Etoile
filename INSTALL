@@ -48,6 +48,7 @@ Notation
     optional parameter, while "*" at the beginning of a line indicate a 
     command.
 
+
 Build and Install
 -----------------
 
@@ -114,6 +115,7 @@ projects directory.
 You can also build test bundles for any specified modules by adding an option
 'test=yes', in future you should be able to run every test bundles with 'make
 check' but this not implemented currently.
+
 
 Trouble
 -------
