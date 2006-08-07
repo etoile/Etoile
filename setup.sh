@@ -91,13 +91,25 @@ userLevelSetup()
 	#
 	# Set up defaults for Camaelon and EtoileWildMenus
 	#
-	
-	bundledir="$GNUSTEP_SYSTEM_ROOT/Library/Bundles"
-	
+
+	if [ $AS_ROOT = yes -o $HAVE_SUDO = yes ]; then
+		bundledir="$GNUSTEP_SYSTEM_ROOT/Library/Bundles"
+	else
+		# When the script is run without sudo or root permissions, we 
+		# can suppose the bundles have been installed in the user 
+		# Library and not the System one.
+		bundledir="$GNUSTEP_USER_ROOT/Library/Bundles"
+	fi
+	# NOTE: Replace any repeated '/' by a single one, otherwise defaults 
+	# will complain about it by throwing an exception.
+        # This occurs when GNUstep is installed with the prefix '/'
+	bundledir=`echo $bundledir | tr -s '/'`
+
 	echo "Going to set or reset some preferences/defaults"
-    echo
+	echo
 	echo "Resetting GSAppKitUserBundles (in NSGlobalDomain)"
-	defaults write NSGlobalDomain GSAppKitUserBundles "($bundledir/Camaelon.themeEngine, $bundledir/EtoileWildMenus)"
+
+	defaults write NSGlobalDomain GSAppKitUserBundles "($bundledir/Camaelon.themeEngine, $bundledir/EtoileMenus.bundle)"
 
 	echo "Setting User Interface Theme to Nesedah (in Camaelon domain)"
 	defaults write Camaelon Theme Nesedah
