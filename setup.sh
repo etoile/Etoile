@@ -79,8 +79,19 @@ systemLevelSetup()
 	#
 	
 	echo "Copying etoile.desktop in /usr/share/xsessions";
-	# TODO: /usr/share/xsessions is surely varying with the host system
-	# This is the proper value for Ubutun Linux.
+	# TODO: /usr/share/xsessions could vary with the host system and the
+	# display manager. This is the proper value for Ubutun Linux.
+	# Possible common paths are,
+	# with GDM:
+	# /etc/dm/Sessions
+	# /etc/X11/gdm/Sessions
+	# /usr/X11R6/share/gnome/xsessions
+	# with KDM:
+	# /usr/share/apps/kdm/sessions 
+	# /usr/local/share/apps/kdm/sessions
+	# This path is set in the config file of the display manager located
+	# in /etc/X11/xdm. The related entry name in the config file is 
+	# usually SessionsDirs.
 	$SUDO cp $PWD/Services/Private/System/etoile.desktop /usr/share/xsessions
 	echo
 
