@@ -29,8 +29,8 @@ EtoileExtensionsKit = Frameworks/EtoileExtensionsKit
 LuceneKit = Frameworks/LuceneKit
 OgreKit = Frameworks/OgreKit
 PreferencesKit = Frameworks/PreferencesKit
-RSSKit =  = Frameworks/RSSKit
-UnitKit =  = Frameworks/UnitKit
+RSSKit = Frameworks/RSSKit
+UnitKit = Frameworks/UnitKit
 XWindowServerKit = Frameworks/XWindowServerKit
 
 # FIXME: For now we support only one dependency specified through DEPENDENCIES,
@@ -75,11 +75,34 @@ prefix = $(if $1,\
 
 PREFIX = $(patsubst %/,%,$(call prefix,$(PROJECT_DIR)))
 
-before-all:: $(DEPENDENCY)
+before-all::
 	$(ECHO_NOTHING) \
 	echo ""; \
 	echo "Build Project: $(PROJECT_DIR)"; \
 	echo ""; \
+	if [ -z $(DEPENDENCIES) ]; then \
+	exit; \
+	fi; \
+	if [ -z $(PROJECT_DIR) ]; then \
+	echo "Dependency import failed: PROJECT_DIR is not set"; \
+	echo ""; \
+	exit; \
+	fi; \
+	if [ -z $(PREFIX) ]; then \
+	echo "Dependency import failed: PREFIX is not set"; \
+	echo ""; \
+	exit; \
+	fi; \
+	if [ -z $(DEPENDENCY) ]; then \
+	echo "Dependency import failed: DEPENDENCY is not set"; \
+	echo ""; \
+	exit; \
+	fi; \
+	if [ -z $(DEPENDENCY_PATH) ]; then \
+	echo "Dependency import failed: DEPENDENCY_PATH is not set"; \
+	echo ""; \
+	exit; \
+	fi; \
 	rm -f $(PROJECT_DIR)/$(DEPENDENCY); \
 	if [ -d $(PREFIX)/$(DEPENDENCY_PATH)/Headers ]; then \
 	$(LN_S) $(PREFIX)/$(DEPENDENCY_PATH)/Headers $(PROJECT_DIR)/$(DEPENDENCY); \
@@ -102,17 +125,43 @@ before-all:: $(DEPENDENCY)
 # 	echo ""; \
 # 	$(END_ECHO)
 
-after-clean:: $(DEPENDENCY)
+after-clean::
 	$(ECHO_NOTHING) \
 	echo ""; \
+	if [ -z $(DEPENDENCIES) ]; then \
+	exit; \
+	fi; \
+	if [ -z $(PROJECT_DIR) ]; then \
+	echo "Dependency import failed: PROJECT_DIR is not set"; \
+	echo ""; \
+	exit; \
+	fi; \
+	if [ -z $(DEPENDENCY) ]; then \
+	echo "Dependency import failed: DEPENDENCY is not set"; \
+	echo ""; \
+	exit; \
+	fi; \
 	rm -f $(PROJECT_DIR)/$(DEPENDENCY); \
 	echo " Removed $(DEPENDENCY) dependency import"; \
 	echo ""; \
 	$(END_ECHO)
 
-after-distclean:: $(DEPENDENCY)
+after-distclean::
 	$(ECHO_NOTHING) \
 	echo ""; \
+	if [ -z $(DEPENDENCIES) ]; then \
+	exit; \
+	fi; \
+	if [ -z $(PROJECT_DIR) ]; then \
+	echo "Dependency import failed: PROJECT_DIR is not set"; \
+	echo ""; \
+	exit; \
+	fi; \
+	if [ -z $(DEPENDENCY) ]; then \
+	echo "Dependency import failed: DEPENDENCY is not set"; \
+	echo ""; \
+	exit; \
+	fi; \
 	rm -f $(PROJECT_DIR)/$(DEPENDENCY); \
 	echo " Removed $(DEPENDENCY) dependency import"; \
 	echo ""; \
@@ -127,7 +176,11 @@ ADDITIONAL_INCLUDE_DIRS += -I$(PROJECT_DIR)
 
 # If we have dependency, we need to link its resulting object file. Well, we
 # have to look for a library or a framework most of time.
+#
+# NOTE: We cannot use $(GNUSTEP_SHARED_OBJ) instead of shared_obj because the 
+# former variable is relative to the project and could be modified by the 
+# developer. For example, it's commonly equals to ./shared_obj
 
-ADDITIONAL_LIB_DIRS += -L$(PREFIX)/$(DEPENDENCY)/$(GNUSTEP_OBJ_DIR)  \
+ADDITIONAL_LIB_DIRS += -L$(PREFIX)/$(DEPENDENCY_PATH)/shared_obj  \
     -L$(PREFIX)/$(DEPENDENCY_PATH)/$(DEPENDENCY).framework/Versions/Current
 
