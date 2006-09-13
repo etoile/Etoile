@@ -70,8 +70,8 @@ systemLevelSetup()
 	# NOTE: Probably replace /usr/local/bin by /usr/bin for etoile_system
 	# deployment
 	echo "Copying etoile_system in /usr/local/bin";
-	# FIXME: 'shared_obj' name  may change depending on the GNUstep setup.
-	$SUDO cp $PWD/Services/Private/System/shared_obj/etoile_system /usr/local/bin
+	# NOTE: 'obj' name  may change depending on the GNUstep setup.
+	$SUDO cp $PWD/Services/Private/System/obj/etoile_system /usr/local/bin
 	echo
 	
 	#
