@@ -1,0 +1,22 @@
+
+gobjc-4.0
+make
+openssl
+libssl-dev
+libxml2-dev
+libxslt-dev
+ffcall-dev (universe component)
+libjpeg-dev
+libtiff4-dev
+libpng12-dev
+libungif4-dev
+libfreetype-dev
+libx11-dev
+libart-2.0-dev
+libxft-dev
+libxext-dev
+libxmu-dev
+
+Needed by PopplerKit: 
+g++
+libpoppler-dev 
