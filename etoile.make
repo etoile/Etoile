@@ -84,15 +84,18 @@ after-all::
 	fi; \
 	fi; \
 	if [ -f $(PROJECT_DIR)/obj/lib$(PROJECT_NAME).so ]; then \
-	echo "exported 1"; \
 	exported="yes"; \
 	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME).so ]; then \
 	$(LN_S) $(PROJECT_DIR)/obj/lib$(PROJECT_NAME).so $(BUILD_DIR)/lib$(PROJECT_NAME).so; \
 	fi; \
 	fi; \
-	echo "blabla $${exported}"; \
+	if [ -f $(PROJECT_DIR)/Source/obj/lib$(PROJECT_NAME).so ]; then \
+	exported="yes"; \
+	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME).so ]; then \
+	$(LN_S) $(PROJECT_DIR)/Source/obj/lib$(PROJECT_NAME).so $(BUILD_DIR)/lib$(PROJECT_NAME).so; \
+	fi; \
+	fi; \
 	if [ "$${exported}" = "yes" ]; then \
-	echo "exported 2"; \
 	if [ -d $(PROJECT_DIR)/Headers -a ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
 	$(LN_S) $(PROJECT_DIR)/Headers $(BUILD_DIR)/$(PROJECT_NAME); \
 	elif [ ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
