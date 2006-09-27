@@ -80,7 +80,7 @@ after-all::
 	if [ -d  $(PROJECT_DIR)/$(PROJECT_NAME).framework ]; then \
 	exported="YES"; \
 	if [ ! -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
-	$(LN_S) $(PROJECT_DIR)/obj/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
+	$(LN_S) $(PROJECT_DIR)/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
 	fi; \
 	fi; \
 	if [ -f $(PROJECT_DIR)/obj/lib$(PROJECT_NAME).so ]; then \
