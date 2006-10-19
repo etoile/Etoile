@@ -32,63 +32,68 @@ userLevelSetdown()
 	
 	bundledir="$GNUSTEP_SYSTEM_ROOT/Library/Bundles/"
 	
+	echo
 	echo "Going to unset some preferences/defaults"
-    echo
+
+	echo
 	echo "Unsetting GSAppKitUserBundles (in NSGlobalDomain)"
 	defaults write NSGlobalDomain GSAppKitUserBundles "()"
 
 	echo "Unsetting User Interface Theme (in Camaelon domain)"
 	defaults write Camaelon Theme ""
-
-	echo
 }
 
 systemLevelSetdown()
 {
-	tooldir="/usr/local/bin/"
-	libdir="/usr/lib/"
+	tooldir="/usr/local/bin" 
+	libdir="/usr/lib"
 	
+	echo
 	for toolname in opentool openapp debugapp defaults; do
-		tool="$tooldir$toolname"
+		tool="$tooldir/$toolname"
 		if [ -x "$tool" ]; then
-			echo "Removing $toolname in /usr/local/bin";
+			echo "Removing $toolname in $tooldir";
 			$SUDO rm $tool
 		fi
 	done
-	echo
 	
-	for libname in libgnustep-base.so; do
-		lib="$libdir$libname"
+	echo
+	for libname in libgnustep-base.so libgnustep-gui.so; do
+		lib="$libdir/$libname"
 		# FIXME: Pass the test for every strings expanded from $lib*
 		if [ -x "$lib" ]; then
-			echo "Removing $libname and related in /usr/lib";
+			echo "Removing $libname and related in $libdir";
 			$SUDO rm $lib*
 		fi
 	done
-	echo
 	
 	toolname=etoile_system
-	tool="$tooldir$toolname"
+	tool="$tooldir/$toolname"
 	
 	if [ -x "$tool" ]; then
-		echo "Removing $toolname in /usr/local/bin";
-		$SUDO rm $tool;
 		echo
+		echo "Removing $toolname in $tooldir";
+		$SUDO rm $tool;
 	fi
 	
 	filename=etoile.desktop
-	filedir="/usr/share/xsessions/"
-	file="$filedir$filename"
+	filedir="/usr/share/xsessions"
+	file="$filedir/$filename"
 	if [ -f "$file" ]; then
+		echo
 		echo "Removing $filename in $filedir";
 		$SUDO rm $file;
-		echo
 	fi
 }
 
 # Beginning of the script
 
-echo
+if [ ! -d "$GNUSTEP_SYSTEM_ROOT" ]; then
+    echo
+    echo "Your GNUstep environment isn't set up correctly. To install Etoile, you must source GNUstep.sh or GNUstep.csh located in System/Library/Makefiles/GNUstep.sh"
+    echo
+    exit
+fi
 
 ### The code below written by Adam Fedor has been picked from InstallGNUstep 
 ### script (r22806) located in 'startup' module of GNUstep project 
@@ -129,6 +134,7 @@ AS_ROOT=yes
 # privileges (i.e. assume they know what they are doing).
 if [ "$WHOAMI" != root -a $gs_run_batch = no ]; then
   AS_ROOT=no
+  echo
   echo NOTE: You are not logged in as root
   echo
   echo If Etoile is set up on the whole system, you need root privileges to set
@@ -149,7 +155,9 @@ if [ "$WHOAMI" != root -a $gs_run_batch = no ]; then
   read user_option
   case "$user_option" in
     1) if [ $HAVE_SUDO = no ]; then
+         echo
          echo Cannot find sudo program. Make sure it is in your path
+         echo
          exit 1
        fi;;
     2) gs_root_prefix=$HOME/GNUstep
@@ -158,13 +166,21 @@ if [ "$WHOAMI" != root -a $gs_run_batch = no ]; then
        fi 
        NO_PRIV=yes
        HAVE_SUDO=no;;
-    *) exit 0;;
+    *) echo 
+       exit 0;;
   esac
 else
   if [ $gs_run_batch = no ]; then
-    echo $ECHO_N "Press the Return key to begin continue: $ECHO_C"
+    if [ $AS_ROOT = yes -o $HAVE_SUDO = yes ]; then
+      echo
+      echo "Etoile environment will be set down in a system wide way since you are"
+      echo "running this script with root privileges."
+    fi
+    echo
+    echo $ECHO_N "Press the Return key to begin or 'q' to exit: $ECHO_C"
     read user_enter
     if [ "$user_enter" = q ]; then
+      echo
       exit 0
     fi
   fi
@@ -172,10 +188,9 @@ fi
 
 SUDO=
 if [ $AS_ROOT = no -a $HAVE_SUDO = yes ]; then
-  SUDO=sudo
-  echo
-  echo "*** You will be prompted for a sudo password during uninstallation ***"
-  echo
+    SUDO=sudo
+    echo
+    echo "*** You will be prompted for a sudo password during uninstallation ***"
 fi
 
 ### End of the code picked from InstallGNUstep
@@ -195,9 +210,9 @@ if [ $AS_ROOT = yes -o $HAVE_SUDO = yes ]; then
 else
     setupdir="$GNUSTEP_USER_ROOT/Library"
 fi
+echo
 echo "Removing Themes in $setupdir/Themes";
 $SUDO rm -rf $setupdir/Themes
-echo
 
 #
 # When we have the right permissions, we handle the host system level set down
@@ -206,5 +221,7 @@ echo
 if [ $AS_ROOT = yes -o $HAVE_SUDO = yes ]; then
 	systemLevelSetdown
 fi
+
+echo
 
 # End of the script

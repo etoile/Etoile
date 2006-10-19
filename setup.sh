@@ -31,37 +31,41 @@ systemLevelSetup()
 	# Install essential GNUstep tools in a convenient way
 	#
 	
-	tooldir="$GNUSTEP_SYSTEM_ROOT/Tools/"
-	
+	gstooldir="$GNUSTEP_SYSTEM_ROOT/Tools"
+	tooldir="/usr/local/bin"
+
+	echo
 	for toolname in opentool openapp debugapp defaults; do
-		tool="$tooldir$toolname"
-		if [ -x "$tool" ]; then
-			echo "Linking $toolname in /usr/local/bin"
+		tool="$gstooldir/$toolname"
+		if [ -x "$tool"  ]; then
+			echo "Linking $toolname in $tooldir"
 			#$(LN_S) $tool "/usr/local/bin/$toolname"
-			$SUDO ln -s $tool "/usr/local/bin/$toolname"
+			$SUDO ln -s $tool "$tooldir/$toolname"
 		fi
 	done
-	echo
 	
 	#
 	# Install essential GNUstep libraries in a convenient way
 	#
 	
-	libdir="$GNUSTEP_SYSTEM_ROOT/Library/Libraries/"
+	gslibdir="$GNUSTEP_SYSTEM_ROOT/Library/Libraries"
+	# NOTE: We should install in /usr/local/lib, then add /usr/local/lib 
+	# to the library path search (by asking the right to the user)
+	libdir="/usr/lib" 
 	
-	for libname in libgnustep-base.so; do
-		lib="$libdir$libname"
+	echo
+	for libname in libgnustep-base.so libgnustep-gui.so; do
+		lib="$gslibdir/$libname"
 		# FIXME: Pass the test for every strings expanded from $lib*
 		if [ -x "$lib" ]; then 
-			echo "Linking $libname in /usr/lib"
+			echo "Linking $libname in $libdir"
 			#$(LN_S) $lib "/usr/lib/libname"
 			# FIXME: Bizarrely, it seems to be necessary to link 
 			# libgnustep-base.so.X.X (the one with version number) so we use $lib*
 			# and not just $lib
-			$SUDO ln -s $lib* "/usr/lib/"
+			$SUDO ln -s $lib* $libdir
 		fi
 	done
-	echo
 	
 	#
 	# Install Etoile system init daemon
@@ -69,16 +73,27 @@ systemLevelSetup()
 	
 	# NOTE: Probably replace /usr/local/bin by /usr/bin for etoile_system
 	# deployment
-	echo "Copying etoile_system in /usr/local/bin";
+
+	toolname=etoile_system
+	tool="$PWD/Services/Private/System/shared_obj/$toolname"
+
+	echo
+	echo "Copying $toolname in $tooldir";
+
 	# NOTE: 'obj' name  may change depending on the GNUstep setup.
 	$SUDO cp $PWD/Services/Private/System/obj/etoile_system /usr/local/bin
-	echo
+
 	
 	#
 	# Install Etoile support files
 	#
-	
-	echo "Copying etoile.desktop in /usr/share/xsessions";
+
+	filename=etoile.desktop
+	file="$PWD/Services/Private/System/$filename"
+	filedir="/usr/share/xsessions"
+
+	echo
+	echo "Copying $filename in $filedir";
 	# TODO: /usr/share/xsessions could vary with the host system and the
 	# display manager. This is the proper value for Ubutun Linux.
 	# Possible common paths are,
@@ -92,8 +107,7 @@ systemLevelSetup()
 	# This path is set in the config file of the display manager located
 	# in /etc/X11/xdm. The related entry name in the config file is 
 	# usually SessionsDirs.
-	$SUDO cp $PWD/Services/Private/System/etoile.desktop /usr/share/xsessions
-	echo
+	$SUDO cp $file $filedir
 
 }
 
@@ -116,6 +130,7 @@ userLevelSetup()
         # This occurs when GNUstep is installed with the prefix '/'
 	bundledir=`echo $bundledir | tr -s '/'`
 
+	echo
 	echo "Going to set or reset some preferences/defaults"
 	echo
 	echo "Resetting GSAppKitUserBundles (in NSGlobalDomain)"
@@ -125,14 +140,12 @@ userLevelSetup()
 	echo "Setting User Interface Theme to Nesedah (in Camaelon domain)"
 	defaults write Camaelon Theme Nesedah
 
-	echo
 }
 
 # Beginning of the script
 
-echo
-
 if [ ! -d "$GNUSTEP_SYSTEM_ROOT" ]; then
+    echo
     echo "Your GNUstep environment isn't set up correctly. To install Etoile, you must source GNUstep.sh or GNUstep.csh located in System/Library/Makefiles/GNUstep.sh"
     echo
     exit
@@ -178,6 +191,7 @@ AS_ROOT=yes
 # privileges (i.e. assume they know what they are doing).
 if [ "$WHOAMI" != root -a $gs_run_batch = no ]; then
   AS_ROOT=no
+  echo
   echo NOTE: You are not logged in as root
   echo
   echo Etoile needs to be set up with root privileges. If you
@@ -195,7 +209,9 @@ if [ "$WHOAMI" != root -a $gs_run_batch = no ]; then
   read user_option
   case "$user_option" in
     1) if [ $HAVE_SUDO = no ]; then
+         echo
          echo Cannot find sudo program. Make sure it is in your path
+         echo
          exit 1
        fi;;
     2) gs_root_prefix=$HOME/GNUstep
@@ -204,13 +220,21 @@ if [ "$WHOAMI" != root -a $gs_run_batch = no ]; then
        fi 
        NO_PRIV=yes
        HAVE_SUDO=no;;
-    *) exit 0;;
+    *) echo
+       exit 0;;
   esac
 else
   if [ $gs_run_batch = no ]; then
-    echo $ECHO_N "Press the Return key to begin continue: $ECHO_C"
+    if [ $AS_ROOT = yes -o $HAVE_SUDO = yes ]; then
+      echo
+      echo "Etoile environment will be set down in a system wide way since you are"
+      echo "running this script with root privileges."
+    fi
+    echo
+    echo $ECHO_N "Press the Return key to begin or 'q' to exit: $ECHO_C"
     read user_enter
     if [ "$user_enter" = q ]; then
+      echo
       exit 0
     fi
   fi
@@ -221,7 +245,6 @@ if [ $AS_ROOT = no -a $HAVE_SUDO = yes ]; then
   SUDO=sudo
   echo
   echo "*** You will be prompted for a sudo password during installation ***"
-  echo
 fi
 
 ### End of the code picked from InstallGNUstep
@@ -244,10 +267,10 @@ else
     setupdir="$GNUSTEP_USER_ROOT/Library"
     echo $SUDO
 fi
+echo
 echo "Copying Themes in $setupdir/Themes";
 # FIXME: Strip .svn with find . \! -path "*\.svn*"
 $SUDO cp -R $PWD/Themes $setupdir
-echo
 
 #
 # We end by setting user related stuff which are mandatory to hava a working
@@ -255,5 +278,7 @@ echo
 #
 
 userLevelSetup
+
+echo
 
 # End of the script
