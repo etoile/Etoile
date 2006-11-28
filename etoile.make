@@ -2,16 +2,6 @@
 # Etoile Makefile Extensions (dependency support, test support, etc.)
 #
 
-
-### Debug, profile adjustments for bundles ###
-
-ifeq ($(debug), yes)
-	extension = debug
-else
-	extension = app
-endif
-
-
 ### Internal dependency handling ###
 
 # CURDIR is the path where make is run, with gnustep-make the value changes in
@@ -49,11 +39,23 @@ BUILD_DIR = $(PREFIX)/Build
 # or a library in a module and we have to export the related headers.
 #EXPORTED = "NO"
 
+# The code run by before-all creates a temporary header directory matching the
+# project name. This allows to include headers within a library/framework by
+# by using a statement like #import <PROJECT_NAME/header.h>. Such system-wide
+# import is mandatory in installed headers of a library/framework.
+
 before-all::
 	$(ECHO_NOTHING) \
 	echo ""; \
 	echo "Build Project: $(PROJECT_NAME)"; \
 	echo ""; \
+	if [ ! -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
+	  if [ -d $(PROJECT_DIR)/Headers ]; then \
+	    $(LN_S) $(PROJECT_DIR)/Headers $(PROJECT_DIR)/$(PROJECT_NAME); \
+	  elif [ -n $(LIBRARY_NAME) -o -n $(FRAMEWORK_NAME) ]; then \
+	    $(LN_S) $(PROJECT_DIR) $(PROJECT_DIR)/$(PROJECT_NAME); \
+	  fi; \
+	fi; \
 	$(END_ECHO)
 
 after-all::
@@ -192,9 +194,9 @@ after-distclean::
 # If we have dependency, once it's imported we need to include its headers
 # located PROJECT_DIR/PROJECT_NAME. This means we have to look in 
 # PROJECT_DIR since we usually use include directive like 
-# #import <PROJECT_NAME_NAME/header.h>
+# #import <PROJECT_NAME/header.h>
 
-ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR)
+ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I($PROJECT_DIR)
 
 # If we have dependency, we need to link its resulting object file. Well, we
 # have to look for a library or a framework most of time.
