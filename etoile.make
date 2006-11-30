@@ -2,7 +2,10 @@
 # Etoile Makefile Extensions (dependency support, test support, etc.)
 #
 
-### Internal dependency handling ###
+# NOTE: In this file, 'module' and 'project' words have exactly the same 
+# meaning.
+
+### Internal Dependency Handling ###
 
 # CURDIR is the path where make is run, with gnustep-make the value changes in
 # subdirectories since each 'submake' is a 'normal' make, sandboxed and not 
@@ -191,12 +194,26 @@ after-distclean::
 	fi; \
 	$(END_ECHO)
 
+
+### Default Variable Values For Conveniency ###
+
+# You can overidde any variable values defined by below by resetting the value
+# in the GNUmakefile.preamble of your module. For example:
+# unexport ADDITIONAL_INCLUDE_DIRS = 
+# If you don't put 'unexport' in front of the variable name, the variable will
+# be reset but still exported to submake instances (this is never the case with
+# gnustep-make variables, that's why you must include a GNUmakefile.preamble in
+# any subdirectories of your module usually).
+
 # If we have dependency, once it's imported we need to include its headers
 # located PROJECT_DIR/PROJECT_NAME. This means we have to look in 
 # PROJECT_DIR since we usually use include directive like 
 # #import <PROJECT_NAME/header.h>
+#
+# By default we also look for headers in PROJECT_DIR and PROJECT_DIR/Headers, 
+# this conveniency avoids to take care of such flags over and over.
 
-ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR)
+export ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR) -I$(PROJECT_DIR)/Headers
 
 # If we have dependency, we need to link its resulting object file. Well, we
 # have to look for a library or a framework most of time.
@@ -205,5 +222,18 @@ ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR)
 # former variable is relative to the project and could be modified by the 
 # developer. For example, it's commonly equals to ./shared_obj
 
-ADDITIONAL_LIB_DIRS += -L$(BUILD_DIR)
+export ADDITIONAL_LIB_DIRS += -L$(BUILD_DIR)
+
+# We disable warnings about #import being deprecated. They occur with old GCC
+# version (before 4.0 iirc).
+export ADDITIONAL_OBJCFLAGS += -Wno-import
+
+# For test bundles, we must link UnitKit
+ifeq ($(test), yes)
+  ifeq ($(FOUNDATION_LIB), apple)
+    export ADDITIONAL_OBJC_LIBS += -framework UnitKit
+  else
+    export ADDITIONAL_OBJC_LIBS += -lUnitKit
+  endif
+endif
 
