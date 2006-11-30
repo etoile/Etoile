@@ -196,7 +196,7 @@ after-distclean::
 # PROJECT_DIR since we usually use include directive like 
 # #import <PROJECT_NAME/header.h>
 
-ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I($PROJECT_DIR)
+ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR)
 
 # If we have dependency, we need to link its resulting object file. Well, we
 # have to look for a library or a framework most of time.
