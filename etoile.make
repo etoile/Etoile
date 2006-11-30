@@ -52,7 +52,7 @@ before-all::
 	if [ ! -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
 	  if [ -d $(PROJECT_DIR)/Headers ]; then \
 	    $(LN_S) $(PROJECT_DIR)/Headers $(PROJECT_DIR)/$(PROJECT_NAME); \
-	  elif [ -n $(LIBRARY_NAME) -o -n $(FRAMEWORK_NAME) ]; then \
+	  elif [ -n "$(LIBRARY_NAME)" -o -n "$(FRAMEWORK_NAME)" ]; then \
 	    $(LN_S) $(PROJECT_DIR) $(PROJECT_DIR)/$(PROJECT_NAME); \
 	  fi; \
 	fi; \
@@ -60,7 +60,7 @@ before-all::
 
 after-all::
 	$(ECHO_NOTHING) \
-	echo "etoile.make: PROJECT_DIR $(PROJECT_DIR) PROJECT_NAME $(PROJECT_NAME) BUILD_DIR $(BUILD_DIR)"; \
+	#echo "etoile.make: PROJECT_DIR $(PROJECT_DIR) PROJECT_NAME $(PROJECT_NAME) BUILD_DIR $(BUILD_DIR)"; \
 	if [ -z $(PROJECT_DIR) ]; then \
 	echo "Dependency export failed: PROJECT_DIR is not set"; \
 	echo ""; \
@@ -101,7 +101,7 @@ after-all::
 	if [ -d $(PROJECT_DIR)/Headers -a ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
 	$(LN_S) $(PROJECT_DIR)/Headers $(BUILD_DIR)/$(PROJECT_NAME); \
 	elif [ ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
-	echo "$(PROJECT_DIR) $(BUILD_DIR) $(PROJECT_NAME)"; \
+	#echo "$(PROJECT_DIR) $(BUILD_DIR) $(PROJECT_NAME)"; \
 	$(LN_S) $(PROJECT_DIR) $(BUILD_DIR)/$(PROJECT_NAME); \
 	fi; \
 	fi; \
