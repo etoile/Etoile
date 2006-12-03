@@ -75,7 +75,7 @@ systemLevelSetup()
 	# deployment
 
 	toolname=etoile_system
-	tool="$PWD/Services/Private/System/shared_obj/$toolname"
+	tool="$PWD/Services/Private/System/obj/$toolname"
 
 	echo
 	echo "Copying $toolname in $tooldir";
@@ -267,6 +267,15 @@ else
     setupdir="$GNUSTEP_USER_ROOT/Library"
     echo $SUDO
 fi
+
+echo
+if [ ! -d "$setupdir/Etoile" ]; then 
+	echo "Creating $setupdir/Etoile directory";
+	$SUDO mkdir $setupdir/Etoile
+fi
+echo "Installing System support files in $setupdir/Etoile";
+$SUDO cp -R $PWD/Services/Private/System/SystemTaskList.plist $setupdir/Etoile
+
 echo
 echo "Copying Themes in $setupdir/Themes";
 # FIXME: Strip .svn with find . \! -path "*\.svn*"

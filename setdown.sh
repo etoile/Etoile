@@ -1,4 +1,4 @@
-#! /bin/sh
+     #! /bin/sh
 #
 # setdown - Étoilé 'unsetup' tool
 #
@@ -210,6 +210,15 @@ if [ $AS_ROOT = yes -o $HAVE_SUDO = yes ]; then
 else
     setupdir="$GNUSTEP_USER_ROOT/Library"
 fi
+
+echo
+echo "Uninstalling System support files in $setupdir/Etoile";
+$SUDO rm $setupdir/Etoile/SystemTaskList.plist
+if [ -d "$setupdir/Etoile" ]; then 
+	echo "Removing $setupdir/Etoile directory (if empty)";
+	$SUDO rmdir $setupdir/Etoile
+fi
+
 echo
 echo "Removing Themes in $setupdir/Themes";
 $SUDO rm -rf $setupdir/Themes
