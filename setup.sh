@@ -47,14 +47,35 @@ systemLevelSetup()
 	#
 	# Install essential GNUstep libraries in a convenient way
 	#
-	
-	gslibdir="$GNUSTEP_SYSTEM_ROOT/Library/Libraries"
+
+# FIXME: Turn on this code that set up the library paths with ldconfig and 
+# should replace the code that symbolically links libraries in /usr/lib
+#
+# 	gslibsuffix=Library/Libraries
+# 	gslibdirs="$GNUSTEP_SYSTEM_ROOT/$gslibsuffix $GNUSTEP_LOCAL_ROOT/$gslibsuffix $GNUSTEP_LOCAL_ROOT/$gslibsuffix"
+# 	newlibdirs=
+# 	if [ -x /etc/ld.so.conf ]; then
+# 		for libdir in gslibdirs; do
+# 			if [ -n grep "$libdir" /etc/ld.so.conf ]; then
+# 				$newlibdirs=$newlibdirs\n$libdir
+# 			fi
+# 		done
+# 	else
+# 		newlibdirs="$GNUSTEP_SYSTEM_ROOT/$gslibsuffix\n$GNUSTEP_LOCAL_ROOT/$gslibsuffix\n$GNUSTEP_LOCAL_ROOT/$gslibsuffix"
+# 	fi
+# 	"$newlibdirs" > /etc/ld.so.conf
+#
+# 	$SUDO ldconfig
+
+	gslibsuffix=Library/Libraries
+	gslibdir="$GNUSTEP_SYSTEM_ROOT/$gslibsuffix"
+
 	# NOTE: We should install in /usr/local/lib, then add /usr/local/lib 
 	# to the library path search (by asking the right to the user)
 	libdir="/usr/lib" 
 	
 	echo
-	for libname in libgnustep-base.so libgnustep-gui.so; do
+	for libname in libgnustep-base.so libgnustep-gui.so libXWindowServerKit.so libWorkspaceCommKit.so; do
 		lib="$gslibdir/$libname"
 		# FIXME: Pass the test for every strings expanded from $lib*
 		if [ -x "$lib" ]; then 

@@ -58,7 +58,7 @@ systemLevelSetdown()
 	done
 	
 	echo
-	for libname in libgnustep-base.so libgnustep-gui.so; do
+	for libname in libgnustep-base.so libgnustep-gui.so libXWindowServerKit.so libWorkspaceCommKit.so; do
 		lib="$libdir/$libname"
 		# FIXME: Pass the test for every strings expanded from $lib*
 		if [ -x "$lib" ]; then
