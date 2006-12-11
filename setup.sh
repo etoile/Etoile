@@ -156,7 +156,7 @@ userLevelSetup()
 	echo
 	echo "Resetting GSAppKitUserBundles (in NSGlobalDomain)"
 
-	defaults write NSGlobalDomain GSAppKitUserBundles "($bundledir/Camaelon.themeEngine, $bundledir/EtoileMenus.bundle)"
+	defaults write NSGlobalDomain GSAppKitUserBundles "($bundledir/Camaelon.themeEngine, $bundledir/EtoileMenus.bundle, $bundledir/EtoileBehavior.bundle)"
 
 	echo "Setting User Interface Theme to Nesedah (in Camaelon domain)"
 	defaults write Camaelon Theme Nesedah
