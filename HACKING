@@ -17,10 +17,17 @@ almost free to do whatever you want in such case :-) well, until someone extend
 Coding Guidelines to include your language.
 
 
-2) You must build the whole repository regularly and specially on:
+2) You must build the whole repository (make in trunk/Etoile) regularly and 
+specially on:
 	- each group of related commits
 	- any repository structural changes (module added, renamed, moved etc.)
 	- any build support changes
+
+If you discover the repository build is broken on your platform, take time to
+check if you haven't broken it in some way with your last commits. In any 
+cases, if you are unable to fix the problem, send a mail to etoile-dev list
+outlining the build issue you encounter (don't forget to mention your platform 
+and setup).
 
 
 3) You must usually conform to usual project layout for the module you 
