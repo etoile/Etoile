@@ -1,0 +1,53 @@
+==============
+Etoile HACKING
+==============
+
+Here is a short document to summarize the rules to follow when you contribute 
+to Etoile.
+
+
+1) You must read and apply Coding Style Guidelines. 
+<http://www.etoile-project.org/etoile/mediawiki/index.php?title=How_to_contribute_with_code>
+
+Any new modules to be committed must comply with them, older modules should be 
+updated gradually (take care of this when you modify the code in an important
+manner).
+There is no coding guidelines for languages other than Objective-C, so you are 
+almost free to do whatever you want in such case :-) well, until someone extend 
+Coding Guidelines to include your language.
+
+
+2) You must build the whole repository regularly and specially on:
+	- each group of related commits
+	- any repository structural changes (module added, renamed, moved etc.)
+	- any build support changes
+
+
+3) You must usually conform to usual project layout for the module you 
+maintain. 
+
+An important point is to always include etoile.make in your main
+GNUmakefile to ensure other modules can access it at build time (for example
+a bundle module can link your framework module). 
+You can find templates for frameworks, applications etc. in Developer/Templates
+<http://svn.gna.org/viewcvs/etoile/trunk/Etoile/Developer/Templates/>
+
+
+---
+
+Here is a short summary of various development aids you could be interested in:
+
+	- Examples of typical framework use (in Developer/Examples)
+	  <http://svn.gna.org/viewcvs/etoile/trunk/Etoile/Developer/Examples/>
+
+	- Framework API documentation
+      <http://www.etoile-project.org/etoile/documentation/>
+
+	- Participate section of the web site (Coding style, Subversion help)
+	  <http://www.etoile-project.org/etoile/mediawiki/index.php?title=Participate>
+
+	- etoile-dev list by subscribing or reading the archive 
+	  <https://mail.gna.org/listinfo/etoile-dev/>
+
+	- Etoile News development blog (includes tutorials and technical discussions)
+      <http://www.etoile-project.org/etoile/blog/>
