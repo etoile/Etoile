@@ -44,10 +44,8 @@ endif
 
 ifeq ($(etoile-extensions), yes)
 
-    export extendedworkspacekit ?= yes
     export lucenekit ?= yes
     export servicesbarkit ?= yes
-    export trackerkit ?= yes
     export servicesbar ?= yes
     
 endif
