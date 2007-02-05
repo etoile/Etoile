@@ -1,4 +1,34 @@
+==============
+Ubuntu INSTALL
+==============
 
+Here is the list of packages/dependencies you must install to build both GNUstep and Etoile on your Ubuntu system. These dependencies may vary a bit depending on your Ubuntu version. It is advised to install all dependency lists (main and extra) to build the whole repository without hurdles.
+
+
+Main Dependencies
+=================
+
+Ubuntu 6.10 (Edgy Eft)
+----------------------
+
+gobjc-4.1
+libxml2-dev
+libxslt1-dev
+libffi4-dev
+libjpeg62-dev
+libtiff4-dev
+libpng12-dev
+libungif4-dev
+libfreetype6-dev
+libx11-dev
+libart-2.0-dev
+libxft-dev
+libxmu-dev
+
+Both make and openssl should be now installed by default.
+libffi is now available in Ubuntu (better to use it rather than ffcall).
+
+Ubuntu 6.06 (Dapper Drake):
 gobjc-4.0
 make
 openssl
@@ -17,6 +47,12 @@ libxft-dev
 libxext-dev
 libxmu-dev
 
-Needed by PopplerKit: 
+
+Extra Dependencies
+==================
+
+PopplerKit
+----------
+
 g++
 libpoppler-dev 
