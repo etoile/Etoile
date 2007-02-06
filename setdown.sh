@@ -30,8 +30,6 @@ userLevelSetdown()
 	# Unset defaults for Camaelon and EtoileWildMenus
 	#
 	
-	bundledir="$GNUSTEP_SYSTEM_ROOT/Library/Bundles/"
-	
 	echo
 	echo "Going to unset some preferences/defaults"
 
