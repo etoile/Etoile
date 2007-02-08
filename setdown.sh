@@ -49,32 +49,13 @@ systemLevelSetdown()
 	libdir="/usr/lib"
 	
 	echo
-	for toolname in opentool openapp debugapp defaults; do
+	for toolname in openapp defaults; do
 		tool="$tooldir/$toolname"
 		if [ -x "$tool" ]; then
 			echo "Removing $toolname in $tooldir";
 			$SUDO rm $tool
 		fi
 	done
-	
-	echo
-	for libname in libgnustep-base.so libgnustep-gui.so libXWindowServerKit.so libWorkspaceCommKit.so; do
-		lib="$libdir/$libname"
-		# FIXME: Pass the test for every strings expanded from $lib*
-		if [ -x "$lib" ]; then
-			echo "Removing $libname and related in $libdir";
-			$SUDO rm $lib*
-		fi
-	done
-	
-	toolname=etoile_system
-	tool="$tooldir/$toolname"
-	
-	if [ -x "$tool" ]; then
-		echo
-		echo "Removing $toolname in $tooldir";
-		$SUDO rm $tool;
-	fi
 	
 	filename=etoile.desktop
 	filedir="/usr/share/xsessions"
@@ -207,8 +188,19 @@ userLevelSetdown
 
 if [ $AS_ROOT = yes -o $HAVE_SUDO = yes ]; then
     setupdir="$GNUSTEP_SYSTEM_ROOT/Library"
+    tooldir="/usr/local/bin"
 else
     setupdir="$GNUSTEP_USER_ROOT/Library"
+    tooldir="$HOME/bin"
+fi
+
+toolname=etoile
+tool="$tooldir/$toolname"
+	
+if [ -x "$tool" ]; then
+	echo
+	echo "Removing $toolname in $tooldir";
+	$SUDO rm $tool;
 fi
 
 echo

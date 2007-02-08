@@ -26,16 +26,19 @@
 
 systemLevelSetup()
 {
+
+	tooldir="/usr/local/bin"
 	
 	#
 	# Install essential GNUstep tools in a convenient way
 	#
+	# NOTE: this tool hack isn't that useful, hence should probably be
+	# removed.
 	
 	gstooldir="$GNUSTEP_SYSTEM_ROOT/Tools"
-	tooldir="/usr/local/bin"
 
 	echo
-	for toolname in opentool openapp debugapp defaults; do
+	for toolname in openapp defaults; do
 		tool="$gstooldir/$toolname"
 		if [ -x "$tool"  ]; then
 			echo "Linking $toolname in $tooldir"
@@ -44,11 +47,10 @@ systemLevelSetup()
 		fi
 	done
 	
-	#
-	# Install essential GNUstep libraries in a convenient way
-	#
-
-# FIXME: Turn on this code that set up the library paths with ldconfig and 
+#
+# Register essential GNUstep library paths
+#
+# NOTE: Turn on this code that set up the library paths with ldconfig and 
 # should replace the code that symbolically links libraries in /usr/lib
 #
 # 	gslibsuffix=Library/Libraries
@@ -66,44 +68,6 @@ systemLevelSetup()
 # 	"$newlibdirs" > /etc/ld.so.conf
 #
 # 	$SUDO ldconfig
-
-	gslibsuffix=Library/Libraries
-	gslibdir="$GNUSTEP_SYSTEM_ROOT/$gslibsuffix"
-
-	# NOTE: We should install in /usr/local/lib, then add /usr/local/lib 
-	# to the library path search (by asking the right to the user)
-	libdir="/usr/lib" 
-	
-	echo
-	for libname in libgnustep-base.so libgnustep-gui.so libXWindowServerKit.so libWorkspaceCommKit.so; do
-		lib="$gslibdir/$libname"
-		# FIXME: Pass the test for every strings expanded from $lib*
-		if [ -x "$lib" ]; then 
-			echo "Linking $libname in $libdir"
-			#$(LN_S) $lib "/usr/lib/libname"
-			# FIXME: Bizarrely, it seems to be necessary to link 
-			# libgnustep-base.so.X.X (the one with version number) so we use $lib*
-			# and not just $lib
-			$SUDO ln -s $lib* $libdir
-		fi
-	done
-	
-	#
-	# Install Etoile system init daemon
-	#
-	
-	# NOTE: Probably replace /usr/local/bin by /usr/bin for etoile_system
-	# deployment
-
-	toolname=etoile_system
-	tool="$PWD/Services/Private/System/obj/$toolname"
-
-	echo
-	echo "Copying $toolname in $tooldir";
-
-	# NOTE: 'obj' name  may change depending on the GNUstep setup.
-	$SUDO cp $PWD/Services/Private/System/obj/etoile_system /usr/local/bin
-
 	
 	#
 	# Install Etoile support files
@@ -288,26 +252,58 @@ fi
 
 if [ $AS_ROOT = yes -o $HAVE_SUDO = yes ]; then
     setupdir="$GNUSTEP_SYSTEM_ROOT/Library"
+    tooldir="/usr/local/bin"
 else
     setupdir="$GNUSTEP_USER_ROOT/Library"
+    tooldir="$HOME/bin"
     echo $SUDO
 fi
+
+#
+# Generate etoile startup file on the fly and install it
+#
+
+toolname=etoile
+
+echo
+echo "Generating startup script $toolname";
+
+# FIXME: As an ultimate fallback, we could add code to relaunch 
+# etoile_system when it returns an error code on exit.
+echo ". $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh; \
+      etoile_system" > $PWD/$toolname
+chmod 755 $PWD/$toolname
+
+echo "Copying $toolname in $tooldir";
+$SUDO cp $toolname $tooldir
+
+#
+# Create special directory Library/Etoile
+#
 
 echo
 if [ ! -d "$setupdir/Etoile" ]; then 
 	echo "Creating $setupdir/Etoile directory";
 	$SUDO mkdir $setupdir/Etoile
 fi
+
+#
+# Install SystemTaskList in Libary/Etoile
+#
+
 echo "Installing System support files in $setupdir/Etoile";
 $SUDO cp -R $PWD/Services/Private/System/SystemTaskList.plist $setupdir/Etoile
 
-echo
+#
+# Install Nesedah in Libary/Themes
+#
+
 echo "Copying Themes in $setupdir/Themes";
 # FIXME: Strip .svn with find . \! -path "*\.svn*"
 $SUDO cp -R $PWD/Themes $setupdir
 
 #
-# We end by setting user related stuff which are mandatory to hava a working
+# We end by setting user related stuff which are mandatory to have a working
 # Etoile environment
 #
 
