@@ -61,9 +61,24 @@ before-all::
 	fi; \
 	$(END_ECHO)
 
+# For debug, insert the next line close to the beginning of after-all.
+#echo "etoile.make: PROJECT_DIR $(PROJECT_DIR) PROJECT_NAME $(PROJECT_NAME) BUILD_DIR $(BUILD_DIR)"; \
+# For debug, insert the next line close to the end of after-all.
+#echo "$(PROJECT_DIR) $(BUILD_DIR) $(PROJECT_NAME)"; \
+#
+# NOTE: Don't put these statements commented out directly in the code because
+# it could make the build fails on some platforms as explained in bug report 
+# #8484
+
+# For framework, we create a symbolic link inside Build for the framework 
+# itself inside but also a symbolic link libFrameworkName.so pointing on 
+# frameworkName.framework/Versions/Current/libFrameworkName.so
+# Not sure why it's needed, why gnustep-make isn't able to discover the library
+# file by itself. Well... For now it avoids applications to pass any custom 
+# flags to link frameworks inside Build directory 
+
 after-all::
 	$(ECHO_NOTHING) \
-	#echo "etoile.make: PROJECT_DIR $(PROJECT_DIR) PROJECT_NAME $(PROJECT_NAME) BUILD_DIR $(BUILD_DIR)"; \
 	if [ -z $(PROJECT_DIR) ]; then \
 	echo "Dependency export failed: PROJECT_DIR is not set"; \
 	echo ""; \
@@ -83,9 +98,12 @@ after-all::
 	mkdir $(BUILD_DIR); \
 	fi; \
 	if [ -d  $(PROJECT_DIR)/$(PROJECT_NAME).framework ]; then \
-	exported="YES"; \
+	exported="yes"; \
 	if [ ! -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
 	$(LN_S) $(PROJECT_DIR)/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
+	fi; \
+	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME).so ]; then \
+	$(LN_S) $(PROJECT_DIR)/$(PROJECT_NAME).framework/Versions/Current/lib$(PROJECT_NAME).so $(BUILD_DIR)/lib$(PROJECT_NAME).so; \
 	fi; \
 	fi; \
 	if [ -f $(PROJECT_DIR)/obj/lib$(PROJECT_NAME).so ]; then \
@@ -104,7 +122,6 @@ after-all::
 	if [ -d $(PROJECT_DIR)/Headers -a ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
 	$(LN_S) $(PROJECT_DIR)/Headers $(BUILD_DIR)/$(PROJECT_NAME); \
 	elif [ ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
-	#echo "$(PROJECT_DIR) $(BUILD_DIR) $(PROJECT_NAME)"; \
 	$(LN_S) $(PROJECT_DIR) $(BUILD_DIR)/$(PROJECT_NAME); \
 	fi; \
 	fi; \
@@ -144,7 +161,7 @@ after-clean::
 	rm -f $(BUILD_DIR)/$(PROJECT_NAME); \
 	removed="yes"; \
 	fi; \
-	if [ -L $(BUILD_DIR)/$(PROJECT_NAME).so ]; then \
+	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME).so ]; then \
 	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME).so; \
 	removed="yes"; \
 	fi; \
@@ -180,7 +197,7 @@ after-distclean::
 	rm -f $(BUILD_DIR)/$(PROJECT_NAME); \
 	removed="yes"; \
 	fi; \
-	if [ -L $(BUILD_DIR)/$(PROJECT_NAME).so ]; then \
+	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME).so ]; then \
 	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME).so; \
 	removed="yes"; \
 	fi; \
