@@ -36,10 +36,13 @@ userLevelSetdown()
 	echo
 	echo "Unsetting GSAppKitUserBundles and NSUseRunningCopy (in NSGlobalDomain)"
 	defaults write NSGlobalDomain GSAppKitUserBundles "()"
-	defaults write NSGlobalDomain NSUseRunningCopy "NO"
+	defaults write NSGlobalDomain NSUseRunningCopy NO
 
 	echo "Unsetting User Interface Theme (in Camaelon domain)"
 	defaults write Camaelon Theme ""
+
+	defaults delete GWorkspace NoWarnOnQuit
+	defaults delete NSGlobalDomain GSWorkspaceApplication
 	
 }
 
