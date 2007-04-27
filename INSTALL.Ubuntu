@@ -3,6 +3,7 @@ Ubuntu INSTALL
 ==============
 
 Here is the list of packages/dependencies you must install to build both GNUstep and Etoile on your Ubuntu system. These dependencies may vary a bit depending on your Ubuntu version. It is advised to install all dependency lists (main and extra) to build the whole repository without hurdles.
+If you want to update dependency list, you should check dependency names to know whether they are different on Ubuntu versions other than the one you currently use. Distinct package list for all Ubuntu versions can be found here: <http://packages.ubuntulinux.org/>
 
 
 Main Dependencies
@@ -24,6 +25,11 @@ libx11-dev
 libart-2.0-dev
 libxft-dev
 libxmu-dev
+dbus
+libdbus-1-dev
+hal
+libstartup-notification0-dev
+libxcursor-dev
 
 Both make and openssl should be now installed by default.
 libffi is now available in Ubuntu (better to use it rather than ffcall).
@@ -46,6 +52,11 @@ libart-2.0-dev
 libxft-dev
 libxext-dev
 libxmu-dev
+dbus 
+libdbus-1-dev
+hal
+libstartup-notification0-dev
+libxcursor-dev
 
 
 Extra Dependencies
