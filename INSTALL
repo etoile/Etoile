@@ -8,13 +8,13 @@ Required software
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
-    * gnustep-make 1.13 or higher
+    * gnustep-make 1.13 or higher (2.00 or higher are strongly advised)
 
-    * gnustep-base 1.13 or higher
+    * gnustep-base 1.14 or higher
 
-    * gnustep-gui 0.11 or higher
+    * gnustep-gui 0.12 or higher
 
-    * gnustep-back 0.11 or higher
+    * gnustep-back 0.12 or higher
 
 See <http://www.gnustep.org/> for further information.
    
@@ -28,19 +28,31 @@ environment or the whole repository:
     
     See <http://www.zlib.net/> for further information.
     
-    * OniGuruma 3.8.6 or higher (OgreKit)
+    * OniGuruma 5.0 or higher (OgreKit)
     
     See <http://www.geocities.jp/kosako3/oniguruma/> for further information. 
     This dependency is also available in trunk/Dependencies/oniguruma (within 
     Etoile repository).
+
+    * D-Bus 1.0 or higher (System)
     
-    * sqlite3 (SQLiteClient)
+    See <http://www.freedesktop.org/wiki/Software_2fdbus> for further 
+    information.
+
+    * HAL (System)
     
-    See <http://www.sqlite3.org> for further information. 
+    See <http://www.freedesktop.org/wiki/Software_2fhal> for further 
+    information.
+
+    * startup-notification (Azalea)
     
-    * SQLClient (SQLiteClient)
+    See <http://www.freedesktop.org/wiki/Software_2fstartup_2dnotification> for
+    further information.
+
+    * Xcursor (Azalea)
     
-    See <http://www.gnustep.org/> for further information.
+    See <http://www.freedesktop.org/wiki/Software_2fxlibs> for further 
+    information.
 
 
 Notation
