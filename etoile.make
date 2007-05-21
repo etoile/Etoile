@@ -102,20 +102,20 @@ after-all::
 	if [ ! -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
 	$(LN_S) $(PROJECT_DIR)/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
 	fi; \
-	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT) ]; then \
-	$(LN_S) $(PROJECT_DIR)/$(PROJECT_NAME).framework/Versions/Current/lib$(PROJECT_NAME).$(SHARED_LIBEXT) $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT); \
+	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+	$(LN_S) $(PROJECT_DIR)/$(PROJECT_NAME).framework/Versions/Current/lib$(PROJECT_NAME)$(SHARED_LIBEXT) $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT); \
 	fi; \
 	fi; \
-	if [ -f $(PROJECT_DIR)/obj/lib$(PROJECT_NAME).$(SHARED_LIBEXT) ]; then \
+	if [ -f $(PROJECT_DIR)/obj/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
 	exported="yes"; \
-	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT) ]; then \
-	$(LN_S) $(PROJECT_DIR)/obj/lib$(PROJECT_NAME).$(SHARED_LIBEXT) $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT) ; \
+	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+	$(LN_S) $(PROJECT_DIR)/obj/lib$(PROJECT_NAME)$(SHARED_LIBEXT) $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ; \
 	fi; \
 	fi; \
-	if [ -f $(PROJECT_DIR)/Source/obj/lib$(PROJECT_NAME).$(SHARED_LIBEXT) ]; then \
+	if [ -f $(PROJECT_DIR)/Source/obj/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
 	exported="yes"; \
-	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT) ]; then \
-	$(LN_S) $(PROJECT_DIR)/Source/obj/lib$(PROJECT_NAME).$(SHARED_LIBEXT) $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT) ; \
+	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+	$(LN_S) $(PROJECT_DIR)/Source/obj/lib$(PROJECT_NAME)$(SHARED_LIBEXT) $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ; \
 	fi; \
 	fi; \
 	if [ "$${exported}" = "yes" ]; then \
@@ -161,8 +161,8 @@ after-clean::
 	rm -f $(BUILD_DIR)/$(PROJECT_NAME); \
 	removed="yes"; \
 	fi; \
-	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT) ]; then \
-	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT); \
+	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT); \
 	removed="yes"; \
 	fi; \
 	if [ -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
@@ -197,8 +197,8 @@ after-distclean::
 	rm -f $(BUILD_DIR)/$(PROJECT_NAME); \
 	removed="yes"; \
 	fi; \
-	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT) ]; then \
-	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME).$(SHARED_LIBEXT); \
+	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT); \
 	removed="yes"; \
 	fi; \
 	if [ -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
