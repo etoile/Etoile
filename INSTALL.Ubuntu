@@ -9,8 +9,11 @@ If you want to update dependency list, you should check dependency names to know
 Main Dependencies
 =================
 
-Ubuntu 6.10 (Edgy Eft)
-----------------------
+Ubuntu 6.10 & 7.10 (Edgy Eft & Feisty Fawn)
+-------------------------------------------
+
+Both make and openssl should be now installed by default.
+libffi is now available in Ubuntu (better to use it rather than ffcall).
 
 gobjc-4.1
 libxml2-dev
@@ -30,11 +33,14 @@ libdbus-1-dev
 hal
 libstartup-notification0-dev
 libxcursor-dev
+x11proto-scrnsaver-dev
+xscreensaver
+g++
+libpoppler-dev 
 
-Both make and openssl should be now installed by default.
-libffi is now available in Ubuntu (better to use it rather than ffcall).
 
-Ubuntu 6.06 (Dapper Drake):
+Ubuntu 6.06 (Dapper Drake)
+-------------------------
 gobjc-4.0
 make
 openssl
@@ -57,13 +63,8 @@ libdbus-1-dev
 hal
 libstartup-notification0-dev
 libxcursor-dev
-
-
-Extra Dependencies
-==================
-
-PopplerKit
-----------
-
+x11proto-scrnsaver-dev
+xscreensaver
 g++
 libpoppler-dev 
+

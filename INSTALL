@@ -8,13 +8,17 @@ Required software
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
-    * gnustep-make 1.13 or higher (2.00 or higher are strongly advised)
+    * gnustep-make 2.00 or higher
 
     * gnustep-base 1.14 or higher
 
     * gnustep-gui 0.12 or higher
 
     * gnustep-back 0.12 or higher
+
+    * gnustep-back 0.10 or higher
+
+    * StepTalk 0.10 or higher
 
 See <http://www.gnustep.org/> for further information.
    
@@ -54,6 +58,10 @@ environment or the whole repository:
     See <http://www.freedesktop.org/wiki/Software_2fxlibs> for further 
     information.
 
+    * XScreenSaver (Idle)
+    
+    See <http://www.jwz.org/xscreensaver/> for further information.
+
 
 Notation
 --------
@@ -66,10 +74,12 @@ Notation
 Build and Install
 -----------------
 
-Warning! At this time, the install process is broken when run with 'sudo', then
-you probably have to use 'su root'. Moreover if you encounter path related 
-error, you can source GNUstep.sh or GNUstep.csh in your shell, read the GNUstep 
-documentation to know more about this topic.
+WARNING: If you don't run setup.sh script, Etoile environment won't be fully 
+installed and will simply fail to start.
+
+Note: If you encounter path related error, you can source GNUstep.sh or 
+GNUstep.csh in your shell, read the GNUstep documentation to know more about 
+this topic.
 
 Steps to build:
 

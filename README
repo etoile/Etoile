@@ -66,11 +66,12 @@ GNUstep, this is the only mandatory dependency. To set up GNUstep with its
 related dependencies, you should read about GNUstep install on
 <http://www.gnustep.org>
 
-    * From GNUstep: gnustep-make, gnustep-base, gnustep-gui, gnustep-back
+    * From GNUstep: gnustep-make, gnustep-base, gnustep-gui, gnustep-back, 
+      StepTalk
 
     * From Freedesktop: D-Bus, HAL, startup-notification, Xcursor
     
-    * libpng, zlib, OniGuruma
+    * libpng, zlib, OniGuruma, XScreenSaver
 
 More details about Etoile dependencies can be found in INSTALL document (in the
 same directory than README one).
