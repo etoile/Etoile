@@ -33,7 +33,7 @@ libdbus-1-dev
 hal
 libstartup-notification0-dev
 libxcursor-dev
-x11proto-scrnsaver-dev
+libxss-dev
 xscreensaver
 g++
 libpoppler-dev 
@@ -63,7 +63,7 @@ libdbus-1-dev
 hal
 libstartup-notification0-dev
 libxcursor-dev
-x11proto-scrnsaver-dev
+libxss-dev
 xscreensaver
 g++
 libpoppler-dev 
