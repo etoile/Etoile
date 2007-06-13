@@ -5,6 +5,12 @@
 # NOTE: In this file, 'module' and 'project' words have exactly the same 
 # meaning.
 
+### Installation Control ###
+
+ifeq ($(ETOILE_CORE_MODULE), YES)
+  export GNUSTEP_INSTALLATION_DOMAIN = SYSTEM
+endif
+
 ### Internal Dependency Handling ###
 
 # CURDIR is the path where make is run, with gnustep-make the value changes in
@@ -253,4 +259,3 @@ ifeq ($(test), yes)
     export ADDITIONAL_OBJC_LIBS += -lUnitKit
   endif
 endif
-
