@@ -308,6 +308,37 @@ echo "Copying Themes in $setupdir/Themes";
 $SUDO cp -R $PWD/Themes $setupdir
 
 #
+# Install Fonts in Libary/Fonts
+#
+
+fontarchive=etoile-default-fonts.tar.gz
+wgetavailable=no
+
+if [ ! -f $PWD/$fontarchive ]; then
+	if [ -n  `which wget` ]; then 
+		wgetavailable=yes
+		echo;
+		echo "Trying to download Etoile default font archive...";
+		echo;
+		wget http://download.gna.org/etoile/$fontarchive
+	else
+		echo "wget tool isn't installed, Fonts will be copied only if Etoile default font archive is already in the current directory";
+	fi
+fi
+
+if [ -f $PWD/$fontarchive ]; then
+	echo "Copying Fonts in $setupdir/Fonts";
+	tar -xzf $PWD/$fontarchive
+	$SUDO cp -R $PWD/etoile-default-fonts/* $setupdir/Fonts
+else
+	if [ $wgetavailable = yes ]; then
+		echo "Fonts archive cannot be downloaded (check your internet connection)";
+	else
+		echo "Fonts archive cannot be found in current directory";
+	fi
+fi
+
+#
 # We end by setting user related stuff which are mandatory to have a working
 # Etoile environment
 #
