@@ -104,7 +104,7 @@ userLevelSetup()
 
 	if [ $AS_ROOT = yes -o $HAVE_SUDO = yes ]; then
 		# FIXME: Seek bundles in both Local and System domains
-		bundledir="$GNUSTEP_LOCAL_ROOT/Library/Bundles"
+		bundledir="$GNUSTEP_SYSTEM_ROOT/Library/Bundles"
 	else
 		# When the script is run without sudo or root permissions, we 
 		# can suppose the bundles have been installed in the user 
