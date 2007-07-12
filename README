@@ -1,5 +1,5 @@
 ==========
-Etoile 0.1
+Etoile 0.2
 ==========
 
 Etoile intends to be an innovative GNUstep based user environnement built from
@@ -13,8 +13,10 @@ Various licenses are used, they are specific to each module, but BSD and LGPL
 licenses are the most widely used.
 
 Maintainers: Quentin Mathe, Nicolas Roard
-Authors: Yen-Ju Chen, David Chisnall, Michael Hanni, Saso Kiselkov, 
-Uli Kusterer, Quentin Mathe, Gunther Noack, Nicolas Roard, Jesse Ross   
+Authors: Isaiah Beerbower, Yen-Ju Chen, David Chisnall, Michael Hanni, 
+Jasper Hauser, Saso Kiselkov, Uli Kusterer, Quentin Mathe, Gunther Noack, 
+Nicolas Roard, Jesse Ross
+
 
 To know more about Etoile: 
 <http://www.etoile-project.org>

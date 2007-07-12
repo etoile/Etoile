@@ -40,6 +40,14 @@ You can find templates for frameworks, applications etc. in Developer/Templates
 <http://svn.gna.org/viewcvs/etoile/trunk/Etoile/Developer/Templates/>
 
 
+4) All defaults exported in NSGlobalDomain or publicly documented must use 'ET'
+prefix.
+
+This choice makes easier to quickly distinguish the defaults which have been set 
+by Etoile. All other defaults use no prefix or their own prefix like 'NS' and 'GS' 
+in GNUstep case.
+
+
 ---
 
 Here is a short summary of various development aids you could be interested in:
@@ -48,7 +56,7 @@ Here is a short summary of various development aids you could be interested in:
 	  <http://svn.gna.org/viewcvs/etoile/trunk/Etoile/Developer/Examples/>
 
 	- Framework API documentation
-      <http://www.etoile-project.org/etoile/documentation/>
+          <http://www.etoile-project.org/etoile/documentation/>
 
 	- Participate section of the web site (Coding style, Subversion help)
 	  <http://www.etoile-project.org/etoile/mediawiki/index.php?title=Participate>
@@ -57,4 +65,4 @@ Here is a short summary of various development aids you could be interested in:
 	  <https://mail.gna.org/listinfo/etoile-dev/>
 
 	- Etoile News development blog (includes tutorials and technical discussions)
-      <http://www.etoile-project.org/etoile/blog/>
+          <http://www.etoile-project.org/etoile/blog/>
