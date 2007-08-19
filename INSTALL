@@ -16,8 +16,6 @@ compile and use Etoile. The core packages are, at a minimum:
 
     * gnustep-back 0.12 or higher
 
-    * gnustep-back 0.10 or higher
-
     * StepTalk 0.10 or higher
 
 See <http://www.gnustep.org/> for further information.
