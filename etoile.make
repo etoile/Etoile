@@ -21,12 +21,18 @@ endif
 # make is run, this variable allows to keep a reference to the initial 
 # directory taking in account the previous comment about CURDIR.
 #
+# PROJECT_NAME is the name of the module to be built, by default the last path 
+# path component of PROJECT_DIR is used as name. It must match the module 
+# target variable like FRAMEWORK_NAME, APP_NAME etc. If you use a target name 
+# which is unrelated to the last path component of PROJECT_DIR, you must 
+# redefine this variable in your GNUmakefile.
+#
 # PWD or ./ is the path where the current makefile is located (for 
 # etoile.make, this is always Etoile/)
 
 export PROJECT_DIR ?= $(CURDIR)
 
-PROJECT_NAME = $(notdir $(PROJECT_DIR))
+PROJECT_NAME ?= $(notdir $(PROJECT_DIR))
 
 # Finally we search etoile.make path in the repository... because Make doesn't 
 # provide any variables to obtain included makefile paths (well, I would like
@@ -58,11 +64,14 @@ before-all::
 	echo ""; \
 	echo "Build Project: $(PROJECT_NAME)"; \
 	echo ""; \
+	echo "$(FRAMEWORK_NAME) $(LIBRARY_NAME) $(PROJECT_DIR) $(PROJECT_NAME)"; \
 	if [ ! -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
 	  if [ -d $(PROJECT_DIR)/Headers ]; then \
 	    $(LN_S) $(PROJECT_DIR)/Headers $(PROJECT_DIR)/$(PROJECT_NAME); \
+	    echo "$(PROJECT_DIR) $(BUILD_DIR) $(PROJECT_NAME)"; \
 	  elif [ -n "$(LIBRARY_NAME)" -o -n "$(FRAMEWORK_NAME)" ]; then \
 	    $(LN_S) $(PROJECT_DIR) $(PROJECT_DIR)/$(PROJECT_NAME); \
+	    echo "$(PROJECT_DIR) $(BUILD_DIR) $(PROJECT_NAME)"; \
 	  fi; \
 	fi; \
 	$(END_ECHO)
