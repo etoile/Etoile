@@ -5,11 +5,48 @@ Ubuntu INSTALL
 Here is the list of packages/dependencies you must install to build both GNUstep and Etoile on your Ubuntu system. These dependencies may vary a bit depending on your Ubuntu version. It is advised to install all dependency lists (main and extra) to build the whole repository without hurdles.
 If you want to update dependency list, you should check dependency names to know whether they are different on Ubuntu versions other than the one you currently use. Distinct package list for all Ubuntu versions can be found here: <http://packages.ubuntulinux.org/>
 
+For gobjc dependency, the packages is given below with a version number to make clear it's better to use the latest release of both GCC and related Objective-C support. If you install gobjc dependency directly, it will automatically install the versioned dependency we suggest for each Ubuntu release.
+
+The dependency lists available below are the shortest possible, that means they will implicitely install various other dependencies. For example, we only suggest development packages (suffixed by -dev) because they result in the installation of the related libraries and tools in addition to the headers they are in charge of installing. To take a concrete case: libtiff4-dev installs libtiff4.
+Time to time, we indicate dependencies which could be omitted because another package depends on it and would install them in all cases. libtiff4-dev will install among others libtiff4, libjpeg62-dev so specifying libjpeg62-dev isn't truly necessary but just helps to make clear we have a dependency on a jpeg library.
+
+We only install hal and omit libhal-dev because we access HAL through D-Bus (we don't link HAL library).
+
+Oniguruma library (libonig) that is required by OgreKit wasn't available as a package before Gutsy Gibbon. If you use an older Ubuntu version, before building Etoile you should configure, compile and install the version available in the Subversion repository at path etoile/trunk/Dependencies.
+
 
 Main Dependencies
 =================
 
-Ubuntu 6.10 & 7.10 (Edgy Eft & Feisty Fawn)
+Ubuntu 7.10 (Gutsy Gibbon)
+--------------------------
+
+gobjc-4.2
+libxml2-dev
+libxslt1-dev
+libffi4-dev
+libjpeg62-dev
+libtiff4-dev
+libpng12-dev
+libungif4-dev
+libfreetype6-dev
+libx11-dev
+libart-2.0-dev
+libxft-dev
+libxmu-dev
+dbus
+libdbus-1-dev
+hal
+libstartup-notification0-dev
+libxcursor-dev
+libxss-dev
+xscreensaver
+g++
+libpoppler-dev
+libonig-dev
+
+
+Ubuntu 6.10 & 7.04 (Edgy Eft & Feisty Fawn)
 -------------------------------------------
 
 Both make and openssl should be now installed by default.
