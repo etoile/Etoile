@@ -18,6 +18,35 @@ Oniguruma library (libonig) that is required by OgreKit wasn't available as a pa
 Main Dependencies
 =================
 
+Ubuntu 8.04 (Hardy Heron)
+--------------------------
+
+gobjc-4.2
+libxml2-dev
+libxslt1-dev
+libffi4-dev
+libssl-dev
+libjpeg62-dev
+libtiff4-dev
+libpng12-dev
+libgif-dev
+libfreetype6-dev
+libx11-dev
+libart-2.0-dev
+libxft-dev
+libxmu-dev
+dbus
+libdbus-1-dev
+hal
+libstartup-notification0-dev
+libxcursor-dev
+libxss-dev
+xscreensaver
+g++
+libpoppler-dev
+libonig-dev
+
+
 Ubuntu 7.10 (Gutsy Gibbon)
 --------------------------
 
