@@ -10,11 +10,11 @@ compile and use Etoile. The core packages are, at a minimum:
 
     * gnustep-make 2.00 or higher
 
-    * gnustep-base 1.14 or higher
+    * gnustep-base 1.15.3 or higher
 
-    * gnustep-gui 0.12 or higher
+    * gnustep-gui 0.13.2 or higher
 
-    * gnustep-back 0.12 or higher
+    * gnustep-back 0.13.2 or higher
 
     * StepTalk 0.10 or higher
 
@@ -82,7 +82,7 @@ this topic.
 Steps to build:
 
     * make
-    * [sudo] make install
+    * [sudo] [-E] make install
     * ./setup.sh
 
 setup.sh script takes care of various operations mandatory to have a ready to 
