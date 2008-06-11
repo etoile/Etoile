@@ -31,8 +31,7 @@ environment or the whole repository:
 Notation
 --------
 In the following text, square brackets "[ ]" are used to indicate an
-optional parameter, while "*" at the beginning of a line indicates a 
-command.
+optional parameter.
 
 
 Build and Install
