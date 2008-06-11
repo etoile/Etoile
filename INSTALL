@@ -1,97 +1,62 @@
-==============
-Etoile INSTALL
-==============
+Installation
+==================================
 
 Required software
 -----------------
-
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
-    * gnustep-make 2.00 or higher
+ * gnustep-make 2.00 or higher
+ * gnustep-base 1.15.3 or higher
+ * gnustep-gui 0.13.2 or higher
+ * gnustep-back 0.13.2 or higher
+ * StepTalk 0.10 or higher
 
-    * gnustep-base 1.15.3 or higher
-
-    * gnustep-gui 0.13.2 or higher
-
-    * gnustep-back 0.13.2 or higher
-
-    * StepTalk 0.10 or higher
-
-See <http://www.gnustep.org/> for further information.
+See [GNUstep](http://www.gnustep.org/) for further information.
    
    
 You need some extra libraries if you intend to build a complete Etoile
 environment or the whole repository:
     
-    * libpng (IconKit)
-
-    * zlib (LuceneKit)
-    
-    See <http://www.zlib.net/> for further information.
-    
-    * OniGuruma 5.0 or higher (OgreKit)
-    
-    See <http://www.geocities.jp/kosako3/oniguruma/> for further information. 
-    This dependency is also available in trunk/Dependencies/oniguruma (within 
-    Etoile repository).
-
-    * D-Bus 1.0 or higher (System)
-    
-    See <http://www.freedesktop.org/wiki/Software_2fdbus> for further 
-    information.
-
-    * HAL (System)
-    
-    See <http://www.freedesktop.org/wiki/Software_2fhal> for further 
-    information.
-
-    * startup-notification (Azalea)
-    
-    See <http://www.freedesktop.org/wiki/Software_2fstartup_2dnotification> for
-    further information.
-
-    * Xcursor (Azalea)
-    
-    See <http://www.freedesktop.org/wiki/Software_2fxlibs> for further 
-    information.
-
-    * XScreenSaver (Idle)
-    
-    See <http://www.jwz.org/xscreensaver/> for further information.
+ * libpng (IconKit)
+ * [zlib](http://www.zlib.net/) (LuceneKit)
+ * [OniGuruma](http://www.geocities.jp/kosako3/oniguruma/) 5.0 or higher (OgreKit)
+ * [D-Bus](http://www.freedesktop.org/wiki/Software_2fdbus) 1.0 or higher (System)
+ * [HAL](http://www.freedesktop.org/wiki/Software_2fhal) (System)
+ * [startup-notification](http://www.freedesktop.org/wiki/Software_2fstartup_2dnotification) (Azalea)
+ * [Xcursor](http://www.freedesktop.org/wiki/Software_2fxlibs) (Azalea)
+ * [XScreenSaver](http://www.jwz.org/xscreensaver/) (Idle)
 
 
 Notation
 --------
-
-    In the following text, square brackets "[ ]" are used to indicate an
-    optional parameter, while "*" at the beginning of a line indicates a 
-    command.
+In the following text, square brackets "[ ]" are used to indicate an
+optional parameter, while "*" at the beginning of a line indicates a 
+command.
 
 
 Build and Install
 -----------------
-
-WARNING: If you don't run setup.sh script, Etoile environment won't be fully 
+**WARNING:** If you don't run setup.sh script, Etoile environment won't be fully 
 installed and will simply fail to start.
 
-Note: If you encounter path related error, you can source GNUstep.sh or 
+**Note:** If you encounter path related error, you can source GNUstep.sh or 
 GNUstep.csh in your shell, read the GNUstep documentation to know more about 
 this topic.
 
 Steps to build:
 
-    * make
-    * [sudo] [-E] make install
-    * ./setup.sh
+	make
+	[sudo] [-E] make install
+	./setup.sh
 
 setup.sh script takes care of various operations mandatory to have a ready to 
 use environment that includes:
 
-    * the environment startup tool (named 'etoile_system')
-    * Nesedah theme
-    * Horizontal menu bar
-    * X11 session support (to start Etoile with KDM, GDM etc.)
+ * the environment startup tool (named 'etoile_system')
+ * Nesedah theme
+ * Horizontal menu bar
+ * X11 session support (to start Etoile with KDM, GDM etc.)
 
 This involves to copy or link various elements and set several preferences 
 (called 'defaults' in GNUstep terminology). 
@@ -101,11 +66,10 @@ current user only or for the whole machine.
 
 Uninstall
 ---------
-
 Steps to uninstall:
 
-    * [sudo] make uninstall
-    * ./setdown.sh
+	[sudo] make uninstall
+	./setdown.sh
 
 setdown.sh script allows to get rid of what has been installed or configured by 
 setup.sh. In other words, it reverts the effect of setup.sh script. 
@@ -123,13 +87,12 @@ applications may fail because of missing elements or daemons not launched.
 
 Custom Build and Install
 ------------------------
-
 In order to build and install the whole project (with the exception of
 developers tools like UnitKit), you can just type in the root directory (named
 Etoile):
 
-    * make
-    * [sudo] make install
+	make
+	[sudo] make install
 
 Warning! The following section isn't up-to-date. At this time, it isn't 
 possible to build only one module by typing 'make modulename=yes'. This
@@ -138,42 +101,42 @@ should be fixed to match the documentation below.
 Which is the equivalent for the build system of asking to build the etoile
 module:
 
-    * make etoile=yes
-    * [sudo] make etoile=yes install
+	make etoile=yes
+	[sudo] make etoile=yes install
 
 Indeed, you can choose to build only a specific module. Simply follow 'make'
 with the module's name (in lowercase) set to yes. For example:
 
-    * make camaelon=yes
-    * make camaelon=yes install
+	make camaelon=yes
+	make camaelon=yes install
 
 Will only build and install Camaelon.
 
 You can combine more than one module:
 
-    * make camaelon=yes lucenekit=yes
+	make camaelon=yes lucenekit=yes
 
 And even use custom set of modules, like desktop-base. Here is a list of the
 current sets of modules:
 
-    * desktop-base --> camaelon, bookmarkkit, iconkit, preferenceskit
-    * user-base --> installer (for now that's all)
-    * developer-base --> unitkit, unittests, examples
-    * etoile-extensions --> lucenekit, extendedworkspacekit, trackerkit,
-    servicesbarkit, servicesbar
+ * desktop-base --> camaelon, bookmarkkit, iconkit, preferenceskit
+ * user-base --> installer (for now that's all)
+ * developer-base --> unitkit, unittests, examples
+ * etoile-extensions --> lucenekit, extendedworkspacekit, trackerkit,
+   servicesbarkit, servicesbar
 
 The 'etoile' option semantic is a bit special:
 
-    * etoile=yes --> desktop-base, user-base, etoile-extensions, workspace
-    * etoile=no --> desktop-base, developer-base // everything which is not
-    bound to Etoile itself
+ * etoile=yes --> desktop-base, user-base, etoile-extensions, workspace
+ * etoile=no --> desktop-base, developer-base // everything which is not
+   bound to Etoile itself
 
 Finally you can combine these module sets with specific module options, like:
 
-    * make developer-base=yes camaelon=yes // build developer-base and camaelon
-    * make desktop-base=no camaelon=yes // build user-base, etoile-extensions,
-    workspace and camaelon (but not other desktop-base stuff)
-    * make etoile=no etoile-extensions=yes extendedworkspacekit=no
+	make developer-base=yes camaelon=yes // build developer-base and camaelon
+	make desktop-base=no camaelon=yes // build user-base, etoile-extensions,
+	// workspace and camaelon (but not other desktop-base stuff)
+	make etoile=no etoile-extensions=yes extendedworkspacekit=no
 
 
 You can use the 'make' command with all the available options from every
@@ -186,6 +149,5 @@ check' but this not implemented currently.
 
 Trouble
 -------
-
 Give us feedback! Tell us what you like; tell us what you think
 could be better. Send bug reports and patches to <etoile-track@gna.org>.
