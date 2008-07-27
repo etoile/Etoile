@@ -10,7 +10,6 @@ compile and use Etoile. The core packages are, at a minimum:
  * gnustep-base 1.15.3 or higher
  * gnustep-gui 0.13.2 or higher
  * gnustep-back 0.13.2 or higher
- * StepTalk 0.10 or higher
 
 See [GNUstep](http://www.gnustep.org/) for further information.
    
@@ -26,6 +25,11 @@ environment or the whole repository:
  * [startup-notification](http://www.freedesktop.org/wiki/Software_2fstartup_2dnotification) (Azalea)
  * [Xcursor](http://www.freedesktop.org/wiki/Software_2fxlibs) (Azalea)
  * [XScreenSaver](http://www.jwz.org/xscreensaver/) (Idle)
+ * [LLVM](http://www.llvm.org) (Smalltalk)
+ * [Lemon](http://www.hwaci.com/sw/lemon/) (Smalltalk)
+ * [GMP](http://gmplib.org/) (Smalltalk)
+
+For now, before building Etoile you should configure, compile and install LLVM by checking out the Subversion development trunk available at: <http://llvm.org/svn/llvm-project/llvm/trunk>
 
 
 Notation

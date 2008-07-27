@@ -14,6 +14,8 @@ We only install hal and omit libhal-dev because we access HAL through D-Bus (we 
 
 Oniguruma library (libonig) that is required by OgreKit wasn't available as a package before Gutsy Gibbon. If you use an older Ubuntu version, before building Etoile you should configure, compile and install the version available in the Subversion repository at path etoile/trunk/Dependencies.
 
+LLVM version (llvm-libs) that is currently required by Smalltalk isn't the lastest release available as a package in Ubuntu, but the developement trunk version of the LLVM repository (See INSTALL).
+
 
 Main Dependencies
 =================
@@ -45,6 +47,8 @@ xscreensaver
 g++
 libpoppler-dev
 libonig-dev
+lemon
+libgmp3-dev
 
 
 Ubuntu 7.10 (Gutsy Gibbon)
@@ -74,6 +78,8 @@ xscreensaver
 g++
 libpoppler-dev
 libonig-dev
+lemon
+libgmp3-dev
 
 
 Ubuntu 6.10 & 7.04 (Edgy Eft & Feisty Fawn)
@@ -105,6 +111,8 @@ libxss-dev
 xscreensaver
 g++
 libpoppler-dev
+lemon
+libgmp3-dev
 
 
 Ubuntu 6.06 (Dapper Drake)
@@ -135,3 +143,5 @@ libxss-dev
 xscreensaver
 g++
 libpoppler-dev
+lemon
+libgmp3-dev
