@@ -258,7 +258,7 @@ export ADDITIONAL_LIB_DIRS += -L$(BUILD_DIR)
 
 # We disable warnings about #import being deprecated. They occur with old GCC
 # version (before 4.0 iirc).
-export ADDITIONAL_OBJCFLAGS += -Wno-import
+export ADDITIONAL_OBJCFLAGS += -Wno-import -Werror -Wno-unused
 
 # For test bundles, we must link UnitKit
 ifeq ($(test), yes)
