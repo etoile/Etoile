@@ -18,6 +18,7 @@ You need some extra libraries if you intend to build a complete Etoile
 environment or the whole repository:
     
  * libpng (IconKit)
+ * libavcodec and libavformat (MediaKit)
  * [zlib](http://www.zlib.net/) (LuceneKit)
  * [OniGuruma](http://www.geocities.jp/kosako3/oniguruma/) 5.0 or higher (OgreKit)
  * [D-Bus](http://www.freedesktop.org/wiki/Software_2fdbus) 1.0 or higher (System)
