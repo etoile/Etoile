@@ -2,7 +2,7 @@
 Ubuntu INSTALL
 ==============
 
-Here is the list of packages/dependencies you must install to build both GNUstep and Etoile on your Ubuntu system. These dependencies may vary a bit depending on your Ubuntu version. It is advised to install all dependency lists (main and extra) to build the whole repository without hurdles.
+Here is the list of packages/dependencies you must install to build both GNUstep and Etoile on your Ubuntu system. These dependencies may vary a bit depending on your Ubuntu version.
 If you want to update dependency list, you should check dependency names to know whether they are different on Ubuntu versions other than the one you currently use. Distinct package list for all Ubuntu versions can be found here: <http://packages.ubuntulinux.org/>
 
 For gobjc dependency, the packages is given below with a version number to make clear it's better to use the latest release of both GCC and related Objective-C support. If you install gobjc dependency directly, it will automatically install the versioned dependency we suggest for each Ubuntu release.
@@ -34,7 +34,7 @@ libpng12-dev
 libgif-dev
 libfreetype6-dev
 libx11-dev
-libart-2.0-dev
+libcairo2-dev
 libxft-dev
 libxmu-dev
 dbus
