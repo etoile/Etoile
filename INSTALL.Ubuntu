@@ -46,9 +46,11 @@ libxss-dev
 xscreensaver
 g++
 libpoppler-dev
-libonig-dev
-lemon
+libonig-dev (universe)
+lemon (universe)
 libgmp3-dev
+postgresql
+libpq-dev
 
 
 Ubuntu 7.10 (Gutsy Gibbon)
@@ -65,7 +67,7 @@ libpng12-dev
 libungif4-dev
 libfreetype6-dev
 libx11-dev
-libart-2.0-dev
+libcairo2-dev
 libxft-dev
 libxmu-dev
 dbus
@@ -77,9 +79,11 @@ libxss-dev
 xscreensaver
 g++
 libpoppler-dev
-libonig-dev
-lemon
+libonig-dev (universe)
+lemon (universe)
 libgmp3-dev
+postgresql-8.3 (backports)
+libpq-dev
 
 
 Ubuntu 6.10 & 7.04 (Edgy Eft & Feisty Fawn)
@@ -111,7 +115,7 @@ libxss-dev
 xscreensaver
 g++
 libpoppler-dev
-lemon
+lemon (universe)
 libgmp3-dev
 
 
@@ -123,7 +127,7 @@ openssl
 libssl-dev
 libxml2-dev
 libxslt-dev
-ffcall-dev (universe component)
+ffcall-dev (universe)
 libjpeg-dev
 libtiff4-dev
 libpng12-dev
@@ -143,5 +147,7 @@ libxss-dev
 xscreensaver
 g++
 libpoppler-dev
-lemon
+lemon (universe)
 libgmp3-dev
+postgresql-8.3 (backports)
+libpq-dev

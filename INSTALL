@@ -18,6 +18,7 @@ You need some extra libraries if you intend to build a complete Etoile
 environment or the whole repository:
     
  * libpng (IconKit)
+ * [PostgreSQL](http://www.postgresql.org) 8.3 or higher (CoreObject)
  * libavcodec and libavformat (MediaKit)
  * [zlib](http://www.zlib.net/) (LuceneKit)
  * [OniGuruma](http://www.geocities.jp/kosako3/oniguruma/) 5.0 or higher (OgreKit)
