@@ -5,6 +5,25 @@
 # NOTE: In this file, 'module' and 'project' words have exactly the same 
 # meaning.
 
+# This variable can be used to check in a GNUmakefile whether a module is 
+# built as a part of Etoile or not. 
+export etoile = yes
+
+### Linking Variables ###
+
+# You can link all the core frameworks with the single flag ETOILE_CORE_LIBS and 
+# Smalltalk dependencies with SMALLTALK_LIBS. .
+# Pass these flags to xxx_LIBRARIES_DEPEND_UPON for a framework/library, and to 
+# xxx_GUI_LIBS, xxx_TOOL_LIBS or xxx_BUNDLE_LIBS for other targets (applications,
+# tools and bundles).
+
+ETOILE_FOUNDATION_LIBS = -lEtoileFoundation -lEtoileThread -lEtoileXML
+COREOBJECT_LIBS = -lCoreObject -lEtoileSerialize
+ETOILE_UI_LIBS = -lEtoileUI
+
+export ETOILE_CORE_LIBS = $(ETOILE_FOUNDATION_LIBS) $(COREOBJECT_LIBS) $(ETOILE_UI_LIBS) 
+export SMALLTALK_LIBS = -lEtoileFoundation -lLanguageKit -lSmalltalkKit -lSmalltalkSupport
+
 ### Installation Control ###
 
 ifeq ($(ETOILE_CORE_MODULE), YES)
@@ -64,14 +83,14 @@ before-all::
 	echo ""; \
 	echo "Build Project: $(PROJECT_NAME)"; \
 	echo ""; \
-	echo "$(FRAMEWORK_NAME) $(LIBRARY_NAME) $(PROJECT_DIR) $(PROJECT_NAME)"; \
+	#echo "$(FRAMEWORK_NAME) $(LIBRARY_NAME) $(PROJECT_DIR) $(PROJECT_NAME)"; \
+	\
+	## Create Local Header Directory ## \
 	if [ ! -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
 	  if [ -d $(PROJECT_DIR)/Headers ]; then \
 	    $(LN_S) $(PROJECT_DIR)/Headers $(PROJECT_DIR)/$(PROJECT_NAME); \
-	    echo "$(PROJECT_DIR) $(BUILD_DIR) $(PROJECT_NAME)"; \
 	  elif [ -n "$(LIBRARY_NAME)" -o -n "$(FRAMEWORK_NAME)" ]; then \
 	    $(LN_S) $(PROJECT_DIR) $(PROJECT_DIR)/$(PROJECT_NAME); \
-	    echo "$(PROJECT_DIR) $(BUILD_DIR) $(PROJECT_NAME)"; \
 	  fi; \
 	fi; \
 	$(END_ECHO)
@@ -89,11 +108,19 @@ before-all::
 # itself inside but also a symbolic link libFrameworkName.so pointing on 
 # frameworkName.framework/Versions/Current/libFrameworkName.so
 # Not sure why it's needed, why gnustep-make isn't able to discover the library
-# file by itself. Well... For now it avoids applications to pass any custom 
-# flags to link frameworks inside Build directory 
+# file by itself. Well... This trick eliminates the need to pass the library 
+# file path inside the framework directory to link a framework inside the Build 
+# directory 
+
+# NOTE: sh seems to have trouble to interpolate $() unlike ${} in the following case:
+# for libfile in ${PROJECT_DIR}/${PROJECT_NAME}.framework/Versions/Current/lib${PROJECT_NAME}${SHARED_LIBEXT}*; do \
+# $(LN_S) -f $$libfile $(BUILD_DIR); \
+# done \
 
 after-all::
 	$(ECHO_NOTHING) \
+	\
+	## Check Variables ## \
 	if [ -z $(PROJECT_DIR) ]; then \
 	echo "Dependency export failed: PROJECT_DIR is not set"; \
 	echo ""; \
@@ -112,27 +139,27 @@ after-all::
 	if [ ! -d $(BUILD_DIR) ]; then \
 	mkdir $(BUILD_DIR); \
 	fi; \
+	\
+	## Export Framework ## \
 	if [ -d  $(PROJECT_DIR)/$(PROJECT_NAME).framework ]; then \
 	exported="yes"; \
-	if [ ! -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
-	$(LN_S) $(PROJECT_DIR)/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
+	$(LN_S) -f $(PROJECT_DIR)/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
+	$(LN_S) -f ${PROJECT_DIR}/${PROJECT_NAME}.framework/Versions/Current/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
 	fi; \
-	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
-	$(LN_S) $(PROJECT_DIR)/$(PROJECT_NAME).framework/Versions/Current/lib$(PROJECT_NAME)$(SHARED_LIBEXT) $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT); \
-	fi; \
-	fi; \
+	\
+	## Export Library Files from obj/lib ## \
 	if [ -f $(PROJECT_DIR)/obj/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
 	exported="yes"; \
-	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
-	$(LN_S) $(PROJECT_DIR)/obj/lib$(PROJECT_NAME)$(SHARED_LIBEXT) $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ; \
+	$(LN_S) -f ${PROJECT_DIR}/obj/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
 	fi; \
-	fi; \
+	\
+	## Export Library Files from Source/obj/lib ## \
 	if [ -f $(PROJECT_DIR)/Source/obj/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
 	exported="yes"; \
-	if [ ! -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
-	$(LN_S) $(PROJECT_DIR)/Source/obj/lib$(PROJECT_NAME)$(SHARED_LIBEXT) $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ; \
+	$(LN_S) -f ${PROJECT_DIR}/Source/obj/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
 	fi; \
-	fi; \
+	\
+	## Export Headers ## \
 	if [ "$${exported}" = "yes" ]; then \
 	if [ -d $(PROJECT_DIR)/Headers -a ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
 	$(LN_S) $(PROJECT_DIR)/Headers $(BUILD_DIR)/$(PROJECT_NAME); \
@@ -157,6 +184,8 @@ after-all::
 after-clean::
 	$(ECHO_NOTHING) \
 	echo ""; \
+	\
+	## Check Variables ## \
 	if [ -z $(PROJECT_DIR) ]; then \
 	echo "Dependency clean failed: PROJECT_DIR is not set"; \
 	echo ""; \
@@ -172,59 +201,38 @@ after-clean::
 	echo ""; \
 	exit; \
 	fi; \
+	\
+	## Remove Local Header Directory ## \
+	if [ -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
+	rm -f $(PROJECT_DIR)/$(PROJECT_NAME); \
+	fi; \
+	\
+	## Remove Exported Headers ## \
 	if [ -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
 	rm -f $(BUILD_DIR)/$(PROJECT_NAME); \
 	removed="yes"; \
 	fi; \
+	\
+	## Remove Exported Library Files ## \
 	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
-	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT); \
+	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT)*; \
 	removed="yes"; \
 	fi; \
+	\
+	## Remove Exported Framework ## \
 	if [ -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
 	rm -f $(BUILD_DIR)/$(PROJECT_NAME).framework; \
 	removed="yes"; \
 	fi; \
+	\
+	## Report Error ## \
 	if [ "$${removed}" = "yes" ]; then \
 	echo " Removed $(PROJECT_NAME) dependency export"; \
 	echo ""; \
 	fi; \
 	$(END_ECHO)
 
-after-distclean::
-	$(ECHO_NOTHING) \
-	echo ""; \
-	if [ -z $(PROJECT_DIR) ]; then \
-	echo "Dependency clean failed: PROJECT_DIR is not set"; \
-	echo ""; \
-	exit; \
-	fi; \
-	if [ -z $(PREFIX) ]; then \
-	echo "Dependency clean failed: PREFIX is not set"; \
-	echo ""; \
-	exit; \
-	fi; \
-	if [ -z $(PROJECT_NAME) ]; then \
-	echo "Dependency clean failed: PROJECT_NAME is not set"; \
-	echo ""; \
-	exit; \
-	fi; \
-	if [ -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
-	rm -f $(BUILD_DIR)/$(PROJECT_NAME); \
-	removed="yes"; \
-	fi; \
-	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
-	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT); \
-	removed="yes"; \
-	fi; \
-	if [ -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
-	rm -f $(BUILD_DIR)/$(PROJECT_NAME).framework; \
-	removed="yes"; \
-	fi; \
-	if [ "$${removed}" = "yes" ]; then \
-	echo " Removed $(PROJECT_NAME) dependency export"; \
-	echo ""; \
-	fi; \
-	$(END_ECHO)
+after-distclean:: after-clean
 
 
 ### Default Variable Values For Conveniency ###
@@ -234,8 +242,8 @@ after-distclean::
 # unexport ADDITIONAL_INCLUDE_DIRS = 
 # If you don't put 'unexport' in front of the variable name, the variable will
 # be reset but still exported to submake instances (this is never the case with
-# gnustep-make variables, that's why you must include a GNUmakefile.preamble in
-# any subdirectories of your module usually).
+# gnustep-make variables, that's why you should include a GNUmakefile.preamble 
+# in any subdirectories of your module usually).
 
 # If we have dependency, once it's imported we need to include its headers
 # located PROJECT_DIR/PROJECT_NAME. This means we have to look in 
@@ -255,6 +263,15 @@ export ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR) -I$(PROJECT_DI
 # developer. For example, it's commonly equals to ./shared_obj
 
 export ADDITIONAL_LIB_DIRS += -L$(BUILD_DIR)
+
+# To resolve library files that are linked by other library files, but whose 
+# symbols aren't referenced by the current project/target and hence not 
+# explicitly linked. 
+# For example, if you use EtoileFoundation that links to EtoileXML but you don't 
+# reference any EtoileXML symbols and doesn't link it. In this last case without 
+# -rpath-link, a warning would be logged:
+# /usr/bin/ld: warning: libEtoileXML.so.0, needed by /testEtoile/Build/libEtoileFoundation.so, not found (try using -rpath or -rpath-link)
+export ADDITIONAL_LDFLAGS += -Wl,-rpath-link $(BUILD_DIR)
 
 # We disable warnings about #import being deprecated. They occur with old GCC
 # version (before 4.0 iirc).

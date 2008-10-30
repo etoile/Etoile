@@ -73,7 +73,7 @@ Uninstall
 ---------
 Steps to uninstall:
 
-	[sudo] make uninstall
+	[sudo] [-E] make uninstall
 	./setdown.sh
 
 setdown.sh script allows to get rid of what has been installed or configured by 
@@ -97,59 +97,30 @@ developers tools like UnitKit), you can just type in the root directory (named
 Etoile):
 
 	make
-	[sudo] make install
+	[sudo] [-E] make install
 
-Warning! The following section isn't up-to-date. At this time, it isn't 
-possible to build only one module by typing 'make modulename=yes'. This
-should be fixed to match the documentation below. 
+You can choose to build only custom set of modules. Add a 'modules.make' file in 
+the root directory named 'Etoile' that contains Frameworks, Services and so on. 
+In this file, to turn on the module CoreObject and off the module UnitKit, write:
 
-Which is the equivalent for the build system of asking to build the etoile
-module:
+export coreobject = yes
+export unitkit = no
 
-	make etoile=yes
-	[sudo] make etoile=yes install
-
-Indeed, you can choose to build only a specific module. Simply follow 'make'
-with the module's name (in lowercase) set to yes. For example:
-
-	make camaelon=yes
-	make camaelon=yes install
-
-Will only build and install Camaelon.
-
-You can combine more than one module:
-
-	make camaelon=yes lucenekit=yes
-
-And even use custom set of modules, like desktop-base. Here is a list of the
-current sets of modules:
-
- * desktop-base --> camaelon, bookmarkkit, iconkit, preferenceskit
- * user-base --> installer (for now that's all)
- * developer-base --> unitkit, unittests, examples
- * etoile-extensions --> lucenekit, extendedworkspacekit, trackerkit,
-   servicesbarkit, servicesbar
-
-The 'etoile' option semantic is a bit special:
-
- * etoile=yes --> desktop-base, user-base, etoile-extensions, workspace
- * etoile=no --> desktop-base, developer-base // everything which is not
-   bound to Etoile itself
-
-Finally you can combine these module sets with specific module options, like:
-
-	make developer-base=yes camaelon=yes // build developer-base and camaelon
-	make desktop-base=no camaelon=yes // build user-base, etoile-extensions,
-	// workspace and camaelon (but not other desktop-base stuff)
-	make etoile=no etoile-extensions=yes extendedworkspacekit=no
-
+Be careful to have no trailing spaces after 'yes' or 'no'. 
+Take also note by declaring these variables, you only determine whether these 
+specific modules are built or not, but the build system won't automatically 
+resolve and turn on and off dependencies in relation to those modules. So you 
+must keep track by yourself of the dependencies to be enabled or disabled. These 
+dependencies are usually documented in Frameworks/GNUmakefile and similar 
+directories. They can also always be found by looking at the linker flags for 
+each module GNUmakefile.
 
 You can use the 'make' command with all the available options from every
 projects directory.
 
 You can also build test bundles for any specified modules by adding an option
 'test=yes', in future you should be able to run every test bundles with 'make
-check' but this not implemented currently.
+check' but this is not implemented currently.
 
 
 Trouble
