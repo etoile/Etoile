@@ -1,0 +1,16 @@
+FreeBSD Etoile Installation
+---------------------------
+
+This is a starting point for making FreeBSD installation notes.
+
+FreeBSD 7.0 Release
+-------------------
+
+Add "proc /proc procfs rw 0 0" to /etc/fstab
+
+LLVM, GNUstep, Etoile dependencies:
+sudo pkg_add -r ffmpeg flex gcc libxml2 libxslt ffcall openssl jpeg tiff libungi
+f png freetype libX11 cairo libXft libXmu dbus hal startup-notification libXcurs
+or xscreensaver g++ poppler oniguruma lemon libgmp postgresql83-server gmake tag
+lib mpeg4ip
+
