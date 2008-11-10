@@ -20,6 +20,12 @@ LLVM version (llvm-libs) that is currently required by Smalltalk isn't the laste
 Main Dependencies
 =================
 
+Ubuntu 8.10 (Intreped Ibex)
+---------------------------
+
+sudo aptitude install subversion flex gobjc-4.3 libxml2-dev libxslt1-dev libffi-dev libssl-dev libjpeg62-dev libtiff-dev libpng-dev libgif-dev libfreetype6-dev libx11-dev libcairo2-dev libxft-dev libxmu-dev dbus libdbus-1-dev hal libstartup-notification0-dev libxcursor-dev libxss-dev xscreensaver g++ libpoppler-dev libonig-dev lemon libgmp3-dev postgresql libpq-dev libavcodec-dev libavformat-dev libtagc0-dev libmp4v2-dev
+
+
 Ubuntu 8.04 (Hardy Heron)
 --------------------------
 
