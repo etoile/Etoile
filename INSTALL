@@ -1,8 +1,9 @@
-Installation
-==================================
+Etoile INSTALL
+==============
 
 Required software
 -----------------
+
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
@@ -12,14 +13,11 @@ compile and use Etoile. The core packages are, at a minimum:
  * gnustep-back 0.13.2 or higher
 
 See [GNUstep](http://www.gnustep.org/) for further information.
-   
-   
+
 You need some extra libraries if you intend to build a complete Etoile
 environment or the whole repository:
-    
+
  * libpng (IconKit)
- * [PostgreSQL](http://www.postgresql.org) 8.3 or higher (CoreObject)
- * libavcodec and libavformat (MediaKit)
  * [zlib](http://www.zlib.net/) (LuceneKit)
  * [OniGuruma](http://www.geocities.jp/kosako3/oniguruma/) 5.0 or higher (OgreKit)
  * [D-Bus](http://www.freedesktop.org/wiki/Software_2fdbus) 1.0 or higher (System)
@@ -30,8 +28,13 @@ environment or the whole repository:
  * [LLVM](http://www.llvm.org) (Smalltalk)
  * [Lemon](http://www.hwaci.com/sw/lemon/) (Smalltalk)
  * [GMP](http://gmplib.org/) (Smalltalk)
+ * [PostgreSQL](http://www.postgresql.org) 8.3 or higher (CoreObject)
+ * [libavcodec and libavformat](http://ffmpeg.mplayerhq.hu/) (MediaKit)
+ * [OSS](http://www.opensound.com/) (MediaKit)
+ * [TagLib](http://developer.kde.org/~wheeler/taglib.html) (Melodie)
+ * [libmp4v2](http://www.mpeg4ip.net/) (Melodie)
 
-For now, before building Etoile you should configure, compile and install LLVM by checking out the Subversion development trunk available at: <http://llvm.org/svn/llvm-project/llvm/trunk>
+For now, before building Etoile you should configure, compile and install LLVM either by downloading LLVM 2.4 release sources or by checking out the Subversion development trunk available at: <http://llvm.org/svn/llvm-project/llvm/trunk>.
 
 
 Notation
@@ -42,8 +45,11 @@ optional parameter.
 
 Build and Install
 -----------------
+
 **WARNING:** If you don't run setup.sh script, Etoile environment won't be fully 
-installed and will simply fail to start.
+installed and will simply fail to start. setup.sh is currently unsupported on 
+platforms other than Linux. So the set up process has been to be done manually 
+on systems such as FreeBSD.
 
 **Note:** If you encounter path related error, you can source GNUstep.sh or 
 GNUstep.csh in your shell, read the GNUstep documentation to know more about 
@@ -71,6 +77,7 @@ current user only or for the whole machine.
 
 Uninstall
 ---------
+
 Steps to uninstall:
 
 	[sudo] [-E] make uninstall

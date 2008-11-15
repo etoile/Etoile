@@ -1,5 +1,4 @@
-==========
-Etoile 0.2
+Etoile 0.4
 ==========
 
 Etoile intends to be an innovative GNUstep based user environnement built from
@@ -9,13 +8,16 @@ reshaping or recombining provided Services (aka Applications), Components etc.
 Flexibility and modularity on both User Interface and code level should allow us
 to scale from PDA to computer environment.
 
-Various licenses are used, they are specific to each module, but BSD and LGPL
-licenses are the most widely used.
+Various licenses are used, they are specific to each module, but BSD and MIT 
+licenses are the most widely used. Apache, LGPL and even more rarely GPL 
+licenses are in used in few modules too.
 
-Maintainers: Quentin Mathe, Nicolas Roard
-Authors: Isaiah Beerbower, Yen-Ju Chen, David Chisnall, Michael Hanni, 
-Jasper Hauser, Saso Kiselkov, Uli Kusterer, Quentin Mathe, Gunther Noack, 
-Nicolas Roard, Jesse Ross
+Maintainers (core team): Quentin Mathe, Nicolas Roard, David Chisnall, 
+Jesse Ross, Yen-Ju Chen
+Authors: Truls Becken, Isaiah Beerbower, Yen-Ju Chen, David Chisnall, 
+Michael Hanni, Jasper Hauser, Saso Kiselkov, Nyap Hong Koh, Uli Kusterer, 
+Manuel Guesdon, Quentin Mathe, Lennart Melzer, Guenther Noack, Nicolas Roard, 
+Jesse Ross, Eric Wasylischen, 
 
 
 To know more about Etoile: 
@@ -36,11 +38,17 @@ but very often outdated, please submit back the ones you take time to update).
 
 Here are modules with supported Cocoa compatibility:
 
+    * EtoileFoundation, EtoileThread, EtoileXML
+
+    * EtoileUI
+
     * IconKit
-    
+
     * LuceneKit
-    
-    * PaneKit
+
+    * XMPPKit
+
+    * UnitKit
 
 
 
@@ -71,8 +79,9 @@ related dependencies, you should read about GNUstep install on
     * From GNUstep: gnustep-make, gnustep-base, gnustep-gui, gnustep-back
 
     * From Freedesktop: D-Bus, HAL, startup-notification, Xcursor
-    
-    * libpng, zlib, OniGuruma, XScreenSaver, LLVM, GMP, Lemon, PostgreSQL
+
+    * libpng, zlib, OniGuruma, XScreenSaver, LLVM, GMP, Lemon, PostgreSQL, 
+      OSS, FFmpeg (libavcodec and libavformat), TagLib, MPEG4IP (libmp4v2)
 
 More details about Etoile dependencies can be found in INSTALL document (in the
 same directory than README one).
@@ -81,5 +90,4 @@ same directory than README one).
 Contribute 
 ----------
 
-Read this link
-<http://www.etoile-project.org/etoile/mediawiki/index.php?title=Participate>
+Read this link <http://www.etoile-project.org/dev/contribute/>
