@@ -93,6 +93,9 @@ before-all::
 	    $(LN_S) $(PROJECT_DIR) $(PROJECT_DIR)/$(PROJECT_NAME); \
 	  fi; \
 	fi; \
+	if [ ! -d $(BUILD_DIR) ]; then \
+	mkdir $(BUILD_DIR); \
+	fi; \
 	$(END_ECHO)
 
 # For debug, insert the next line close to the beginning of after-all.
@@ -135,9 +138,6 @@ after-all::
 	echo "Dependency export failed: PREFIX is not set"; \
 	echo ""; \
 	exit; \
-	fi; \
-	if [ ! -d $(BUILD_DIR) ]; then \
-	mkdir $(BUILD_DIR); \
 	fi; \
 	\
 	## Export Framework ## \
