@@ -60,6 +60,7 @@ Steps to build:
 	make
 	[sudo] [-E] make install
 	./setup.sh
+	Frameworks/CoreObject/setup-coreobject.sh
 
 setup.sh script takes care of various operations mandatory to have a ready to 
 use environment that includes:
@@ -74,6 +75,8 @@ This involves to copy or link various elements and set several preferences
 The script will ask you whether you want to set up the environment for the 
 current user only or for the whole machine.
 
+Read CoreObject INSTALL documentation to learn about setup-coreobject.sh.
+
 
 Uninstall
 ---------
@@ -82,6 +85,7 @@ Steps to uninstall:
 
 	[sudo] [-E] make uninstall
 	./setdown.sh
+	Frameworks/CoreObject/uninstall-coreobject.sh
 
 setdown.sh script allows to get rid of what has been installed or configured by 
 setup.sh. In other words, it reverts the effect of setup.sh script. 
@@ -95,6 +99,8 @@ However it's important to note that setdown.sh doesn't disable only Camaelon
 (theme engine) and WildMenus (horizontal menu engine). You won't be able
 to log in from KDM or GDM once setdown.sh has been run, and Etoile specific 
 applications may fail because of missing elements or daemons not launched.
+
+Read CoreObject INSTALL documentation to learn about uninstall-coreobject.sh.
 
 
 Custom Build and Install
