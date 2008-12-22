@@ -58,9 +58,9 @@ PROJECT_NAME ?= $(notdir $(PROJECT_DIR))
 # to be wrong on this one).
 
 prefix = $(if $1,\
-             $(if $(shell find $1 -maxdepth 1 -name etoile.make),\
+             $(if $(wildcard $1/etoile.make),\
                  $(dir \
-                     $(shell find $1 -maxdepth 1 -name etoile.make)),\
+                     $(wildcard $1/etoile.make)),\
                  $(call prefix,\
                      $(patsubst %/$(notdir $1),%, $1))),\
              $(warning No makefile etoile.make found in the repository tree.))
