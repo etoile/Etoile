@@ -7,7 +7,7 @@ to Etoile.
 
 
 1) You must read and apply Coding Style Guidelines. 
-<http://www.etoile-project.org/etoile/mediawiki/index.php?title=How_to_contribute_with_code>
+<http://etoileos.com/dev/codingstyle/>
 
 Any new modules to be committed must comply with them, older modules should be 
 updated gradually (take care of this when you modify the code in an important
