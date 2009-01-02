@@ -4,6 +4,8 @@
 Required software
 -----------------
 
+ * GCC 4.1 or higher is required to build Etoile
+
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
