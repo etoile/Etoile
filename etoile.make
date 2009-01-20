@@ -22,7 +22,7 @@ COREOBJECT_LIBS = -lCoreObject -lEtoileSerialize
 ETOILE_UI_LIBS = -lEtoileUI
 
 export ETOILE_CORE_LIBS = $(ETOILE_FOUNDATION_LIBS) $(COREOBJECT_LIBS) $(ETOILE_UI_LIBS) 
-export SMALLTALK_LIBS = -lEtoileFoundation -lLanguageKit -lSmalltalkKit -lSmalltalkSupport
+export SMALLTALK_LIBS = -lEtoileFoundation -lLanguageKit -lSmalltalkSupport
 
 ### Installation Control ###
 
