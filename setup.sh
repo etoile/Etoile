@@ -312,17 +312,24 @@ $SUDO cp -R $PWD/Themes $setupdir
 #
 
 fontarchive=etoile-default-fonts.tar.gz
-wgetavailable=no
+os=`uname -s`
+downloadtool=''
+
+if [ "x$os" = "xFreeBSD" ]; then
+	downloadtool='/usr/bin/fetch'
+else
+	downloadtool=`which wget`
+fi
 
 if [ ! -f $PWD/$fontarchive ]; then
-	if [ -n  `which wget` ]; then 
-		wgetavailable=yes
+	if [ -n  $downloadtool ]; then 
+		downloadattempt=yes
 		echo;
 		echo "Trying to download Etoile default font archive...";
 		echo;
-		wget http://download.gna.org/etoile/$fontarchive
+		`$downloadtool http://download.gna.org/etoile/$fontarchive`
 	else
-		echo "wget tool isn't installed, Fonts will be copied only if Etoile default font archive is already in the current directory";
+		echo "A tool such as wget or fetch is unavailable. Fonts will be copied only if Etoile default font archive is already in the current directory";
 	fi
 fi
 
@@ -331,7 +338,7 @@ if [ -f $PWD/$fontarchive ]; then
 	tar -xf $PWD/$fontarchive
 	$SUDO cp -R $PWD/etoile-default-fonts/* $setupdir/Fonts
 else
-	if [ $wgetavailable = yes ]; then
+	if [ $downloadattempt = yes ]; then
 		echo "Fonts archive cannot be downloaded (check your internet connection)";
 	else
 		echo "Fonts archive cannot be found in current directory";
