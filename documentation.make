@@ -82,7 +82,7 @@ after-all::
 	if [ ! -d $(DEV_DOC_DIR)/$(PROJECT_NAME) ]; then \
 		mkdir $(DEV_DOC_DIR)/$(PROJECT_NAME); \
 	fi; \
-	cp -fu $(PROJECT_DOC_DIR)/*.html $(DEV_DOC_DIR)/$(PROJECT_NAME); \
+	cp -f $(PROJECT_DOC_DIR)/*.html $(DEV_DOC_DIR)/$(PROJECT_NAME); \
 	$(END_ECHO)
 
 after-distclean:: clean-doc
