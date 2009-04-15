@@ -13,14 +13,14 @@ We only install hal and omit libhal-dev because we access HAL through D-Bus (we 
 
 Oniguruma library (libonig) that is required by OgreKit wasn't available as a package before Gutsy Gibbon. If you use an older Ubuntu version, before building Etoile you should configure, compile and install the version available in the Subversion repository at path etoile/trunk/Dependencies.
 
-LLVM version (llvm-libs) that is currently required by Smalltalk and LanguageKit isn't the release 2.2 presently packaged in Ubuntu, but the latest 2.4 release or the developement trunk version of the LLVM repository (See INSTALL).
+LLVM version (llvm-dev) that is currently required by Smalltalk and LanguageKit is the latest 2.5 release or the developement trunk version of the LLVM repository (See INSTALL). The 2.5 version is only available as a package starting with Jaunty Jackalope.
 
 
 Main Dependencies
 =================
 
-Ubuntu 8.10 (Intrepid Ibex)
----------------------------
+Ubuntu 8.10 && 9.04 (Intrepid Ibex && Jaunty Jackalope)
+-------------------------------------------------------
 
  * gobjc-4.3
  * libxml2-dev
@@ -54,6 +54,7 @@ Ubuntu 8.10 (Intrepid Ibex)
  * libavformat-dev
  * libtagc0-dev
  * libmp4v2-dev (multiverse)
+ * llvm-dev (universe) -- only valid with Jaunty, LLVM 2.3.1 in Intrepid is too old
 
 
 Ubuntu 8.04 (Hardy Heron)
