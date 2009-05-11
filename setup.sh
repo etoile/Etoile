@@ -336,6 +336,7 @@ fi
 if [ -f $PWD/$fontarchive ]; then
 	echo "Copying Fonts in $setupdir/Fonts";
 	tar -xf $PWD/$fontarchive
+	$SUDO mkdir -p $setupdir/Fonts
 	$SUDO cp -R $PWD/etoile-default-fonts/* $setupdir/Fonts
 else
 	if [ $downloadattempt = yes ]; then
