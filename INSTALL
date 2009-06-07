@@ -48,7 +48,11 @@ environment or the whole repository:
  * [TagLib](http://developer.kde.org/~wheeler/taglib.html) (Melodie)
  * [libmp4v2](http://www.mpeg4ip.net/) (Melodie)
 
-For now, before building Etoile you should configure, compile and install LLVM either by downloading LLVM 2.4 release sources or by checking out the Subversion development trunk available at: <http://llvm.org/svn/llvm-project/llvm/trunk>.
+For now, before building Etoile you should configure, compile and install LLVM either by downloading LLVM 2.5 release sources or by checking out the Subversion development trunk available at: <http://llvm.org/svn/llvm-project/llvm/trunk>.
+
+**WARNING:*** At present, there is a known bug in LLVM that causes LanguageKit 
+to fail on Linux/x86. Please apply [the patch found here](http://llvm.org/bugs/attachment.cgi?id=2744) 
+to the LLVM 2.5 sources before compiling.
 
 
 Notation
