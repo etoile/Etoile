@@ -16,7 +16,9 @@ compile and use Etoile. The core packages are, at a minimum:
 
 Alternatively you can check out GNUstep unstable (or trunk) as follows: 
 
-	svn co http://svn.gna.org/svn/gnustep/devmodules/core
+	svn co http://svn.gna.org/svn/gnustep/modules/core
+
+Then follow the instructions [here](http://wiki.gnustep.org/index.php/GNUstep_SVN_installation_guide).
 
 **WARNING**: GNUstep releases with an even number as minor version, such as 
 gnustep-base 1.16.z or gnustep-gui 1.14.z, are stable releases that don't 
