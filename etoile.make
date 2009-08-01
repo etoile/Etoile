@@ -30,13 +30,6 @@ ifeq ($(ETOILE_CORE_MODULE), YES)
   export GNUSTEP_INSTALLATION_DOMAIN = SYSTEM
 endif
 
-### Support for non-flattened GNUstep ###
-ifeq ($(GNUSTEP_IS_FLATTENED), no)
-  export NOFLAT_FRAGMENT = ${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}/
-else
-  export NOFLAT_FRAGMENT =
-endif
-
 ### Internal Dependency Handling ###
 
 # CURDIR is the path where make is run, with gnustep-make the value changes in
@@ -151,19 +144,19 @@ after-all::
 	if [ -d  $(PROJECT_DIR)/$(PROJECT_NAME).framework ]; then \
 	exported="yes"; \
 	$(LN_S) -f $(PROJECT_DIR)/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
-	$(LN_S) -f ${PROJECT_DIR}/${PROJECT_NAME}.framework/Versions/Current/${NOFLAT_FRAGMENT}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
+	$(LN_S) -f ${PROJECT_DIR}/${PROJECT_NAME}.framework/Versions/Current/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
 	fi; \
 	\
 	## Export Library Files from obj/lib ## \
-	if [ -f $(PROJECT_DIR)/obj/${NOFLAT_FRAGMENT}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+	if [ -f $(PROJECT_DIR)/obj/${GNUSTEP_TARGET_LDIR}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
 	exported="yes"; \
-	$(LN_S) -f ${PROJECT_DIR}/obj/${NOFLAT_FRAGMENT}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
+	$(LN_S) -f ${PROJECT_DIR}/obj/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
 	fi; \
 	\
 	## Export Library Files from Source/obj/lib ## \
-	if [ -f $(PROJECT_DIR)/Source/obj/${NOFLAT_FRAGMENT}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+	if [ -f $(PROJECT_DIR)/Source/obj/${GNUSTEP_TARGET_LDIR}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
 	exported="yes"; \
-	$(LN_S) -f ${PROJECT_DIR}/Source/obj/${NOFLAT_FRAGMENT}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
+	$(LN_S) -f ${PROJECT_DIR}/Source/obj/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
 	fi; \
 	\
 	## Export Headers ## \
