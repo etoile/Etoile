@@ -78,14 +78,20 @@ BUILD_DIR = $(PREFIX)/Build
 # by using a statement like #import <PROJECT_NAME/header.h>. Such system-wide
 # import is mandatory in installed headers of a library/framework.
 
+# WARNING: Don't use sh comments without backquoting them in command scripts, 
+# otherwise the next lines will be interpreted as belonging to the comment on 
+# some platform such as Solaris. sh concatenates all the lines with a trailing 
+# '\' without inserting any a line break. However some sh versions (FreeBSD, 
+# GNU) will consider each comment line to be implicitly ended by a line break.  
+
 before-all::
 	$(ECHO_NOTHING) \
 	echo ""; \
 	echo "Build Project: $(PROJECT_NAME)"; \
 	echo ""; \
-	#echo "$(FRAMEWORK_NAME) $(LIBRARY_NAME) $(PROJECT_DIR) $(PROJECT_NAME)"; \
 	\
-	## Create Local Header Directory ## \
+	`# Create Local Header Directory`; \
+	\
 	if [ ! -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
 	  if [ -d $(PROJECT_DIR)/Headers ]; then \
 	    $(LN_S) $(PROJECT_DIR)/Headers $(PROJECT_DIR)/$(PROJECT_NAME); \
@@ -93,6 +99,7 @@ before-all::
 	    $(LN_S) $(PROJECT_DIR) $(PROJECT_DIR)/$(PROJECT_NAME); \
 	  fi; \
 	fi; \
+	\
 	if [ ! -d $(BUILD_DIR) ]; then \
 	mkdir $(BUILD_DIR); \
 	fi; \
@@ -123,7 +130,8 @@ before-all::
 after-all::
 	$(ECHO_NOTHING) \
 	\
-	## Check Variables ## \
+	`# Check Variables`; \
+	\
 	if [ -z $(PROJECT_DIR) ]; then \
 	echo "Dependency export failed: PROJECT_DIR is not set"; \
 	echo ""; \
@@ -140,26 +148,30 @@ after-all::
 	exit; \
 	fi; \
 	\
-	## Export Framework ## \
+	`# Export Framework`; \
+	\
 	if [ -d  $(PROJECT_DIR)/$(PROJECT_NAME).framework ]; then \
 	exported="yes"; \
 	$(LN_S) -f $(PROJECT_DIR)/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
 	$(LN_S) -f ${PROJECT_DIR}/${PROJECT_NAME}.framework/Versions/Current/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
 	fi; \
 	\
-	## Export Library Files from obj/lib ## \
+	`# Export Library Files from obj/lib`; \
+	\
 	if [ -f $(PROJECT_DIR)/obj/${GNUSTEP_TARGET_LDIR}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
 	exported="yes"; \
 	$(LN_S) -f ${PROJECT_DIR}/obj/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
 	fi; \
 	\
-	## Export Library Files from Source/obj/lib ## \
+	`# Export Library Files from Source/obj/lib`; \
+	\
 	if [ -f $(PROJECT_DIR)/Source/obj/${GNUSTEP_TARGET_LDIR}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
 	exported="yes"; \
 	$(LN_S) -f ${PROJECT_DIR}/Source/obj/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
 	fi; \
 	\
-	## Export Headers ## \
+	`# Export Headers`; \
+	\
 	if [ "$${exported}" = "yes" ]; then \
 	if [ -d $(PROJECT_DIR)/Headers -a ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
 	$(LN_S) $(PROJECT_DIR)/Headers $(BUILD_DIR)/$(PROJECT_NAME); \
@@ -185,7 +197,8 @@ after-clean::
 	$(ECHO_NOTHING) \
 	echo ""; \
 	\
-	## Check Variables ## \
+	`# Check Variables`; \
+	\
 	if [ -z $(PROJECT_DIR) ]; then \
 	echo "Dependency clean failed: PROJECT_DIR is not set"; \
 	echo ""; \
@@ -202,30 +215,35 @@ after-clean::
 	exit; \
 	fi; \
 	\
-	## Remove Local Header Directory ## \
+	`# Remove Local Header Directory`; \
+	\
 	if [ -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
 	rm -f $(PROJECT_DIR)/$(PROJECT_NAME); \
 	fi; \
 	\
-	## Remove Exported Headers ## \
+	`# Remove Exported Headers`; \
+	\
 	if [ -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
 	rm -f $(BUILD_DIR)/$(PROJECT_NAME); \
 	removed="yes"; \
 	fi; \
 	\
-	## Remove Exported Library Files ## \
+	`# Remove Exported Library Files`; \
+	\
 	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
 	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT)*; \
 	removed="yes"; \
 	fi; \
 	\
-	## Remove Exported Framework ## \
+	`# Remove Exported Framework`; \
+	\
 	if [ -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
 	rm -f $(BUILD_DIR)/$(PROJECT_NAME).framework; \
 	removed="yes"; \
 	fi; \
 	\
-	## Report Error ## \
+	`# Report Error`; \
+	\
 	if [ "$${removed}" = "yes" ]; then \
 	echo " Removed $(PROJECT_NAME) dependency export"; \
 	echo ""; \
