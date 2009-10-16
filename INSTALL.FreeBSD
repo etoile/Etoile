@@ -9,7 +9,7 @@ FreeBSD 7.0 Release
 Add "proc /proc procfs rw 0 0" to /etc/fstab
 
 LLVM, GNUstep, Etoile dependencies:
-	sudo pkg_add -r ffmpeg flex gcc libxml2 libxslt ffcall 
+	sudo pkg_add -r ffmpeg flex gcc libxml2 libxslt libffi 
 	openssl jpeg tiff libungif png freetype libX11 cairo 
 	libXft libXmu dbus hal startup-notification libXcursor 
 	xscreensaver g++ poppler oniguruma lemon libgmp 
