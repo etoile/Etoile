@@ -122,6 +122,7 @@ userLevelSetup()
 	echo "Resetting GSAppKitUserBundles and NSUseRunningCopy (in NSGlobalDomain)"
 
 	defaults write NSGlobalDomain GSAppKitUserBundles "($bundledir/Camaelon.themeEngine, $bundledir/EtoileMenus.bundle, $bundledir/EtoileBehavior.bundle)"
+	defaults write NSGlobalDomain NSMenuInterfaceStyle "NSMacintoshInterfaceStyle"
 	# NSUseRunningCopy equals to YES avoids to launch another copy of an 
 	# already running application (AppKit-based process).
 	defaults write NSGlobalDomain NSUseRunningCopy YES
