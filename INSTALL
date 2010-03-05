@@ -9,7 +9,7 @@ Required software
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
- * gnustep-make 2.00 or higher
+ * gnustep-make svn trunk (r29644 or more recent)
  * gnustep-base svn trunk (r28778 or more recent is required by EtoileSerialize)
  * gnustep-gui svn trunk
  * gnustep-back svn trunk
