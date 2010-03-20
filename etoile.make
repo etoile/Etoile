@@ -316,9 +316,9 @@ export ADDITIONAL_OBJCFLAGS += -Wno-import -Werror -Wno-unused -Wno-implicit
 ifndef GNU_RUNTIME_VERSION
 LIBOBJC = libobjc.so.4
 GNU_RUNTIME_VERSION = 1
-GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_SYSTEM_ROOT)/Library/Libraries/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
-GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_LOCAL_ROOT)/Library/Libraries/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
-GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_USER_ROOT)/Library/Libraries/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
+GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_SYSTEM_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
+GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_LOCAL_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
+GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_USER_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
 GNU_RUNTIME_VERSION := $(if $(wildcard /usr/lib/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
 GNU_RUNTIME_VERSION := $(if $(wildcard /usr/local/lib/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
 endif
