@@ -53,10 +53,8 @@ export PROJECT_DIR ?= $(CURDIR)
 
 PROJECT_NAME ?= $(notdir $(PROJECT_DIR))
 
-# Finally we search etoile.make path in the repository... because Make doesn't 
-# provide any variables to obtain included makefile paths (well, I would like
-# to be wrong on this one).
-
+# We search etoile.make path in the repository... because Make doesn't provide 
+# any variables to obtain included makefile paths.
 prefix = $(if $1,\
              $(if $(wildcard $1/etoile.make),\
                  $(dir \
@@ -69,181 +67,138 @@ PREFIX = $(patsubst %/,%,$(call prefix,$(PROJECT_DIR)))
 
 BUILD_DIR = $(PREFIX)/Build
 
-# We use this variable in the after-all script to note we detected a framework 
-# or a library in a module and we have to export the related headers.
-#EXPORTED = "NO"
-
-# The code run by before-all creates a temporary header directory matching the
-# project name. This allows to include headers within a library/framework by
-# by using a statement like #import <PROJECT_NAME/header.h>. Such system-wide
-# import is mandatory in installed headers of a library/framework.
-
-# WARNING: Don't use sh comments without backquoting them in command scripts, 
-# otherwise the next lines will be interpreted as belonging to the comment on 
-# some platform such as Solaris. sh concatenates all the lines with a trailing 
-# '\' without inserting any a line break. However some sh versions (FreeBSD, 
-# GNU) will consider each comment line to be implicitly ended by a line break.  
+# We create a temporary header directory to support #import <PROJECT_NAME/header.h>
+# from within the library/framework project itself.
+define create-local-header-dir
+  if [ ! -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
+    if [ -d $(PROJECT_DIR)/Headers ]; then \
+      $(LN_S) $(PROJECT_DIR)/Headers $(PROJECT_DIR)/$(PROJECT_NAME); \
+    elif [ -n "$(LIBRARY_NAME)" -o -n "$(FRAMEWORK_NAME)" ]; then \
+      $(LN_S) $(PROJECT_DIR) $(PROJECT_DIR)/$(PROJECT_NAME); \
+    fi; \
+  fi;
+endef 
 
 before-all::
 	$(ECHO_NOTHING) \
 	echo ""; \
 	echo "Build Project: $(PROJECT_NAME)"; \
 	echo ""; \
-	\
-	`# Create Local Header Directory`; \
-	\
-	if [ ! -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
-	  if [ -d $(PROJECT_DIR)/Headers ]; then \
-	    $(LN_S) $(PROJECT_DIR)/Headers $(PROJECT_DIR)/$(PROJECT_NAME); \
-	  elif [ -n "$(LIBRARY_NAME)" -o -n "$(FRAMEWORK_NAME)" ]; then \
-	    $(LN_S) $(PROJECT_DIR) $(PROJECT_DIR)/$(PROJECT_NAME); \
-	  fi; \
-	fi; \
-	\
+	$(create-local-header-dir) \
 	if [ ! -d $(BUILD_DIR) ]; then \
-	mkdir $(BUILD_DIR); \
+	  mkdir $(BUILD_DIR); \
 	fi; \
 	$(END_ECHO)
 
-# For debug, insert the next line close to the beginning of after-all.
+define check-variables
+  if [ -z $(PROJECT_DIR) ]; then \
+    echo "Dependency export failed: PROJECT_DIR is not set"; \
+    echo ""; \
+    exit; \
+  fi; \
+  if [ -z $(PROJECT_NAME) ]; then \
+    echo "Dependency export failed: PROJECT_NAME is not set"; \
+    echo ""; \
+    exit; \
+  fi; \
+  if [ -z $(PREFIX) ]; then \
+    echo "Dependency export failed: PREFIX is not set"; \
+    echo ""; \
+    exit; \
+  fi;
+endef
+
+# For a framework target, we create a symbolic link inside Build for the 
+# framewrok itself inside but also a symbolic link libFrameworkName.so pointing on 
+# frameworkName.framework/Versions/Current/libFrameworkName.so
+# TODO: Would be nice if gnustep-make could discover the library file by itself.
+#
+# NOTE: sh seems to have trouble to interpolate $() unlike ${} in the following case:
+# for libfile in ${PROJECT_DIR}/${PROJECT_NAME}.framework/Versions/Current/lib${PROJECT_NAME}${SHARED_LIBEXT}*; do 
+#   $(LN_S) -f $$libfile $(BUILD_DIR); 
+# done 
+define export-framework
+  if [ -d  $(PROJECT_DIR)/$(PROJECT_NAME).framework ]; then \
+    exported="yes"; \
+    $(LN_S) -f $(PROJECT_DIR)/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
+    $(LN_S) -f ${PROJECT_DIR}/${PROJECT_NAME}.framework/Versions/Current/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
+  fi;
+endef
+
+define export-library-files
+  if [ -f $(PROJECT_DIR)/obj/${GNUSTEP_TARGET_LDIR}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+    exported="yes"; \
+    $(LN_S) -f ${PROJECT_DIR}/obj/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
+  fi; \
+  \
+  if [ -f $(PROJECT_DIR)/Source/obj/${GNUSTEP_TARGET_LDIR}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+    exported="yes"; \
+    $(LN_S) -f ${PROJECT_DIR}/Source/obj/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
+  fi;
+endef
+
+# We use 'exported' variable in the after-all script to remember we detected a 
+# framework or a library in a module and we have to export the related headers.
+define export-headers
+  if [ "$${exported}" = "yes" ]; then \
+    if [ -d $(PROJECT_DIR)/Headers -a ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
+      $(LN_S) $(PROJECT_DIR)/Headers $(BUILD_DIR)/$(PROJECT_NAME); \
+    elif [ ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
+      $(LN_S) $(PROJECT_DIR) $(BUILD_DIR)/$(PROJECT_NAME); \
+    fi; \
+  fi;
+endef
+
+# To debug, insert the next line close to the beginning of after-all.
 #echo "etoile.make: PROJECT_DIR $(PROJECT_DIR) PROJECT_NAME $(PROJECT_NAME) BUILD_DIR $(BUILD_DIR)"; \
 # For debug, insert the next line close to the end of after-all.
 #echo "$(PROJECT_DIR) $(BUILD_DIR) $(PROJECT_NAME)"; \
 #
 # NOTE: Don't put these statements commented out directly in the code because
-# it could make the build fails on some platforms as explained in bug report 
-# #8484
-
-# For framework, we create a symbolic link inside Build for the framework 
-# itself inside but also a symbolic link libFrameworkName.so pointing on 
-# frameworkName.framework/Versions/Current/libFrameworkName.so
-# Not sure why it's needed, why gnustep-make isn't able to discover the library
-# file by itself. Well... This trick eliminates the need to pass the library 
-# file path inside the framework directory to link a framework inside the Build 
-# directory 
-
-# NOTE: sh seems to have trouble to interpolate $() unlike ${} in the following case:
-# for libfile in ${PROJECT_DIR}/${PROJECT_NAME}.framework/Versions/Current/lib${PROJECT_NAME}${SHARED_LIBEXT}*; do \
-# $(LN_S) -f $$libfile $(BUILD_DIR); \
-# done \
-
+# it could make the build fails on some platforms as explained in bug report #8484
 after-all::
 	$(ECHO_NOTHING) \
-	\
-	`# Check Variables`; \
-	\
-	if [ -z $(PROJECT_DIR) ]; then \
-	echo "Dependency export failed: PROJECT_DIR is not set"; \
-	echo ""; \
-	exit; \
-	fi; \
-	if [ -z $(PROJECT_NAME) ]; then \
-	echo "Dependency export failed: PROJECT_NAME is not set"; \
-	echo ""; \
-	exit; \
-	fi; \
-	if [ -z $(PREFIX) ]; then \
-	echo "Dependency export failed: PREFIX is not set"; \
-	echo ""; \
-	exit; \
-	fi; \
-	\
-	`# Export Framework`; \
-	\
-	if [ -d  $(PROJECT_DIR)/$(PROJECT_NAME).framework ]; then \
-	exported="yes"; \
-	$(LN_S) -f $(PROJECT_DIR)/$(PROJECT_NAME).framework $(BUILD_DIR)/$(PROJECT_NAME).framework; \
-	$(LN_S) -f ${PROJECT_DIR}/${PROJECT_NAME}.framework/Versions/Current/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
-	fi; \
-	\
-	`# Export Library Files from obj/lib`; \
-	\
-	if [ -f $(PROJECT_DIR)/obj/${GNUSTEP_TARGET_LDIR}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
-	exported="yes"; \
-	$(LN_S) -f ${PROJECT_DIR}/obj/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
-	fi; \
-	\
-	`# Export Library Files from Source/obj/lib`; \
-	\
-	if [ -f $(PROJECT_DIR)/Source/obj/${GNUSTEP_TARGET_LDIR}/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
-	exported="yes"; \
-	$(LN_S) -f ${PROJECT_DIR}/Source/obj/${GNUSTEP_TARGET_LDIR}/lib${PROJECT_NAME}${SHARED_LIBEXT}* $(BUILD_DIR); \
-	fi; \
-	\
-	`# Export Headers`; \
-	\
-	if [ "$${exported}" = "yes" ]; then \
-	if [ -d $(PROJECT_DIR)/Headers -a ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
-	$(LN_S) $(PROJECT_DIR)/Headers $(BUILD_DIR)/$(PROJECT_NAME); \
-	elif [ ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
-	$(LN_S) $(PROJECT_DIR) $(BUILD_DIR)/$(PROJECT_NAME); \
-	fi; \
-	fi; \
+	$(check-variables) \
+	$(export-framework) \
+	$(export-library-files) \
+	$(export-headers) \
 	$(END_ECHO)
 
-# Example with PROJECT_DIR variable only (based on PreferencesKitExample old 
-# GNUmakefile.postamble):
-#
-# 	$(ECHO_NOTHING) \
-# 	echo "Build Project: $(PROJECT_DIR)"; \
-# 	echo ""; \
-# 	rm -f $(PROJECT_DIR)/PreferencesKit; \
-# 	$(LN_S) $(PROJECT_DIR)/../../../Frameworks/PreferencesKit/Headers $(PROJECT_DIR)/PreferencesKit; \
-# 	echo " Imported PreferencesKit dependency"; \
-# 	echo ""; \
-# 	$(END_ECHO)
+define remove-local-header-dir
+  if [ -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
+    rm -f $(PROJECT_DIR)/$(PROJECT_NAME); \
+  fi;
+endef
+
+define remove-exported-headers
+  if [ -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
+    rm -f $(BUILD_DIR)/$(PROJECT_NAME); \
+    removed="yes"; \
+  fi;
+endef
+
+define remove-exported-library-files
+  if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
+    rm -f $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT)*; \
+    removed="yes"; \
+  fi;
+endef
+
+define remove-exported-framework
+  if [ -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
+    rm -f $(BUILD_DIR)/$(PROJECT_NAME).framework; \
+    removed="yes"; \
+  fi;
+endef
 
 after-clean::
 	$(ECHO_NOTHING) \
 	echo ""; \
-	\
-	`# Check Variables`; \
-	\
-	if [ -z $(PROJECT_DIR) ]; then \
-	echo "Dependency clean failed: PROJECT_DIR is not set"; \
-	echo ""; \
-	exit; \
-	fi; \
-	if [ -z $(PREFIX) ]; then \
-	echo "Dependency clean failed: PREFIX is not set"; \
-	echo ""; \
-	exit; \
-	fi; \
-	if [ -z $(PROJECT_NAME) ]; then \
-	echo "Dependency clean failed: PROJECT_NAME is not set"; \
-	echo ""; \
-	exit; \
-	fi; \
-	\
-	`# Remove Local Header Directory`; \
-	\
-	if [ -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
-	rm -f $(PROJECT_DIR)/$(PROJECT_NAME); \
-	fi; \
-	\
-	`# Remove Exported Headers`; \
-	\
-	if [ -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
-	rm -f $(BUILD_DIR)/$(PROJECT_NAME); \
-	removed="yes"; \
-	fi; \
-	\
-	`# Remove Exported Library Files`; \
-	\
-	if [ -L $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT) ]; then \
-	rm -f $(BUILD_DIR)/lib$(PROJECT_NAME)$(SHARED_LIBEXT)*; \
-	removed="yes"; \
-	fi; \
-	\
-	`# Remove Exported Framework`; \
-	\
-	if [ -L $(BUILD_DIR)/$(PROJECT_NAME).framework ]; then \
-	rm -f $(BUILD_DIR)/$(PROJECT_NAME).framework; \
-	removed="yes"; \
-	fi; \
-	\
-	`# Report Error`; \
-	\
+	$(check-variables) \
+	$(remove-local-header-dir) \
+	$(remove-exported-headers) \
+	$(remove-exported-library-files) \
+	$(remove-exported-framework) \
 	if [ "$${removed}" = "yes" ]; then \
 	echo " Removed $(PROJECT_NAME) dependency export"; \
 	echo ""; \
@@ -270,7 +225,6 @@ after-distclean:: after-clean
 #
 # By default we also look for headers in PROJECT_DIR and PROJECT_DIR/Headers, 
 # this conveniency avoids to take care of such flags over and over.
-
 export ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR) -I$(PROJECT_DIR)/Headers
 
 # If we have dependency, we need to link its resulting object file. Well, we
@@ -279,7 +233,6 @@ export ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR) -I$(PROJECT_DI
 # NOTE: We cannot use $(GNUSTEP_SHARED_OBJ) instead of shared_obj because the 
 # former variable is relative to the project and could be modified by the 
 # developer. For example, it's commonly equals to ./shared_obj
-
 export ADDITIONAL_LIB_DIRS += -L$(BUILD_DIR)
 
 # To resolve library files that are linked by other library files, but whose 
