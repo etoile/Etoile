@@ -5,8 +5,9 @@ Required software
 -----------------
 
  * GCC 4.1 or higher is required to build Etoile
- * Clang is required to build LanguageKit.  LanguageKit also requires LLVM
-   trunk, so it is recommended that you install clang from svn as well.
+ * Clang is required to build LanguageKit. 
+   Clang 2.7 should work on FreeBSD but Linux requires Clang trunk.
+   LanguageKit also requires LLVM trunk, so it is recommended that you install clang from svn as well.
 
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
@@ -15,6 +16,7 @@ compile and use Etoile. The core packages are, at a minimum:
  * gnustep-base svn trunk (r28778 or more recent is required by EtoileSerialize)
  * gnustep-gui svn trunk
  * gnustep-back svn trunk
+ * libobjc2 svn svn trunk (required by LanguageKit)
 
 You can check out the latest GNUstep unstable (or trunk) as follows: 
 
