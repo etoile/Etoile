@@ -22,13 +22,7 @@ You can check out the latest GNUstep unstable (or trunk) as follows:
 
 	svn co http://svn.gna.org/svn/gnustep/modules/core
 
-**Note**: EtoileUI works the best with the Cairo backend and the most recent GNUstep svn revision, many EtoileUI-related bug fixes or improvements are regularly being committed to the GNUstep repository.
-
-Then follow the instructions [here](http://wiki.gnustep.org/index.php/GNUstep_SVN_installation_guide).
-You can compile gnustep-back with the Cairo backend by configuring it as follows:
-./configure --enable-graphics=cairo
-
-See [GNUstep](http://www.gnustep.org/) for further information.
+**Note**: EtoileUI works best with the most recent GNUstep svn revision, many EtoileUI-related bug fixes or improvements are regularly being committed to the GNUstep repository.
 
 You need some extra libraries if you intend to build a complete Etoile
 environment or the whole repository:
@@ -61,9 +55,86 @@ In the following text, square brackets "[ ]" are used to indicate an
 optional parameter.
 
 
-Build and Install
------------------
+Build LLVM and Clang
+--------------------
+- First check out the projects
 
+svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm
+cd llvm/tools
+svn co http://llvm.org/svn/llvm-project/cfe/trunk clang
+
+- Build both projects but don't install them
+
+cd .. # Back to llvm directory
+./configure [--enable-optimized] && make [-j4] # It's a good idea to build LLVM in parallel, so use '-j' if you can.
+
+Both LLVM and Clang have been built in debug mode. 
+Without --enable-optimized, Clang is quite slow, so it can be a good idea to pass this option. The downside is that it makes harder to debug LLVM/Clang issues, which might lead you to recompile LLVM/Clang without --enable-optimized later on.
+For more detailed instructions, see http://clang.llvm.org/get_started.html
+
+- Finally put LLVM and Clang in your PATH so they can be found transparently by GNUstep Make:
+
+export CC=clang
+export PATH=$PATH:$PWD/Debug/bin: # llvm/Debug/bin contains the clang binary
+
+A good choice is put the two lines above in ~/.bashrc or similar and open a new shell. This way you want have to export these variable every time you want to compile GNUstep or Etoile stuff.
+
+- Check Clang is ready:
+
+clang -v
+
+
+Build and Install GNUstep
+-------------------------
+To build GNUstep with GCC, follow the instructions [here](http://wiki.gnustep.org/index.php/GNUstep_SVN_installation_guide).
+You can compile gnustep-back with the Cairo backend by configuring it as follows:
+./configure --enable-graphics=cairo
+
+To build GNUstep with Clang:
+
+- Check out GNUstep core modules and libobjc2:
+
+svn co http://svn.gna.org/svn/gnustep/modules/core
+svn co http://svn.gna.org/svn/gnustep/dev-libs/libobjc2
+
+- Install GNUstep Make a first time:
+
+cd core/make
+./configure --enable-debug-by-default [--prefix=/] && make && sudo -E make install
+
+- Build libobjc2
+
+cd ../../libobjc2
+make debug=no && sudo -E make strip=yes install # strip=yes ensures you can debug ObjC code without stepping inside runtime functions each time a message is sent
+
+**Warning**: The new runtime is the GNU runtime version 2 but its library version is libobjc.so.4. libobjc.so.2 corresponds to the GNU runtime version 1 which comes with GCC and is also available at http://svn.gna.org/svn/gnustep/dev-libs/libobjc.
+
+- Install GNUstep Make a second time so it can detect the new ObjC runtime just installed:
+
+cd ../../core/make
+./configure --enable-debug-by-default [--prefix=/] && make && sudo -E make install
+
+- Build and Install GNUstep Base, Gui and Back:
+
+cd core/base
+./configure --with-ffi-include=/usr/include/`gcc -dumpmachine` && make && sudo -E make install
+
+cd core/gui
+./configure && make && sudo -E make install
+
+cd core/back
+./configure && make && sudo -E make install
+
+You can check you are really using Clang and not GCC with 'make messages=yes' instead of 'make' when building a GNUstep module.
+You can switch back to GCC for a given project with 'make CC=gcc' (or alternatively './configure CC=gcc').
+
+To get an overview of the build options per module, you can use './configure --help' in each module directory.
+
+See also [GNUstep](http://www.gnustep.org/) for further information.
+
+
+Build and Install Etoile
+------------------------
 **WARNING:** If you don't run setup.sh script, Etoile environment won't be fully 
 installed and will simply fail to start. setup.sh is currently unsupported on 
 platforms other than Linux. So the set up process has been to be done manually 
@@ -96,9 +167,8 @@ current user only or for the whole machine.
 Read CoreObject INSTALL documentation to learn about setup-coreobject.sh.
 
 
-Uninstall
----------
-
+Uninstall Etoile
+----------------
 Steps to uninstall:
 
 	[sudo] [-E] make uninstall
