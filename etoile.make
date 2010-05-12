@@ -259,9 +259,9 @@ export ADDITIONAL_LIB_DIRS += -L$(BUILD_DIR)
 #export ADDITIONAL_LDFLAGS += -Wl,-rpath-link $(BUILD_DIR):$(LD_LIBRARY_PATH)
 export LD_LIBRARY_PATH := $(BUILD_DIR):$(LD_LIBRARY_PATH)
 
-# We disable warnings about #import being deprecated. They occur with old GCC
-# version (before 4.0 iirc).
-export ADDITIONAL_OBJCFLAGS += -Wno-import -Werror -Wno-unused -Wno-implicit
+# We pass -Wno-unused parameter for Clang which behaves as if -Wunused-parameter 
+# was present even when we pass -Wno-unused
+export ADDITIONAL_OBJCFLAGS += -Wno-import -Werror -Wno-unused-parameter -Wno-unused -Wno-implicit
 
 # Ugly hack until gnustep-make is improved to export a variable that lets us know 
 # which libobjc version we compile against.
