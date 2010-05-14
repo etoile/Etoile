@@ -103,13 +103,15 @@ To build GNUstep with Clang:
 - Check out GNUstep core modules and libobjc2:
 
 	svn co http://svn.gna.org/svn/gnustep/modules/core
-	svn co http://svn.gna.org/svn/gnustep/dev-libs/libobjc2
+	svn co http://svn.gna.org/svn/gnustep/libs/libobjc2/trunk libobjc2
 
 - Install GNUstep Make a first time:
 
 	cd core/make
 	./configure --enable-debug-by-default [--prefix=/]
 	make && sudo -E make install
+	. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh 
+	# Or . /System/Library/Makefiles/GNUstep.sh if --prefix=/ was passed
 
 - Build libobjc2
 
@@ -129,7 +131,8 @@ strip=yes ensures you can debug ObjC code without stepping inside runtime functi
 - Build and Install GNUstep Base, Gui and Back:
 
 	cd core/base
-	./configure --with-ffi-include=/usr/include/`gcc -dumpmachine`
+	# For Linux e.g. Ubuntu, --with-ffi-include is usually required
+	./configure [--with-ffi-include=/usr/include/`gcc -dumpmachine`]
 	make && sudo -E make install
 
 	cd core/gui
