@@ -113,6 +113,10 @@ To build GNUstep with Clang:
 	. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh 
 	# Or . /System/Library/Makefiles/GNUstep.sh if --prefix=/ was passed
 
+A good choice is to put this last line above in ~/.bashrc or similar. This way you won't have to source GNUstep.sh every time you want to compile GNUstep or Etoile stuff.
+
+**Note**: If you use a C shell, you should source GNUstep.csh rather than GNUstep.sh.
+
 - Build libobjc2
 
 strip=yes ensures you can debug ObjC code without stepping inside runtime functions each time a message is sent.
