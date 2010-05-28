@@ -237,9 +237,19 @@ fi
 
 SUDO=
 if [ $AS_ROOT = no -a $HAVE_SUDO = yes ]; then
-  SUDO=sudo
+  SUDO="sudo -E"
   echo
   echo "*** You will be prompted for a sudo password during installation ***"
+fi
+
+if [ $HAVE_SUDO = yes -a -z `$SUDO echo $GNUSTEP_USER_ROOT` ]; then
+    echo
+    echo "Impossible to start the installation."
+    echo
+    echo "GNUstep environment variables are not passed to sudo."
+    echo "Please report the error."
+    echo
+    exit
 fi
 
 ### End of the code picked from InstallGNUstep
