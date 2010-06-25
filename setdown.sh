@@ -39,8 +39,8 @@ userLevelSetdown()
 	defaults write NSGlobalDomain NSUseRunningCopy NO
 	defaults delete NSGlobalDomain NSMenuInterfaceStyle
 
-	echo "Unsetting User Interface Theme (in Camaelon domain)"
-	defaults write Camaelon Theme ""
+	#echo "Unsetting User Interface Theme (in Camaelon domain)"
+	#defaults write Camaelon Theme ""
 
 	defaults delete GWorkspace NoWarnOnQuit
 	defaults delete NSGlobalDomain GSWorkspaceApplication
