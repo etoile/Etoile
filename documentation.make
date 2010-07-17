@@ -30,29 +30,41 @@ $(DOCUMENT_NAME)_HEADER_DIR = $(PROJECT_DIR)/$(PROJECT_NAME)
 # Extension to let us specify where source files can be found
 $(DOCUMENT_NAME)_SOURCE_DIRS = $(PROJECT_DIR)/Source $(PROJECT_DIR)
 
-$(DOCUMENT_NAME)_AGSDOC_FILES = $(notdir $(wildcard $($(DOCUMENT_NAME)_HEADER_DIR)/*.h))
+
+$(DOCUMENT_NAME)_AGSDOC_FILES = $(wildcard $($(DOCUMENT_NAME)_HEADER_DIR)/*.h)
+$(DOCUMENT_NAME)_AGSDOC_FILES += $(wildcard $(PROJECT_DIR)/Source/*.m)
+
+#$(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_SOURCE_DIRS), $(notdir $(wildcard $(sourcedir)/*.m)))
 
 # We pass -Project otherwise the title is DOCUMENT_NAME with the Doc suffix
 $(DOCUMENT_NAME)_AGSDOC_FLAGS = \
 	-Project $(PROJECT_NAME) \
 	-MakeFrames YES \
-	-HeaderDirectory $($(DOCUMENT_NAME)_HEADER_DIR) \
 	-DocumentationDirectory $($(DOCUMENT_NAME)_DOCUMENTATION_DIR) \
+	-GenerateParagraphMarkup YES \
 	-Warn YES \
-	-ShowDependencies NO \
-	-Declared $(PROJECT_NAME)
+	-Verbose YES
 
 #	-Clean YES
 #	-IgnoreDependencies YES
 
-include $(GNUSTEP_MAKEFILES)/documentation.make
+doc: before-all internal-doc
+
+internal-doc:
+	autogsdoc $($(DOCUMENT_NAME)_AGSDOC_FLAGS) -Files $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/doc-make-dependencies
 
 DEV_DOC_DIR = $(PREFIX)/Developer/Documentation
 PROJECT_DOC_DIR = $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)
+comma := ,
+blank := 
+space := $(blank) $(blank)
+AGSDOC_FILE_ARRAY := $(subst $(space),$(comma)$(space),($($(DOCUMENT_NAME)_AGSDOC_FILES)))
+
 
 ifeq ($(debug-doc), yes)
 $(warning $(DOCUMENT_NAME)_AGSDOC_FLAGS=$($(DOCUMENT_NAME)_AGSDOC_FLAGS))
 $(warning $(DOCUMENT_NAME)_AGSDOC_FILES=$($(DOCUMENT_NAME)_AGSDOC_FILES))
+$(warning AGSDOC_FILE_ARRAY = $(AGSDOC_FILE_ARRAY))
 $(warning DEV_DOC_DIR = $(DEV_DOC_DIR))
 $(warning PROJECT_DOC_DIR = $(PROJECT_DOC_DIR))
 endif
@@ -63,11 +75,10 @@ endif
 # and documentation directory (and header directory may be too). Let's work 
 # around that with ln...
 before-all::
-	$(ECHO_NOTHING) \
 	if [ ! -d $(PROJECT_DOC_DIR) ];  then \
 		mkdir $(PROJECT_DOC_DIR); \
 	fi; \
-	$(END_ECHO)
+	echo "$(AGSDOC_FILE_ARRAY)" > $(PROJECT_DOC_DIR)/doc-make-dependencies
 
 after-all::
 	$(ECHO_NOTHING) \
@@ -79,7 +90,9 @@ after-all::
 	if [ ! -d $(DEV_DOC_DIR) ]; then \
 		mkdir $(DEV_DOC_DIR); \
 	fi; \
+	echo bla $(DEV_DOC_DIR)/$(PROJECT_NAME); \
 	if [ ! -d $(DEV_DOC_DIR)/$(PROJECT_NAME) ]; then \
+		echo bla $(DEV_DOC_DIR); \
 		mkdir $(DEV_DOC_DIR)/$(PROJECT_NAME); \
 	fi; \
 	cp -f $(PROJECT_DOC_DIR)/*.html $(DEV_DOC_DIR)/$(PROJECT_NAME); \
@@ -91,6 +104,7 @@ after-distclean:: clean-doc
 # but that's it, so let's do it with rm...
 clean-doc:
 	$(ECHO_NOTHING) \
+	rm -f $(PROJECT_DOC_DIR)/doc-make-dependencies \
 	rm -f $(PROJECT_DOC_DIR)/*.igsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.gsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.html \
