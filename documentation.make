@@ -42,9 +42,9 @@ $(DOCUMENT_NAME)_AGSDOC_FLAGS = \
 	-MakeFrames YES \
 	-DocumentationDirectory $($(DOCUMENT_NAME)_DOCUMENTATION_DIR) \
 	-GenerateParagraphMarkup YES \
-	-Warn YES \
-	-Verbose YES
+	-Warn YES
 
+#	-Verbose YES
 #	-Clean YES
 #	-IgnoreDependencies YES
 
@@ -95,7 +95,11 @@ after-all::
 		echo bla $(DEV_DOC_DIR); \
 		mkdir $(DEV_DOC_DIR)/$(PROJECT_NAME); \
 	fi; \
-	cp -f $(PROJECT_DOC_DIR)/*.html $(DEV_DOC_DIR)/$(PROJECT_NAME); \
+	for htmlfile in $(PROJECT_DOC_DIR)/*.html; do \
+		if [ -f $htmlfile ]; then \
+			cp -f $htmlfile $(DEV_DOC_DIR)/$(PROJECT_NAME); \
+		fi; \
+	done; \
 	$(END_ECHO)
 
 after-distclean:: clean-doc
