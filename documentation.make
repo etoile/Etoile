@@ -48,7 +48,7 @@ $(DOCUMENT_NAME)_AGSDOC_FLAGS = \
 #	-Clean YES
 #	-IgnoreDependencies YES
 
-doc: before-all internal-doc
+doc: before-doc internal-doc
 
 internal-doc:
 	autogsdoc $($(DOCUMENT_NAME)_AGSDOC_FLAGS) -Files $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/doc-make-dependencies
@@ -74,13 +74,13 @@ endif
 # work either. autogsdoc only collects sources files in the current directory 
 # and documentation directory (and header directory may be too). Let's work 
 # around that with ln...
-before-all::
+before-doc:
 	if [ ! -d $(PROJECT_DOC_DIR) ];  then \
 		mkdir $(PROJECT_DOC_DIR); \
 	fi; \
 	echo "$(AGSDOC_FILE_ARRAY)" > $(PROJECT_DOC_DIR)/doc-make-dependencies
 
-after-all::
+after-doc:
 	$(ECHO_NOTHING) \
 	for mfile in $(PROJECT_DOC_DIR)/*.m; do \
 		if [ -L $mfile ]; then \
@@ -90,9 +90,7 @@ after-all::
 	if [ ! -d $(DEV_DOC_DIR) ]; then \
 		mkdir $(DEV_DOC_DIR); \
 	fi; \
-	echo bla $(DEV_DOC_DIR)/$(PROJECT_NAME); \
 	if [ ! -d $(DEV_DOC_DIR)/$(PROJECT_NAME) ]; then \
-		echo bla $(DEV_DOC_DIR); \
 		mkdir $(DEV_DOC_DIR)/$(PROJECT_NAME); \
 	fi; \
 	for htmlfile in $(PROJECT_DOC_DIR)/*.html; do \
@@ -102,7 +100,6 @@ after-all::
 	done; \
 	$(END_ECHO)
 
-after-distclean:: clean-doc
 
 # autogsdoc -Clean YES doesn't work well, it removes the html files if I pass *
 # but that's it, so let's do it with rm...
@@ -112,4 +109,7 @@ clean-doc:
 	rm -f $(PROJECT_DOC_DIR)/*.igsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.gsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.html \
+	rm -f $(DEV_DOC_DIR)/$(PROJECT_NAME)/*.html \
 	$(END_ECHO)
+
+after-distclean:: clean-doc
