@@ -244,6 +244,30 @@ You can also build test bundles for any specified modules by adding an option
 check' but this is not implemented currently.
 
 
+Generate Documentation
+----------------------
+To build both the code and the documentation at the same time in any directory, type: 
+
+	make documentation=yes
+
+In addition, you can also generate the documentation without building the code per module. Move to a module directory (e.g. cd Languages/LanguageKit) and do:
+
+	make doc
+
+Every time you generate some documentation, a Documentation directory appears per module (e.g. Languages/LanguageKit/Documentation) and it gets consolidated in Developer/Documentation. You can browse the Developer/Documentation/index.html as a starting point.
+If you are in a module directory, you can browse its documentation with Documentation/index.html (e.g. Languages/LanguageKit/Documentation/index.html)
+
+To clean the generated documentation in the current module directory (will also clean the content copied in Developer/Documentation):
+
+	make clean-doc
+
+Finally to remove all the generated documentation, you can use in any directory:
+
+	make distclean
+
+which also discards the code previously built.
+
+
 Trouble
 -------
 Give us feedback! Tell us what you like; tell us what you think
