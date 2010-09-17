@@ -46,6 +46,10 @@ endif
 # which is unrelated to the last path component of PROJECT_DIR, you must 
 # redefine this variable in your GNUmakefile.
 #
+# PRINT_PROJECT_NAME can be YES or NO. When the value is set to NO, make will 
+# ouput a new line but not 'Build Project: $(PROJECT_NAME)'. It is usually set 
+# to NO in any subproject that includes etoile.make.
+#
 # PWD or ./ is the path where the current makefile is located (for 
 # etoile.make, this is always Etoile/)
 
@@ -82,9 +86,11 @@ endef
 before-all::
 	$(ECHO_NOTHING) \
 	echo ""; \
-	echo "Build Project: $(PROJECT_NAME)"; \
-	echo ""; \
+	if [ "$(PRINT_PROJECT_NAME)" != "NO" ]; then \
+	  echo "Build Project: $(PROJECT_NAME)"; \
+	  echo ""; \
 	$(create-local-header-dir) \
+	fi; \
 	if [ ! -d $(BUILD_DIR) ]; then \
 	  mkdir $(BUILD_DIR); \
 	fi; \
@@ -207,6 +213,21 @@ after-clean::
 
 after-distclean:: after-clean
 
+TEST_BUNDLE_NAME = $(PROJECT_NAME).bundle
+
+check::
+	$(ECHO_NOTHING) \
+	if [ "$${compile}" != "no" ]; then \
+		${MAKE} test=yes; \
+	fi; \
+	if [ -d $(PROJECT_DIR)/$(TEST_BUNDLE_NAME) ]; then \
+		ukrun -q $(TEST_BUNDLE_NAME); \
+		if [ $$? -ne 0 ]; then \
+			echo "\n --- TESTING FAILED FOR $(PROJECT_NAME) --- \n"; \
+		fi; \
+	fi; \
+	$(END_ECHO)
+
 
 ### Default Variable Values For Conveniency ###
 
@@ -261,7 +282,7 @@ export LD_LIBRARY_PATH := $(BUILD_DIR):$(LD_LIBRARY_PATH)
 
 # We pass -Wno-unused parameter for Clang which behaves as if -Wunused-parameter 
 # was present even when we pass -Wno-unused
-export ADDITIONAL_OBJCFLAGS += -Wno-import -Werror -Wno-unused-parameter -Wno-unused -Wno-implicit
+export ADDITIONAL_OBJCFLAGS += -Wno-import -Wno-unused-parameter -Wno-unused -Wno-implicit
 
 # Ugly hack until gnustep-make is improved to export a variable that lets us know 
 # which libobjc version we compile against.
