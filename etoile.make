@@ -282,7 +282,7 @@ export LD_LIBRARY_PATH := $(BUILD_DIR):$(LD_LIBRARY_PATH)
 
 # We pass -Wno-unused parameter for Clang which behaves as if -Wunused-parameter 
 # was present even when we pass -Wno-unused
-export ADDITIONAL_OBJCFLAGS += -Wno-import -Wno-unused-parameter -Wno-unused -Wno-implicit
+export ADDITIONAL_OBJCFLAGS += -Werror -Wno-import -Wno-unused-parameter -Wno-unused -Wno-implicit
 
 # Ugly hack until gnustep-make is improved to export a variable that lets us know 
 # which libobjc version we compile against.
