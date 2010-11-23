@@ -23,7 +23,7 @@
 # $(DOCUMENT_NAME)_HEADER_DIRS and $(DOCUMENT_NAME)_SOURCE_DIRS are appended to 
 # $(DOCUMENT_NAME)_AGSDOC_FILES
 #
-# Files named TestXXX.m are not included in $(DOCUMENT_NAME)_AGSDOC_FILES
+# Files named TestXXX.m or TestXXX.c are not included in $(DOCUMENT_NAME)_AGSDOC_FILES
 #
 # This makefile creates a Documentation directory inside your project unless 
 # you override $(DOCUMENT_NAME)_DOCUMENTATION_DIR.
@@ -40,6 +40,7 @@ $(DOCUMENT_NAME)_SOURCE_DIRS += $(PROJECT_DIR)/Source $(PROJECT_DIR)
 
 $(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach headerdir, $($(DOCUMENT_NAME)_HEADER_DIRS), $(wildcard $(headerdir)/*.h))
 $(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_SOURCE_DIRS), $(wildcard $(sourcedir)/[^T]?[^e]?[^s]?[^t]?*.m))
+$(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_SOURCE_DIRS), $(wildcard $(sourcedir)/[^T]?[^e]?[^s]?[^t]?*.c))
 
 
 # We pass -Project otherwise the title is DOCUMENT_NAME with the Doc suffix
@@ -48,7 +49,7 @@ $(DOCUMENT_NAME)_AGSDOC_FLAGS = \
 	-MakeFrames YES \
 	-DocumentationDirectory $($(DOCUMENT_NAME)_DOCUMENTATION_DIR) \
 	-GenerateParagraphMarkup YES \
-	-Warn YES
+	-Warn NO
 
 # The user-visible target used to build the documentation
 doc: before-doc internal-doc after-doc
