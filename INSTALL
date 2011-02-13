@@ -110,7 +110,7 @@ To build GNUstep with Clang:
 - Install GNUstep Make a first time:
 
 	cd core/make
-	./configure --enable-debug-by-default [--prefix=/]
+	./configure --enable-debug-by-default --with-layout=gnustep [--prefix=/]
 	make && sudo -E make install
 	. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh 
 	# Or . /System/Library/Makefiles/GNUstep.sh if --prefix=/ was passed
@@ -131,7 +131,7 @@ strip=yes ensures you can debug ObjC code without stepping inside runtime functi
 - Install GNUstep Make a second time so it can detect the new ObjC runtime just installed:
 
 	cd ../../core/make
-	./configure --enable-debug-by-default [--prefix=/]
+	./configure --enable-debug-by-default --with-layout=gnustep [--prefix=/]
 	make && sudo -E make install
 
 - Build and Install GNUstep Base, Gui and Back:
