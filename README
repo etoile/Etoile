@@ -23,6 +23,8 @@ Jesse Ross, Eric Wasylishen,
 To know more about Etoile: 
 <http://www.etoile-project.org>
 
+**WARNING**: As it stands now, Etoile is more or less a development environment and not a desktop environment. We have no working theme since we are still in the process of migrating from our Camaelon theme engine to the new one bundled with GNUstep. User-oriented applications such as Melodie can fail to launch or behave correctly because their development have been put on hold. 
+
 
 Build and Install
 -----------------

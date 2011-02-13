@@ -1,6 +1,8 @@
 Étoilé INSTALL
 ==============
 
+**WARNING**: As it stands now, Etoile is more or less a development environment and not a desktop environment. We have no working theme since we are still in the process of migrating from our Camaelon theme engine to the new one bundled with GNUstep. User-oriented applications such as Melodie can fail to launch or behave correctly because their development have been put on hold. We advise you not to use the session support built into Étoilé, but rather write Étoilé code inside another environment such as GNOME or KDE.
+
 Required software
 -----------------
 
@@ -16,7 +18,7 @@ compile and use Etoile. The core packages are, at a minimum:
  * gnustep-base svn trunk (r28778 or more recent is required by EtoileSerialize)
  * gnustep-gui svn trunk
  * gnustep-back svn trunk
- * libobjc2 svn svn trunk (required by LanguageKit)
+ * libobjc2 svn trunk (required by LanguageKit)
 
 You can check out the latest GNUstep unstable (or trunk) as follows: 
 
@@ -155,6 +157,7 @@ See also [GNUstep](http://www.gnustep.org/) for further information.
 
 Build and Install Etoile
 ------------------------
+
 **WARNING:** If you don't run setup.sh script, Etoile environment won't be fully 
 installed and will simply fail to start. setup.sh is currently unsupported on 
 platforms other than Linux. So the set up process has been to be done manually 
@@ -175,7 +178,7 @@ setup.sh script takes care of various operations mandatory to have a ready to
 use environment that includes:
 
  * the environment startup tool (named 'etoile_system')
- * Nesedah theme
+ * Themes
  * Horizontal menu bar
  * X11 session support (to start Etoile with KDM, GDM etc.)
 
@@ -203,10 +206,8 @@ useful when you want to disable temporarily Etoile theme, horizontal menu etc.
 and get back to the GNUstep look & feel. Then you can return to the usual 
 Etoile look & feel by running setup.sh again.
 
-However it's important to note that setdown.sh doesn't disable only Camaelon 
-(theme engine) and WildMenus (horizontal menu engine). You won't be able
-to log in from KDM or GDM once setdown.sh has been run, and Etoile specific 
-applications may fail because of missing elements or daemons not launched.
+However it's important to note that setdown.sh doesn't disable only WildMenus (horizontal menu engine). You won't be able
+to log in from KDM or GDM once setdown.sh has been run, and Etoile specific applications may fail because of missing elements or daemons not launched.
 
 Read CoreObject INSTALL documentation to learn about uninstall-coreobject.sh.
 
