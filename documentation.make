@@ -38,29 +38,40 @@ $(DOCUMENT_NAME)_DOCUMENTATION_DIR = $(PROJECT_DIR)/Documentation
 $(DOCUMENT_NAME)_HEADER_DIRS += $(PROJECT_DIR)/Headers $(PROJECT_DIR)
 $(DOCUMENT_NAME)_SOURCE_DIRS += $(PROJECT_DIR)/Source $(PROJECT_DIR)
 
+# autogsdoc variables
 $(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach headerdir, $($(DOCUMENT_NAME)_HEADER_DIRS), $(wildcard $(headerdir)/*.h))
 $(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_SOURCE_DIRS), $(wildcard $(sourcedir)/[^T]?[^e]?[^s]?[^t]?*.m))
 $(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_SOURCE_DIRS), $(wildcard $(sourcedir)/[^T]?[^e]?[^s]?[^t]?*.c))
 
+# etdocgen variables
+$(DOCUMENT_NAME)_MAIN_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/etoile-documentation-template.html
+$(DOCUMENT_NAME)_MENU_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/menu.html
+$(DOCUMENT_NAME)_EXTERNAL_INDEX_UNIT_FILES += $(PREFIX)/Developer/Services/DocGenerator/TestFiles/class-mapping.plist
+$(DOCUMENT_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
+$(DOCUMENT_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
+
+# Some shortcut variables
+DEV_DOC_DIR = $(PREFIX)/Developer/Documentation
+PROJECT_DOC_DIR = $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)
 
 # We pass -Project otherwise the title is DOCUMENT_NAME with the Doc suffix
 $(DOCUMENT_NAME)_AGSDOC_FLAGS = \
 	-Project $(PROJECT_NAME) \
 	-MakeFrames YES \
-	-DocumentationDirectory $($(DOCUMENT_NAME)_DOCUMENTATION_DIR) \
+	-DocumentationDirectory $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/GSDoc \
 	-GenerateParagraphMarkup YES \
 	-Warn NO
 
 # The user-visible target used to build the documentation
-doc: before-doc internal-doc after-doc
+doc: before-doc gsdocgen etdocgen after-doc
 
 # The main target that invokes autogsdoc to output .gsdoc and .html files
-internal-doc:
+gsdocgen:
 	autogsdoc $($(DOCUMENT_NAME)_AGSDOC_FLAGS) -Files $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/doc-make-dependencies
 
-# Some shortcut variables
-DEV_DOC_DIR = $(PREFIX)/Developer/Documentation
-PROJECT_DOC_DIR = $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)
+etdocgen:
+	etdocgen -n $(PROJECT_NAME) -c $(PROJECT_DOC_DIR)/GSDoc -r $(PROJECT_DOC_DIR) -t $($(DOCUMENT_NAME)_MAIN_TEMPLATE_FILE) -m $($(DOCUMENT_NAME)_MENU_TEMPLATE_FILE) -e $($(DOCUMENT_NAME)_EXTERNAL_INDEX_UNIT_FILES) -o $(PROJECT_DOC_DIR)
+
 
 # Build the plist array saved as doc-make-dependencies in before-doc and 
 # passed to autogsdoc with -Files in internal-doc
@@ -85,6 +96,20 @@ before-doc:
 	if [ ! -d $(PROJECT_DOC_DIR) ];  then \
 		mkdir $(PROJECT_DOC_DIR); \
 	fi; \
+	if [ ! -d $(PROJECT_DOC_DIR)/GSDoc ];  then \
+		mkdir $(PROJECT_DOC_DIR)/GSDoc; \
+	fi; \
+	if [ ! -e images ];  then \
+		ln -s $(PREFIX)/Developer/Services/DocGenerator/Templates/images images; \
+	fi; \
+	if [ ! -e $_includes ];  then \
+		ln -s $(PREFIX)/Developer/Services/DocGenerator/Templates/_includes _includes; \
+	fi; \
+	for filename in README INSTALL NEWS; do \
+		if [ -f $$filename ]; then \
+			cp $(PROJECT_DIR)/$$filename $(PROJECT_DOC_DIR)/$${filename}.html; \
+		fi; \
+	done; \
 	echo "$(AGSDOC_FILE_ARRAY)" > $(PROJECT_DOC_DIR)/doc-make-dependencies
 
 # Export the generated doc to Developer/Documentation and recreate the index.html there
@@ -110,7 +135,12 @@ after-doc:
 # We also remove stuff previously copied to Developer/Documentation 
 clean-doc:
 	$(ECHO_NOTHING) \
+	rm _includes \
+	rm images \
 	rm -f $(PROJECT_DOC_DIR)/doc-make-dependencies \
+	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.igsdoc \
+	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.gsdoc \
+	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.html \
 	rm -f $(PROJECT_DOC_DIR)/*.igsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.gsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.html \
