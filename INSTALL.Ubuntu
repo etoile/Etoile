@@ -54,10 +54,14 @@ Ubuntu 8.10 && 9.04 (Intrepid Ibex && Jaunty Jackalope)
  * libavformat-dev
  * libtagc0-dev
  * libmp4v2-dev (multiverse)
+ * libgraphviz-dev
 
 
 Ubuntu 8.04 (Hardy Heron)
 -------------------------
+
+Both make and openssl should be now installed by default.
+libffi is now available in Ubuntu (better to use it rather than ffcall).
 
  * gobjc-4.2
  * libxml2-dev
@@ -91,79 +95,7 @@ Ubuntu 8.04 (Hardy Heron)
  * libavformat-dev
  * libtagc0-dev
  * libmp4v2-dev (multiverse)
-
-
-Ubuntu 7.10 (Gutsy Gibbon)
---------------------------
-
- * gobjc-4.2
- * libxml2-dev
- * libxslt1-dev
- * libffi4-dev
- * libssl-dev
- * libjpeg62-dev
- * libtiff4-dev
- * libpng12-dev
- * libungif4-dev
- * libfreetype6-dev
- * libx11-dev
- * libcairo2-dev
- * libxft-dev
- * libxmu-dev
- * dbus
- * libdbus-1-dev
- * hal
- * libstartup-notification0-dev
- * libxcursor-dev
- * libxss-dev
- * xscreensaver
- * g++
- * libpoppler-dev
- * libonig-dev (universe)
- * lemon (universe)
- * libgmp3-dev
- * postgresql-8.3 (backports)
- * libpq-dev
- * libavcodec-dev (security)
- * libavformat-dev (security)
- * libtagc0-dev
- * libmp4v2-dev (multiverse)
-
-
-Ubuntu 6.10 & 7.04 (Edgy Eft & Feisty Fawn)
--------------------------------------------
-Both make and openssl should be now installed by default.
-libffi is now available in Ubuntu (better to use it rather than ffcall).
-
- * gobjc-4.1
- * libxml2-dev
- * libxslt1-dev
- * libffi4-dev
- * libssl-dev
- * libjpeg62-dev
- * libtiff4-dev
- * libpng12-dev
- * libungif4-dev
- * libfreetype6-dev
- * libx11-dev
- * libart-2.0-dev
- * libxft-dev
- * libxmu-dev
- * dbus
- * libdbus-1-dev
- * hal
- * libstartup-notification0-dev
- * libxcursor-dev
- * libxss-dev
- * xscreensaver
- * g++
- * libpoppler-dev
- * lemon (universe)
- * libgmp3-dev
- * libavcodec-dev (universe)
- * libavformat-dev (universe)
- * libtagc0-dev
- * libmp4v2-dev (multiverse)
+ * libgraphviz-dev
 
 
 Ubuntu 6.06 (Dapper Drake)
@@ -203,3 +135,4 @@ Ubuntu 6.06 (Dapper Drake)
  * libavformat-dev (universe)
  * libtagc0-dev
  * libmp4v2-dev (multiverse)
+ * graphviz-dev (universe)
