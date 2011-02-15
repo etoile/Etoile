@@ -280,9 +280,11 @@ export ADDITIONAL_LIB_DIRS += -L$(BUILD_DIR)
 #export ADDITIONAL_LDFLAGS += -Wl,-rpath-link $(BUILD_DIR):$(LD_LIBRARY_PATH)
 export LD_LIBRARY_PATH := $(BUILD_DIR):$(LD_LIBRARY_PATH)
 
+export ERROR_FLAG ?= -Werror 
 # We pass -Wno-unused parameter for Clang which behaves as if -Wunused-parameter 
 # was present even when we pass -Wno-unused
-export ADDITIONAL_OBJCFLAGS += -Werror -Wno-import -Wno-unused-parameter -Wno-unused -Wno-implicit
+export WARNING_FLAGS ?= -Wno-import -Wno-unused-parameter -Wno-unused -Wno-implicit
+export ADDITIONAL_OBJCFLAGS += $(ERROR_FLAG) $(WARNING_FLAGS)
 
 # Ugly hack until gnustep-make is improved to export a variable that lets us know 
 # which libobjc version we compile against.
