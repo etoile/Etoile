@@ -13,6 +13,8 @@ We only install hal and omit libhal-dev because we access HAL through D-Bus (we 
 
 Oniguruma library (libonig) that is required by OgreKit wasn't available as a package before Gutsy Gibbon. If you use an older Ubuntu version, before building Etoile you should configure, compile and install the version available in the Subversion repository at path etoile/trunk/Dependencies.
 
+Discount (markdown tool) isn't available as a package on Ubuntu, you should compile and install the version downloadable at <http://www.pell.portland.or.us/~orc/Code/discount/>
+
 LLVM version (llvm-dev) that is currently required by Smalltalk and LanguageKit is the developement trunk version of the LLVM repository (See INSTALL). LLVM 2.3.2 available in Intrepid and the latest release 2.5 available in Jaunty Jackalope are too old.
 
 

@@ -84,7 +84,7 @@ related dependencies, you should read about GNUstep install on
 
     * libpng, zlib, OniGuruma, XScreenSaver, LLVM, GMP, Lemon, PostgreSQL, 
       OSS, FFmpeg (libavcodec and libavformat), TagLib, MPEG4IP (libmp4v2), 
-      Graphviz
+      Graphviz, Discount
 
 More details about Etoile dependencies can be found in INSTALL document (in the
 same directory than README one).

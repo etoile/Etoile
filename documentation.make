@@ -49,6 +49,9 @@ $(DOCUMENT_NAME)_MENU_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator
 $(DOCUMENT_NAME)_EXTERNAL_INDEX_UNIT_FILES += $(PREFIX)/Developer/Services/DocGenerator/TestFiles/class-mapping.plist
 $(DOCUMENT_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
 $(DOCUMENT_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
+$(DOCUMENT_NAME)_README_FILE = $(wildcard $(PROJECT_DIR)/README)
+$(DOCUMENT_NAME)_INSTALL_FILE = $(wildcard $(PROJECT_DIR)/INSTALL)
+$(DOCUMENT_NAME)_NEWS_FILE = $(wildcard $(PROJECT_DIR)/NEWS) 
 
 # Some shortcut variables
 DEV_DOC_DIR = $(PREFIX)/Developer/Documentation
@@ -70,7 +73,7 @@ gsdocgen:
 	autogsdoc $($(DOCUMENT_NAME)_AGSDOC_FLAGS) -Files $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/doc-make-dependencies
 
 etdocgen:
-	etdocgen -n $(PROJECT_NAME) -c $(PROJECT_DOC_DIR)/GSDoc -r $(PROJECT_DOC_DIR) -t $($(DOCUMENT_NAME)_MAIN_TEMPLATE_FILE) -m $($(DOCUMENT_NAME)_MENU_TEMPLATE_FILE) -e $($(DOCUMENT_NAME)_EXTERNAL_INDEX_UNIT_FILES) -o $(PROJECT_DOC_DIR)
+	etdocgen -n $(PROJECT_NAME) -c $(PROJECT_DOC_DIR)/GSDoc -r $(PROJECT_DOC_DIR) -t $($(DOCUMENT_NAME)_MAIN_TEMPLATE_FILE) -m $($(DOCUMENT_NAME)_MENU_TEMPLATE_FILE) -e $($(DOCUMENT_NAME)_EXTERNAL_INDEX_UNIT_FILES) -o $(PROJECT_DOC_DIR) $($(DOCUMENT_NAME)_README_FILE) $($(DOCUMENT_NAME)_INSTALL_FILE) $($(DOCUMENT_NAME)_NEWS_FILE)
 
 
 # Build the plist array saved as doc-make-dependencies in before-doc and 
@@ -105,11 +108,6 @@ before-doc:
 	if [ ! -e $_includes ];  then \
 		ln -s $(PREFIX)/Developer/Services/DocGenerator/Templates/_includes _includes; \
 	fi; \
-	for filename in README INSTALL NEWS; do \
-		if [ -f $$filename ]; then \
-			cp $(PROJECT_DIR)/$$filename $(PROJECT_DOC_DIR)/$${filename}.html; \
-		fi; \
-	done; \
 	echo "$(AGSDOC_FILE_ARRAY)" > $(PROJECT_DOC_DIR)/doc-make-dependencies
 
 # Export the generated doc to Developer/Documentation and recreate the index.html there
@@ -141,9 +139,11 @@ clean-doc:
 	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.igsdoc \
 	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.gsdoc \
 	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.html \
+	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.plist \
 	rm -f $(PROJECT_DOC_DIR)/*.igsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.gsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.html \
+	rm -f $(PROJECT_DOC_DIR)/*.png \
 	rm -f $(DEV_DOC_DIR)/$(PROJECT_NAME)/*.html \
 	$(END_ECHO)
 
