@@ -6,21 +6,20 @@
 Required software
 -----------------
 
- * GCC 4.1 or higher is required to build Etoile
- * Clang is required to build LanguageKit. 
-   Clang 2.7 should work on FreeBSD but Linux requires Clang trunk.
-   LanguageKit also requires LLVM trunk, so it is recommended that you install clang from svn as well.
+ * LLVM/Clang 2.9 or higher is required to build Etoile
+
+GCC is not supported, although it can be used to build some modules within the repository.
 
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
- * gnustep-make svn trunk (r29644 or more recent)
- * gnustep-base svn trunk (r28778 or more recent is required by EtoileSerialize)
- * gnustep-gui svn trunk
- * gnustep-back svn trunk
- * libobjc2 svn trunk (required by LanguageKit)
+ * gnustep-make svn trunk (2.6 is broken with Clang currently)
+ * gnustep-base 1.22
+ * gnustep-gui 0.20
+ * gnustep-back 0.20
+ * libobjc2 (other ObjC runtimes such as the one packaged with GCC won't work)
 
-You can check out the latest GNUstep unstable (or trunk) as follows: 
+Alternatively you can check out the latest GNUstep unstable (or trunk) as follows: 
 
 	svn co http://svn.gna.org/svn/gnustep/modules/core
 
@@ -48,15 +47,16 @@ environment or the whole repository:
  * [Graphviz](http://www.graphviz.org/) (DocGenerator)
  * [Discount] (http://www.pell.portland.or.us/~orc/Code/discount/) (DocGenerator)
 
-For now, before building Etoile you should configure, compile and install LLVM by checking out the Subversion development trunk available at: <http://llvm.org/svn/llvm-project/llvm/trunk>.
-
-**WARNING:** Please note that only the version of LanguageKit in stable will build with a release version of LLVM. The version in trunk requires a recent svn snapshot. Because the LLVM APIs are constantly evolving, LanguageKit may be broken with the latest svn at any given time. Please report any build failures to etoile-dev.
+If you are using LLVM/Clang and GNUstep packages rather than building them manually, 
+you can jump directly to the section **Build and Install Etoile**.
+Don't forget to check libobjc2 is installed, otherwise you have to install it as 
+explained in the **Build and Install GNUstep** section.
 
 
 Notation
 --------
 
-In the following text, square brackets "[ ]" are used to indicate an
+In the following sections, square brackets "[ ]" are used to indicate an
 optional parameter.
 
 
