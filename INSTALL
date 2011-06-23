@@ -8,18 +8,24 @@ Required software
 
  * LLVM/Clang 2.9 or higher is required to build Etoile
 
-GCC is not supported, although it can be used to build some modules within the repository.
+LLVM/Clang 2.9 binaries can be downloaded here
+
+GCC is not supported, although it can be used to build some modules within the repository (especially GCC 4.6 which supports the main Objective-C 2 features). 
 
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
- * gnustep-make svn trunk (2.6 is broken with Clang currently)
+ * gnustep-make 2.6.1 (2.6 is broken with Clang)
  * gnustep-base 1.22
  * gnustep-gui 0.20
  * gnustep-back 0.20
- * libobjc2 (other ObjC runtimes such as the one packaged with GCC won't work)
+ * libobjc2 1.4 (other ObjC runtimes such as the one packaged with GCC won't work)
 
-Alternatively you can check out the latest GNUstep unstable (or trunk) as follows: 
+**Warning:** libobjc2 is also known as the GNUstep runtime. It's a new runtime unrelated to the GCC libobjc and the old GNUstep libobjc (which was a just patched GCC libobjc). Linux distributions such as Debian or Ubuntu include packages named libobjc2 or libobjc3 which are completely unrelated to the GNUstep runtime, and are just recent GCC libobjc packaged under a new name. More details in [GNUstep Objective-2 FAQ](http://wiki.gnustep.org/index.php/ObjC2_FAQ)
+
+GNUstep source releases can be downloaded [here](http://wwwmain.gnustep.org/resources/downloads.php) and the libobjc2 source [here](http://download.gna.org/gnustep/)
+
+Alternatively you can check out the latest GNUstep unstable (or trunk) as follows, but libobjc2 won't be included: 
 
 	svn co http://svn.gna.org/svn/gnustep/modules/core
 
@@ -36,8 +42,8 @@ environment or the whole repository:
  * [startup-notification](http://www.freedesktop.org/wiki/Software_2fstartup_2dnotification) (Azalea)
  * [Xcursor](http://www.freedesktop.org/wiki/Software_2fxlibs) (Azalea)
  * [XScreenSaver](http://www.jwz.org/xscreensaver/) (Idle)
- * [LLVM](http://www.llvm.org) (Smalltalk)
- * [Lemon](http://www.hwaci.com/sw/lemon/) (Smalltalk)
+ * [LLVM](http://www.llvm.org) (LanguageKit)
+ * [Lemon](http://www.hwaci.com/sw/lemon/) (Smalltalk and EScript)
  * [GMP](http://gmplib.org/) (Smalltalk)
  * [PostgreSQL](http://www.postgresql.org) 8.3 or higher (CoreObject)
  * [libavcodec and libavformat](http://ffmpeg.mplayerhq.hu/) (MediaKit)
@@ -45,7 +51,7 @@ environment or the whole repository:
  * [TagLib](http://developer.kde.org/~wheeler/taglib.html) (Melodie)
  * [libmp4v2](http://www.mpeg4ip.net/) (Melodie)
  * [Graphviz](http://www.graphviz.org/) (DocGenerator)
- * [Discount] (http://www.pell.portland.or.us/~orc/Code/discount/) (DocGenerator)
+ * [Discount](http://www.pell.portland.or.us/~orc/Code/discount/) (DocGenerator)
 
 If you are using LLVM/Clang and GNUstep packages rather than building them manually, 
 you can jump directly to the section **Build and Install Etoile**.
@@ -160,11 +166,6 @@ See also [GNUstep](http://www.gnustep.org/) for further information.
 Build and Install Etoile
 ------------------------
 
-**WARNING:** If you don't run setup.sh script, Etoile environment won't be fully 
-installed and will simply fail to start. setup.sh is currently unsupported on 
-platforms other than Linux. So the set up process has been to be done manually 
-on systems such as FreeBSD.
-
 **Note:** If you encounter path related error, you can source GNUstep.sh or 
 GNUstep.csh in your shell, read the GNUstep documentation to know more about 
 this topic.
@@ -173,23 +174,6 @@ Steps to build:
 
 	make
 	[sudo] [-E] make install
-	./setup.sh
-	Frameworks/CoreObject/setup-coreobject.sh
-
-setup.sh script takes care of various operations mandatory to have a ready to 
-use environment that includes:
-
- * the environment startup tool (named 'etoile_system')
- * Themes
- * Horizontal menu bar
- * X11 session support (to start Etoile with KDM, GDM etc.)
-
-This involves to copy or link various elements and set several preferences 
-(called 'defaults' in GNUstep terminology). 
-The script will ask you whether you want to set up the environment for the 
-current user only or for the whole machine.
-
-Read CoreObject INSTALL documentation to learn about setup-coreobject.sh.
 
 
 Uninstall Etoile
@@ -197,21 +181,6 @@ Uninstall Etoile
 Steps to uninstall:
 
 	[sudo] [-E] make uninstall
-	./setdown.sh
-	Frameworks/CoreObject/uninstall-coreobject.sh
-
-setdown.sh script allows to get rid of what has been installed or configured by 
-setup.sh. In other words, it reverts the effect of setup.sh script. 
-
-Take note, you can use it alone without running 'make uninstall' first. This is 
-useful when you want to disable temporarily Etoile theme, horizontal menu etc. 
-and get back to the GNUstep look & feel. Then you can return to the usual 
-Etoile look & feel by running setup.sh again.
-
-However it's important to note that setdown.sh doesn't disable only WildMenus (horizontal menu engine). You won't be able
-to log in from KDM or GDM once setdown.sh has been run, and Etoile specific applications may fail because of missing elements or daemons not launched.
-
-Read CoreObject INSTALL documentation to learn about uninstall-coreobject.sh.
 
 
 Custom Build and Install
