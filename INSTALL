@@ -8,7 +8,7 @@ Required software
 
  * LLVM/Clang 2.9 or higher is required to build Etoile
 
-LLVM/Clang 2.9 binaries can be downloaded here
+LLVM/Clang 2.9 binaries can be downloaded [here](http://llvm.org/releases/download.html#2.9).
 
 GCC is not supported, although it can be used to build some modules within the repository (especially GCC 4.6 which supports the main Objective-C 2 features). 
 
@@ -23,7 +23,7 @@ compile and use Etoile. The core packages are, at a minimum:
 
 **Warning:** libobjc2 is also known as the GNUstep runtime. It's a new runtime unrelated to the GCC libobjc and the old GNUstep libobjc (which was a just patched GCC libobjc). Linux distributions such as Debian or Ubuntu include packages named libobjc2 or libobjc3 which are completely unrelated to the GNUstep runtime, and are just recent GCC libobjc packaged under a new name. More details in [GNUstep Objective-2 FAQ](http://wiki.gnustep.org/index.php/ObjC2_FAQ)
 
-GNUstep source releases can be downloaded [here](http://wwwmain.gnustep.org/resources/downloads.php) and the libobjc2 source [here](http://download.gna.org/gnustep/)
+GNUstep source releases can be downloaded [here](http://wwwmain.gnustep.org/resources/downloads.php) and the libobjc2 source [here](http://download.gna.org/gnustep/).
 
 Alternatively you can check out the latest GNUstep unstable (or trunk) as follows, but libobjc2 won't be included: 
 
