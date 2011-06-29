@@ -5,96 +5,150 @@
 # -include path/to/repository/root/etoile.make
 # -include path/to/repository/root/documentation.make
 #
-# Usually this should be enough to build the doc. If not, you can override with 
-# = or += AGSDOC_XXX variables in the project GNUmakefile:
-# $(DOCUMENT_NAME)_AGSDOC_FILES = .h and .m paths
-# $(DOCUMENT_NAME)_AGSDOC_FLAGS = autogsdoc options
+# Any doc-related overriden variables should be put before these include 
+# statements.
 #
+# Usually this should be enough to build the doc. If not, you can override with 
+# documentation-related variables in the project GNUmakefile:
+# $(DOC_NAME)_DOC_FILES = .h and .m paths relative to $(PROJECT_DIR)
+# $(DOC_NAME)_EXCLUDED_DOC_FILES = .h and .m paths relative to $(PROJECT_DIR)
+# $(DOC_NAME)_AGSDOC_EXTRA_FLAGS = autogsdoc options
+# where $(DOC_NAME)is your project name suffixed with 'Doc'.
+
 # For example, to get a more verbose output:
-# # $(DOCUMENT_NAME)_AGSDOC_FLAGS += -Verbose YES
+# EtoileFoundationDoc_AGSDOC_EXTRA_FLAGS = -Verbose YES
+#
+# $(DOC_NAME) is not defined before 'include documentation.make', that's why 
+# 'ProjectNameDoc' (in the example EtoileFoundationDoc) must be used. If you 
+# prefer, you can redefine DOC_NAME.
 #
 # Few additional variables are provided:
-# $(DOCUMENT_NAME)_DOCUMENTATION_DIR = ./Documentation
-# $(DOCUMENT_NAME)_HEADER_DIRS = '.' and './Headers'
-# $(DOCUMENT_NAME)_SOURCE_DIRS = '.' and './Source'
-# where $(DOCUMENT_NAME)is your project name suffixed with 'Doc'.
+# $(DOC_NAME)_DOCUMENTATION_DIR = ./Documentation
+# $(DOC_NAME)_HEADER_DIRS = '.' and './Headers'
+# $(DOC_NAME)_SOURCE_DIRS = '.' and './Source'
+# If you override a variable above such as $(DOC_NAME)_SOURCE_DIRS and still 
+# want to use the project directory as a search path, you must redeclare it:
+# $(DOC_NAME)_SOURCE_DIRS = . SourceCodeDir1 SourceCodeDir2
 #
 # The .h and .m files found in the directories provided with 
-# $(DOCUMENT_NAME)_HEADER_DIRS and $(DOCUMENT_NAME)_SOURCE_DIRS are appended to 
-# $(DOCUMENT_NAME)_AGSDOC_FILES
+# $(DOC_NAME)_HEADER_DIRS and $(DOC_NAME)_SOURCE_DIRS are appended to 
+# $(DOC_NAME)_DOC_FILES.
 #
-# Files named TestXXX.m or TestXXX.c are not included in $(DOCUMENT_NAME)_AGSDOC_FILES
+# You can use $(DOC_NAME)_DOC_FILES to declare explicitly every .h and .m files 
+# to be processed, but you must then prevent the header and source directories 
+# to be visited by documentation.make as done below:
+# $(DOC_NAME)_HEADER_DIRS=
+# $(DOC_NAME)_SOURCE_DIRS=
+#
+# Files named TestXXX.m or TestXXX.c are not included in $(DOC_NAME)_DOC_FILES
+#
+# HTML templates can be customized to use other template paths:
+# $(DOC_NAME)_MAIN_TEMPLATE_FILE = Developer/DocGenerator/Templates/etoile-documentation-template.html
+# $(DOC_NAME)_MENU_TEMPLATE_FILE = Developer/Services/DocGenerator/Templates/menu.html
+#
+# Presentation, Installation and Revision History sections in the default menu 
+# represent respectively the Markdown files below if not overriden:
+# $(DOC_NAME)_README_FILE = ./README
+# $(DOC_NAME)_INSTALL_FILE = ./INSTALL
+# $(DOC_NAME)_NEWS_FILE = ./NEWS
 #
 # This makefile creates a Documentation directory inside your project unless 
-# you override $(DOCUMENT_NAME)_DOCUMENTATION_DIR.
+# you override $(DOC_NAME)_DOCUMENTATION_DIR.
 # The html ouput is also copied to Developer/Documentation/yourProjectName.
 #
-# To get some debug infos, pass 'debug-doc=yes' to 'make'
+# To get some debug infos, append 'debug-doc=yes' to 'make doc' or 
+# 'make documentation=yes'. Use 'make debug-doc' to print out documentation 
+# variables and return immediately (no documentation generation).
 #
 
-DOCUMENT_NAME = $(PROJECT_NAME)Doc
+DOC_NAME ?= $(PROJECT_NAME)Doc
 
-$(DOCUMENT_NAME)_DOCUMENTATION_DIR = $(PROJECT_DIR)/Documentation
-$(DOCUMENT_NAME)_HEADER_DIRS += $(PROJECT_DIR)/Headers $(PROJECT_DIR)
-$(DOCUMENT_NAME)_SOURCE_DIRS += $(PROJECT_DIR)/Source $(PROJECT_DIR)
-$(DOCUMENT_NAME)_OTHER_SOURCE_DIR =
+$(DOC_NAME)_DOCUMENTATION_DIR ?= $(PROJECT_DIR)/Documentation
+$(DOC_NAME)_HEADER_DIRS ?= $(PROJECT_DIR)/Headers $(PROJECT_DIR)
+$(DOC_NAME)_SOURCE_DIRS ?= $(PROJECT_DIR)/Source $(PROJECT_DIR)
+# OTHER_SOURCE_DIR is deprecated 
+$(DOC_NAME)_OTHER_SOURCE_DIR =
 
-# autogsdoc variables
-$(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach headerdir, $($(DOCUMENT_NAME)_HEADER_DIRS), $(wildcard $(headerdir)/*.h))
-$(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_SOURCE_DIRS), $(wildcard $(sourcedir)/[^T]?[^e]?[^s]?[^t]?*.m))
-$(DOCUMENT_NAME)_AGSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_SOURCE_DIRS), $(wildcard $(sourcedir)/[^T]?[^e]?[^s]?[^t]?*.c))
+# Expand relative paths in variables which allows it
+ifdef $(DOC_NAME)_DOC_FILES
+  $(DOC_NAME)_DOC_FILES := $(foreach file, $($(DOC_NAME)_DOC_FILES), $(PROJECT_DIR)/$(wildcard $(file)))
+endif
+$(DOC_NAME)_EXCLUDED_DOC_FILES := $(foreach file, $($(DOC_NAME)_EXCLUDED_DOC_FILES), $(PROJECT_DIR)/$(wildcard $(file)))
+
+# Collect .h and .m paths in header and source directories
+$(DOC_NAME)_DOC_FILES += $(foreach headerdir, $($(DOC_NAME)_HEADER_DIRS), $(wildcard $(headerdir)/*.h))
+$(DOC_NAME)_DOC_FILES += $(foreach sourcedir, $($(DOC_NAME)_SOURCE_DIRS), $(wildcard $(sourcedir)/[^T]?[^e]?[^s]?[^t]?*.m))
+$(DOC_NAME)_DOC_FILES += $(foreach sourcedir, $($(DOC_NAME)_SOURCE_DIRS), $(wildcard $(sourcedir)/[^T]?[^e]?[^s]?[^t]?*.c))
+
+# Remove .h and .m paths for which no doc should be generated
+$(DOC_NAME)_DOC_FILES := $(foreach file, $($(DOC_NAME)_DOC_FILES), \
+  $(if $(findstring $(file), $($(DOC_NAME)_EXCLUDED_DOC_FILES)),, $(file)))
+
+# autogsdoc variables (do not use or override)
+$(DOC_NAME)_AGSDOC_FILES := $($(DOC_NAME)_DOC_FILES)
 
 # etdocgen variables
-$(DOCUMENT_NAME)_MAIN_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/etoile-documentation-template.html
-$(DOCUMENT_NAME)_MENU_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/menu.html
-$(DOCUMENT_NAME)_EXTERNAL_INDEX_UNIT_FILES += $(PREFIX)/Developer/Services/DocGenerator/TestFiles/class-mapping.plist
-$(DOCUMENT_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
-$(DOCUMENT_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
-$(DOCUMENT_NAME)_README_FILE = $(wildcard $(PROJECT_DIR)/README)
-$(DOCUMENT_NAME)_INSTALL_FILE = $(wildcard $(PROJECT_DIR)/INSTALL)
-$(DOCUMENT_NAME)_NEWS_FILE = $(wildcard $(PROJECT_DIR)/NEWS) 
+$(DOC_NAME)_MAIN_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/etoile-documentation-template.html
+$(DOC_NAME)_MENU_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/menu.html
+$(DOC_NAME)_EXTERNAL_INDEX_UNIT_FILES += $(PREFIX)/Developer/Services/DocGenerator/TestFiles/class-mapping.plist
+$(DOC_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOC_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
+$(DOC_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOC_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
+$(DOC_NAME)_README_FILE ?= $(wildcard $(PROJECT_DIR)/README)
+$(DOC_NAME)_INSTALL_FILE ?= $(wildcard $(PROJECT_DIR)/INSTALL)
+$(DOC_NAME)_NEWS_FILE ?= $(wildcard $(PROJECT_DIR)/NEWS) 
 
 # Some shortcut variables
 DEV_DOC_DIR = $(PREFIX)/Developer/Documentation
-PROJECT_DOC_DIR = $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)
+PROJECT_DOC_DIR = $($(DOC_NAME)_DOCUMENTATION_DIR)
 
-# We pass -Project otherwise the title is DOCUMENT_NAME with the Doc suffix
-$(DOCUMENT_NAME)_AGSDOC_FLAGS = \
+# We pass -Project otherwise the title is DOC_NAME with the Doc suffix
+$(DOC_NAME)_AGSDOC_FLAGS = \
 	-Project $(PROJECT_NAME) \
 	-MakeFrames YES \
-	-DocumentationDirectory $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/GSDoc \
+	-DocumentationDirectory $($(DOC_NAME)_DOCUMENTATION_DIR)/GSDoc \
 	-GenerateParagraphMarkup YES \
 	-Warn NO
+
+.PHONY: doc before-doc gsdocgen etdocgen after-doc debug-doc
 
 # The user-visible target used to build the documentation
 doc: before-doc gsdocgen etdocgen after-doc
 
 # The main target that invokes autogsdoc to output .gsdoc and .html files
 gsdocgen:
-	autogsdoc $($(DOCUMENT_NAME)_AGSDOC_FLAGS) -Files $($(DOCUMENT_NAME)_DOCUMENTATION_DIR)/doc-make-dependencies
+	autogsdoc $($(DOC_NAME)_AGSDOC_FLAGS) $($(DOC_NAME)_AGSDOC_EXTRA_FLAGS) -Files $($(DOC_NAME)_DOCUMENTATION_DIR)/doc-make-dependencies
 
-FLAG_OTHER_SOURCE_DIR = $(if $(strip $($(DOCUMENT_NAME)_OTHER_SOURCE_DIR)),-r $($(DOCUMENT_NAME)_OTHER_SOURCE_DIR),)
+FLAG_OTHER_SOURCE_DIR = $(if $(strip $($(DOC_NAME)_OTHER_SOURCE_DIR)),-r $($(DOC_NAME)_OTHER_SOURCE_DIR),)
 
 etdocgen:
-	etdocgen -n $(PROJECT_NAME) -c $(PROJECT_DOC_DIR)/GSDoc $(FLAG_OTHER_SOURCE_DIR) -t $($(DOCUMENT_NAME)_MAIN_TEMPLATE_FILE) -m $($(DOCUMENT_NAME)_MENU_TEMPLATE_FILE) -e $($(DOCUMENT_NAME)_EXTERNAL_INDEX_UNIT_FILES) -o $(PROJECT_DOC_DIR) $($(DOCUMENT_NAME)_README_FILE) $($(DOCUMENT_NAME)_INSTALL_FILE) $($(DOCUMENT_NAME)_NEWS_FILE)
+	etdocgen -n $(PROJECT_NAME) -c $(PROJECT_DOC_DIR)/GSDoc $(FLAG_OTHER_SOURCE_DIR) -t $($(DOC_NAME)_MAIN_TEMPLATE_FILE) -m $($(DOC_NAME)_MENU_TEMPLATE_FILE) -e $($(DOC_NAME)_EXTERNAL_INDEX_UNIT_FILES) -o $(PROJECT_DOC_DIR) $($(DOC_NAME)_README_FILE) $($(DOC_NAME)_INSTALL_FILE) $($(DOC_NAME)_NEWS_FILE)
 
+# A debugging target useful to print out the documentation.make variables without 
+# any tool invocation
+debug-doc: 
 
 # Build the plist array saved as doc-make-dependencies in before-doc and 
 # passed to autogsdoc with -Files in internal-doc
 comma := ,
 blank := 
 space := $(blank) $(blank)
-$(DOCUMENT_NAME)_AGSDOC_FILES := $(strip $($(DOCUMENT_NAME)_AGSDOC_FILES))
-AGSDOC_FILE_ARRAY := $(subst $(space),$(comma)$(space),($($(DOCUMENT_NAME)_AGSDOC_FILES)))
+$(DOC_NAME)_AGSDOC_FILES := $(strip $($(DOC_NAME)_AGSDOC_FILES))
+AGSDOC_FILE_ARRAY := $(subst $(space),$(comma)$(space),($($(DOC_NAME)_AGSDOC_FILES)))
 
 # Output debug infos if requested
+ifneq ($(debug-doc), no)
+  debug-doc := yes
+endif
+
 ifeq ($(debug-doc), yes)
-$(warning $(DOCUMENT_NAME)_HEADER_DIRS=$($(DOCUMENT_NAME)_HEADER_DIRS))
-$(warning $(DOCUMENT_NAME)_AGSDOC_FLAGS=$($(DOCUMENT_NAME)_AGSDOC_FLAGS))
-$(warning $(DOCUMENT_NAME)_AGSDOC_FILES=$($(DOCUMENT_NAME)_AGSDOC_FILES))
-$(warning AGSDOC_FILE_ARRAY = $(AGSDOC_FILE_ARRAY))
-$(warning DEV_DOC_DIR = $(DEV_DOC_DIR))
-$(warning PROJECT_DOC_DIR = $(PROJECT_DOC_DIR))
+  $(warning $(DOC_NAME)_HEADER_DIRS=$($(DOC_NAME)_HEADER_DIRS))
+  $(warning $(DOC_NAME)_SOURCE_DIRS=$($(DOC_NAME)_SOURCE_DIRS))
+  $(warning $(DOC_NAME)_EXCLUDED_DOC_FILES=$($(DOC_NAME)_EXCLUDED_DOC_FILES))
+  $(warning $(DOC_NAME)_DOC_FILES=$($(DOC_NAME)_DOC_FILES))
+  $(warning $(DOC_NAME)_AGSDOC_FLAGS=$($(DOC_NAME)_AGSDOC_FLAGS))
+  $(warning AGSDOC_FILE_ARRAY = $(AGSDOC_FILE_ARRAY))
+  $(warning DEV_DOC_DIR = $(DEV_DOC_DIR))
+  $(warning PROJECT_DOC_DIR = $(PROJECT_DOC_DIR))
 endif
 
 # Create the Documentation directory and a file that contains the .h and .m file list
