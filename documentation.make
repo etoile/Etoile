@@ -125,7 +125,8 @@ etdocgen:
 
 # A debugging target useful to print out the documentation.make variables without 
 # any tool invocation
-debug-doc: 
+debug-doc:
+	export debug-doc=yes 
 
 # Build the plist array saved as doc-make-dependencies in before-doc and 
 # passed to autogsdoc with -Files in internal-doc
@@ -134,11 +135,6 @@ blank :=
 space := $(blank) $(blank)
 $(DOC_NAME)_AGSDOC_FILES := $(strip $($(DOC_NAME)_AGSDOC_FILES))
 AGSDOC_FILE_ARRAY := $(subst $(space),$(comma)$(space),($($(DOC_NAME)_AGSDOC_FILES)))
-
-# Output debug infos if requested
-ifneq ($(debug-doc), no)
-  debug-doc := yes
-endif
 
 ifeq ($(debug-doc), yes)
   $(warning $(DOC_NAME)_HEADER_DIRS=$($(DOC_NAME)_HEADER_DIRS))
