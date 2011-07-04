@@ -112,15 +112,15 @@ $(DOC_NAME)_AGSDOC_FLAGS = \
 .PHONY: doc before-doc gsdocgen etdocgen after-doc debug-doc
 
 # The user-visible target used to build the documentation
-doc: before-doc gsdocgen etdocgen after-doc
+doc: before-doc gsdoc etdoc after-doc
 
 # The main target that invokes autogsdoc to output .gsdoc and .html files
-gsdocgen:
+gsdoc:
 	autogsdoc $($(DOC_NAME)_AGSDOC_FLAGS) $($(DOC_NAME)_AGSDOC_EXTRA_FLAGS) -Files $($(DOC_NAME)_DOCUMENTATION_DIR)/doc-make-dependencies
 
 FLAG_OTHER_SOURCE_DIR = $(if $(strip $($(DOC_NAME)_OTHER_SOURCE_DIR)),-r $($(DOC_NAME)_OTHER_SOURCE_DIR),)
 
-etdocgen:
+etdoc:
 	etdocgen -n $(PROJECT_NAME) -c $(PROJECT_DOC_DIR)/GSDoc $(FLAG_OTHER_SOURCE_DIR) -t $($(DOC_NAME)_MAIN_TEMPLATE_FILE) -m $($(DOC_NAME)_MENU_TEMPLATE_FILE) -e $($(DOC_NAME)_EXTERNAL_INDEX_UNIT_FILES) -o $(PROJECT_DOC_DIR) $($(DOC_NAME)_README_FILE) $($(DOC_NAME)_INSTALL_FILE) $($(DOC_NAME)_NEWS_FILE)
 
 # A debugging target useful to print out the documentation.make variables without 
@@ -149,6 +149,7 @@ endif
 
 # Create the Documentation directory and a file that contains the .h and .m file list
 before-doc:
+	$(ECHO_NOTHING) \
 	if [ ! -d $(PROJECT_DOC_DIR) ];  then \
 		mkdir $(PROJECT_DOC_DIR); \
 	fi; \
@@ -161,11 +162,17 @@ before-doc:
 	if [ ! -e $_includes ];  then \
 		ln -s $(PREFIX)/Developer/Services/DocGenerator/Templates/_includes _includes; \
 	fi; \
-	echo "$(AGSDOC_FILE_ARRAY)" > $(PROJECT_DOC_DIR)/doc-make-dependencies
+	echo "$(AGSDOC_FILE_ARRAY)" > $(PROJECT_DOC_DIR)/doc-make-dependencies \
+	$(END_ECHO)
 
-# Export the generated doc to Developer/Documentation and recreate the index.html there
+# Create the project doc index.html
+# Export the generated doc to Developer/Documentation and recreate the index.html 
+# that enumerates the documented projects
 after-doc:
 	$(ECHO_NOTHING) \
+	if [ -f $(PROJECT_DOC_DIR)/README.html ];  then \
+		ln -s ./README.html $(PROJECT_DOC_DIR)/index.html; \
+	fi; \
 	if [ ! -d $(DEV_DOC_DIR) ]; then \
 		mkdir $(DEV_DOC_DIR); \
 	fi; \
