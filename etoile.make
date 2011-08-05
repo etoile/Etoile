@@ -83,12 +83,23 @@ define create-local-header-dir
   fi;
 endef 
 
+define collect-headers-in-subdirs
+	for headerDir in $(OTHER_HEADER_DIRS); do \
+		for header in `ls -1 $$headerDir/*.h`; do \
+			if [ ! -e Headers/`basename $$header` ]; then \
+				ln -s ../$$header Headers; \
+			fi; \
+		done; \
+	done;
+endef
+
 before-all::
 	$(ECHO_NOTHING) \
 	echo ""; \
 	if [ "$(PRINT_PROJECT_NAME)" != "NO" ]; then \
 	  echo "Build Project: $(PROJECT_NAME)"; \
 	  echo ""; \
+	$(collect-headers-in-subdirs) \
 	$(create-local-header-dir) \
 	fi; \
 	if [ ! -d $(BUILD_DIR) ]; then \
@@ -197,10 +208,19 @@ define remove-exported-framework
   fi;
 endef
 
+define remove-collected-headers
+	for header in `ls -1 Headers/*.h`; do \
+		if [ -L $$header ]; then \
+			rm $$header; \
+		fi; \
+	done;
+endef
+
 after-clean::
 	$(ECHO_NOTHING) \
 	echo ""; \
 	$(check-variables) \
+	$(remove-collected-headers) \
 	$(remove-local-header-dir) \
 	$(remove-exported-headers) \
 	$(remove-exported-library-files) \
