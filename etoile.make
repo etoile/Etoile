@@ -303,7 +303,7 @@ export LD_LIBRARY_PATH := $(BUILD_DIR):$(LD_LIBRARY_PATH)
 ifeq ($(CC), clang)
 export LANG_FLAGS ?= -fobjc-nonfragile-abi -fblocks
 endif
-export ERROR_FLAG ?= -Werror 
+#export ERROR_FLAG ?= -Werror 
 # We pass -Wno-unused parameter for Clang which behaves as if -Wunused-parameter 
 # was present even when we pass -Wno-unused
 export WARNING_FLAGS ?= -Wno-import -Wno-unused-parameter -Wno-unused -Wno-implicit
