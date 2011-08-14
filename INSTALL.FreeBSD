@@ -1,17 +1,91 @@
-FreeBSD INSTALL
-==============
+Installing Étoilé on FreeBSD
+============================
 
-This is a starting point for making FreeBSD installation notes.
+First, install subversion, if it isn't already installed.  You'll need this to actually get the code.
 
-FreeBSD 7.0 Release
--------------------
+With FreeBSD 9, the system libobjc is gone.  This makes life easier, because we can't accidentally use the wrong one.  Both clang and GCC are installed, and the version of clang should be recent enough to use for everything.  With FreeBSD 10, GCC will be gone.
 
-Add "proc /proc procfs rw 0 0" to /etc/fstab
+If you are using FreeBSD 8, then install LLVM/clang from source (see llvm.org for instructions).  
 
-LLVM, GNUstep, Etoile dependencies:
-	sudo pkg_add -r ffmpeg flex gcc libxml2 libxslt libffi 
-	openssl jpeg tiff libungif png freetype libX11 cairo 
-	libXft libXmu dbus hal startup-notification libXcursor 
-	xscreensaver g++ poppler oniguruma lemon libgmp 
-	postgresql83-server gmake taglib mpeg4ip
+Installing GNUstep
+------------------
 
+Make a directory to use for building all of the GNUstep stuff:
+
+	$ mkdir gs
+	$ cd gs
+
+First we need to build and install the Objective-C runtime.  This has to be done before installing GNUstep Make.
+
+	$ svn co svn://svn.gna.org/svn/gnustep/libs/libobjc2/trunk libobjc
+	$ cd libobjc
+
+We're going to build with the simple Makefile, rather than with the GNUmakefile.  This will use the system C/C++ compilers, which are still gcc/g++ on FreeBSD 9, so we need to specify clang.
+
+	$ CC=clang CXX=clang++ make
+	$ sudo make install
+
+For the rest, we need to use GNUstep Make, which requires GNU make.  Install the gmake package if it isn't already installed.  First we need GNUstep Make.  Unfortunately, GNUstep Make does not follow the 'sane defaults' philosophy, so we need to specify a huge number of additional options when configuring it:
+
+	$ svn co svn+ssh://theraven@svn.gna.org/svn/gnustep/tools/make/trunk make
+	$ cd make
+	$ ./configure --prefix=/ --enable-objc-nonfragile-abi --enable-native-objc-exceptions --with-layout=gnustep --enable-debug-by-default CC=clang CXX=clang++
+
+Note that I used --prefix=/.  This gives you a clean GNUstep install, with /Local and /System directories, but it is only sensible if you have a single system partition.  If you have a small / and a large /usr, then you would be better off using /usr/GNUstep or similar.  When I do this, I then add symbolic links, so /Local -> /usr/local/GNUstep/Local, but that's optional.
+
+I used --enable-debug-by-default so that everything is compiled in debug mode in the future.  
+
+	$ sudo -E gmake install
+
+Note that now we use gmake instead of make.  Most GNUstep things require GNUstep make.  If you forget to use it and use make, you'll get some errors.  With the GNUstep layout, you need to source the GNUstep.sh file.  This will do it now and make sure it's done every time you log in:
+
+	$ . /System/Library/Makefiles/GNUstep.sh
+	$ echo . /System/Library/Makefiles/GNUstep.sh >> ~/.profile
+
+Now we need to install the GNUstep Base library.  This provides the Foundation framework.  You need to make sure that you have *libffi* and *libxml2* installed from ports for this to work.  You should also install *icu*.  This is not technically required, but lots of stuff in -base won't work properly without it.
+
+Base doesn't use the CC and CXX options we set for -make, for some reason.
+
+	$ svn co svn://svn.gna.org/svn/gnustep/libs/base/trunk base
+	$ cd base
+	$ ./configure --disable-mixedabi CC=clang CXX=clang++ 
+	$ gmake -j 8 && sudo -E gmake install
+
+The -j8 here is for parallel building.  If you don't have a multicore machine, feel free to reduce this.  The --disable-mixedabi flag is optional.  If you use it, then it assumes that everything will be built using the non-fragile ABI (a safe assumption for Étoilé, since LanguageKit requires it) and avoids some indirection and padding every class with a spare class.  This makes the code slightly smaller and faster, but breaks compatibility with code compiled with the legacy ABI (including everything compiled with GCC).
+
+Now we can install GNUstep-gui (AppKit).  This requires a few libraries to handle images, so make sure you install these ports: *jpeg*, *tiff*, *png*.  For spell checking, install *aspell*.  For speech synthesis, install *flite*.
+
+	$ svn co svn://svn.gna.org/svn/gnustep/libs/gui/trunk gui
+	$ cd gui
+	$ gmake -j 8 && sudo -E gmake install
+
+-gui is only half of the puzzle.  It uses the GNUstep back library to handle all of the windowing-system-specific details.  Here you'll need the *libXt* and *cairo* ports
+
+	$ svn co svn://svn.gna.org/svn/gnustep/libs/back/trunk back
+	$ cd back
+	$ gmake -j 8 && sudo -E gmake install
+
+You should now have a working GNUstep install and you can start with installing Étoilé.  
+
+Installing Étoilé
+-----------------
+
+First, you need to make sure that all of the Étoilé dependencies are satisfied.  
+
+
+LanguageKit: llvm, clang (unfortunately, you can't use the one in the base system, because it doesn't export all of the required headers)
+PopplerKit: *poppler*
+CoreObject: *postgresql-server*, *postgresql-client*
+LanguageKit: *gmp*
+OgreKit: *oniguruma5*
+MediaKit (not currently enabled in the default build, but should be soon): *ffmpeg*
+Azalea: *libXft*
+etoile_system: *dbus*
+Corner: *libXScrnSaver*
+DocGenerator: *graphviz*
+
+Now, you should just be able to check out Étoilé from subversion and build it:
+
+	$ svn://svn.gna.org/svn/etoile/trunk/Etoile
+	$ cd Etoile
+	$ gmake && sudo -E gmake install
