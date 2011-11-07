@@ -309,6 +309,14 @@ endif
 export WARNING_FLAGS ?= -Wno-import -Wno-unused-parameter -Wno-unused -Wno-implicit
 export ADDITIONAL_OBJCFLAGS += $(LANG_FLAGS) $(ERROR_FLAG) $(WARNING_FLAGS)
 
+# Work around flags unsupported by Clang but still used by gnustep-make
+ifeq ($(CC), clang)
+# For -fexec-charset
+export ADDITIONAL_OBJCFLAGS += -Qunused-arguments
+# For -shared-libgcc
+export ADDITIONAL_LDFLAGS += -Qunused-arguments
+endif
+
 # Ugly hack until gnustep-make is improved to export a variable that lets us know 
 # which libobjc version we compile against.
 # If a libobjc.so.4 (v2) is installed in a path listed below, but you use another 
