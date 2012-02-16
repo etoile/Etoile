@@ -124,7 +124,7 @@ To build GNUstep with Clang:
 	# Or . /System/Library/Makefiles/GNUstep.sh if --prefix=/ was passed
 
 A good choice is to put this last line above in ~/.bashrc or similar. This way you won't have to source GNUstep.sh every time you want to compile GNUstep or Etoile stuff.
-@
+
 **Note**: If you use a C shell, you should source GNUstep.csh rather than GNUstep.sh.
 
 - Build libobjc2
