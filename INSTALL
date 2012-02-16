@@ -6,9 +6,9 @@
 Required software
 -----------------
 
- * LLVM/Clang 2.9 or higher is required to build Etoile
+ * LLVM/Clang 3.0 or higher is required to build Etoile
 
-LLVM/Clang 2.9 binaries can be downloaded [here](http://llvm.org/releases/download.html#2.9).
+LLVM/Clang 3.0 binaries can be downloaded [here](http://llvm.org/releases/download.html#3.0).
 
 GCC is not supported, although it can be used to build some modules within the repository (especially GCC 4.6 which supports the main Objective-C 2 features). 
 
@@ -16,10 +16,10 @@ You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
  * gnustep-make 2.6.1 (2.6 is broken with Clang)
- * gnustep-base 1.22
- * gnustep-gui 0.20
- * gnustep-back 0.20
- * libobjc2 1.4 (other ObjC runtimes such as the one packaged with GCC won't work)
+ * gnustep-base 1.24
+ * gnustep-gui 0.22
+ * gnustep-back 0.22
+ * libobjc2 1.6 (other ObjC runtimes such as the one packaged with GCC won't work)
 
 **Warning:** libobjc2 is also known as the GNUstep runtime. It's a new runtime unrelated to the GCC libobjc and the old GNUstep libobjc (which was a just patched GCC libobjc). Linux distributions such as Debian or Ubuntu include packages named libobjc2 or libobjc3 which are completely unrelated to the GNUstep runtime, and are just recent GCC libobjc packaged under a new name. More details in [GNUstep Objective-2 FAQ](http://wiki.gnustep.org/index.php/ObjC2_FAQ)
 
@@ -124,7 +124,7 @@ To build GNUstep with Clang:
 	# Or . /System/Library/Makefiles/GNUstep.sh if --prefix=/ was passed
 
 A good choice is to put this last line above in ~/.bashrc or similar. This way you won't have to source GNUstep.sh every time you want to compile GNUstep or Etoile stuff.
-
+@
 **Note**: If you use a C shell, you should source GNUstep.csh rather than GNUstep.sh.
 
 - Build libobjc2
@@ -146,7 +146,7 @@ strip=yes ensures you can debug ObjC code without stepping inside runtime functi
 
 	cd core/base
 	# For Linux e.g. Ubuntu, --with-ffi-include is usually required
-	./configure [--with-ffi-include=/usr/include/`gcc -dumpmachine`]
+	./configure --disable-mixedabi --disable-unicodeconstants [--with-ffi-include=/usr/include/`gcc -dumpmachine`]
 	make && sudo -E make install
 
 	cd core/gui
