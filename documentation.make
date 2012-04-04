@@ -88,6 +88,8 @@ $(DOC_NAME)_DOC_FILES := $(foreach file, $($(DOC_NAME)_DOC_FILES), \
 $(DOC_NAME)_AGSDOC_FILES := $($(DOC_NAME)_DOC_FILES)
 
 # etdocgen variables
+$(DOC_NAME)_IMAGES_DIR ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/images
+$(DOC_NAME)_WEBINCLUDES_DIR ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/_includes
 $(DOC_NAME)_MAIN_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/etoile-documentation-template.html
 $(DOC_NAME)_MENU_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/menu.html
 $(DOC_NAME)_EXTERNAL_INDEX_UNIT_FILES += $(PREFIX)/Developer/Services/DocGenerator/TestFiles/class-mapping.plist
@@ -157,10 +159,10 @@ before-doc:
 		mkdir $(PROJECT_DOC_DIR)/GSDoc; \
 	fi; \
 	if [ ! -e images ];  then \
-		ln -s $(PREFIX)/Developer/Services/DocGenerator/Templates/images images; \
+		ln -s $($(DOC_NAME)_IMAGES_DIR) images; \
 	fi; \
 	if [ ! -e $_includes ];  then \
-		ln -s $(PREFIX)/Developer/Services/DocGenerator/Templates/_includes _includes; \
+		ln -s $($(DOC_NAME)_WEBINCLUDES_DIR) _includes; \
 	fi; \
 	echo "$(AGSDOC_FILE_ARRAY)" > $(PROJECT_DOC_DIR)/doc-make-dependencies \
 	$(END_ECHO)
