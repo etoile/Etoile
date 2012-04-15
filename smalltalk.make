@@ -17,7 +17,7 @@ SMALLTALK_BITCODE_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(SMALLTALK_B
 
 # The bitcode location for MsgSendSmallInt can be overridden, e.g. if
 # LanguageKit was installed into a different installation domain.
-LK_SMALL_INT_BITCODE?= ${GNUSTEP_SYSTEM_ROOT}/Library/Frameworks/LanguageKitCodeGen.framework/Versions/Current/Resources/MsgSendSmallInt.bc  
+LK_SMALL_INT_BITCODE?= $(firstword $(wildcard $(foreach framework_dir,${GNUSTEP_FRAMEWORK_DIRS},$(framework_dir)/LanguageKitCodeGen.framework/Versions/Current/Resources/MsgSendSmallInt.bc))) 
 
 $(GNUSTEP_OBJ_INSTANCE_DIR)/%.st.bc : %.st
 	@echo "Compiling Pragmatic Smalltalk file $< to LLVM bitcode ..."
