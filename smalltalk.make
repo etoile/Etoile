@@ -29,7 +29,7 @@ ifneq ($(strip $(SMALLTALK_BITCODE_FILES)),)
 # building a framework or an executable
 $(GNUSTEP_OBJ_INSTANCE_DIR)/smalltalk.bc : $(SMALLTALK_BITCODE_FILES)
 	@echo "Linking LLVM bitcodes from Pragmatic Smalltalk files ..."
-	@llvm-ld -link-as-library -disable-internalize -o $@ $(SMALLTALK_BITCODE_FILES) $(LK_SMALL_INT_BITCODE)
+	@llvm-link -enable-objc-arc-opts -o $@ $(SMALLTALK_BITCODE_FILES) $(LK_SMALL_INT_BITCODE)
 
 # TODO: Load opts for the GNUstep runtime
 $(GNUSTEP_OBJ_INSTANCE_DIR)/smalltalk.opt.bc : $(GNUSTEP_OBJ_INSTANCE_DIR)/smalltalk.bc
