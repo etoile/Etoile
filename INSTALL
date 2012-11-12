@@ -132,7 +132,11 @@ A good choice is to put this last line above in ~/.bashrc or similar. This way y
 strip=yes ensures you can debug ObjC code without stepping inside runtime functions each time a message is sent.
 
 	cd ../../libobjc2
-	make debug=no && sudo -E make strip=yes install
+	make debug=no && sudo sh -c ". $GNUSTEP_MAKEFILES/GNUstep.sh; make strip=yes install" 
+
+The special sudo invocation for 'make install' is required if sudo uses a secure PATH variable. You can also edit /etc/sudoers using visudo and comment out the line 'Defaults secure_path=XXX'. Which means 'sudo -E' now inherits the PATH variable as customized by GNUstep.sh and the gnustep-config tool can be found (by the libobjc2 GNUmakefile). If the secure path support has been disabled, the line below can be used to build and install libobjc2:
+
+	make debug=no && sudo -E make install
 
 **Warning**: The new runtime is the GNU runtime version 2 but its library version is libobjc.so.4. libobjc.so.2 corresponds to the GNU runtime version 1 which comes with GCC and is also available at http://svn.gna.org/svn/gnustep/dev-libs/libobjc.
 
