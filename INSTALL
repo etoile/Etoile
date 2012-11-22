@@ -176,8 +176,10 @@ this topic.
 
 Steps to build:
 
-	make
+	make # Don't use -j flag
 	[sudo] [-E] make install
+
+**Warning:** If *Smalltalk.h not found* is reported, then it is usually because the -j flag was passed to GNUstep Make. GNUstep Make sometimes doesn't track the dependencies correctly for compiling SmalltalkParser.
 
 
 Uninstall Etoile
