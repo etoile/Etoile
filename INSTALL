@@ -15,11 +15,11 @@ GCC is not supported, although it can be used to build some modules within the r
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
- * gnustep-make 2.6.1 (2.6 is broken with Clang)
- * gnustep-base 1.24
- * gnustep-gui 0.22
- * gnustep-back 0.22
- * libobjc2 1.6 (other ObjC runtimes such as the one packaged with GCC won't work)
+ * gnustep-make trunk (2.6.1 should work but doesn't enable native exceptions for the non-fragile ABI)
+ * gnustep-base trunk (1.24 doesn't support the non-fragile ABI required by CoreObject)
+ * gnustep-gui trunk
+ * gnustep-back trunk
+ * libobjc2 trunk (other ObjC runtimes such as the one packaged with GCC won't work and libobjc2 1.6.1 has several important issues)
 
 **Warning:** libobjc2 is also known as the GNUstep runtime. It's a new runtime unrelated to the GCC libobjc and the old GNUstep libobjc (which was a just patched GCC libobjc). Linux distributions such as Debian or Ubuntu include packages named libobjc2 or libobjc3 which are completely unrelated to the GNUstep runtime, and are just recent GCC libobjc packaged under a new name. More details in [GNUstep Objective-2 FAQ](http://wiki.gnustep.org/index.php/ObjC2_FAQ)
 
