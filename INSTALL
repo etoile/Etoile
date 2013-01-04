@@ -6,9 +6,9 @@
 Required software
 -----------------
 
- * LLVM/Clang 3.1 or higher is required to build Etoile
+ * LLVM/Clang 3.2 or higher is required to build Etoile
 
-LLVM/Clang 3.1 binaries can be downloaded [here](http://llvm.org/releases/download.html#3.1).
+LLVM/Clang 3.2 binaries can be downloaded [here](http://llvm.org/releases/download.html#3.2).
 
 GCC is not supported, although it can be used to build some modules within the repository (especially GCC 4.6 which supports the main Objective-C 2 features). 
 
