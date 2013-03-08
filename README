@@ -53,6 +53,54 @@ Here are modules with supported Cocoa compatibility:
     * UnitKit
 
 
+Maintained Modules
+------------------
+
+The Etoile repository contains a large number of modules, but some of them have 
+no maintainer or might be deprecated in the near future. Here is a list of the 
+maintained modules, for which a long term support can be expected:
+
+	* BuildScripts
+
+	* Frameworks/CoreObject
+
+	* Developer/Services/DocGenerator
+
+	* Frameworks/EtoileFoundation
+
+	* Frameworks/EtoileText
+
+	* Frameworks/EtoileUI
+
+	* Languages/LanguageKit
+
+	* Developer/Services/ModelBuilder
+
+	* Services/Private/ObjectManager
+
+	* Languages/ParserKit
+
+	* Services/Private/ProjectManager
+
+	* Frameworks/ScriptKit
+
+	* Languages/Smalltalk
+
+	* Services/Private/System
+
+	* Frameworks/SystemConfig
+
+	* Languages/SourceCodeKit
+
+	* Frameworks/UnitKit
+
+	* Services/Private/Worktable
+
+	* Frameworks/XMPPKit
+
+The Etoile core frameworks are UnitKit, EtoileFoundation, CoreObject, LanguageKit, 
+SourceCodeKit, XMPPKit and EtoileUI.
+
 
 Developer notes
 ===============
