@@ -6,9 +6,11 @@
 Required software
 -----------------
 
- * LLVM/Clang 3.2 or higher is required to build Etoile
+ * LLVM/Clang 3.2 or 3.3 is required to build Etoile
 
-LLVM/Clang 3.2 binaries can be downloaded [here](http://llvm.org/releases/download.html#3.2).
+LLVM/Clang 3.3 binaries can be downloaded [here](http://llvm.org/releases/download.html#3.3).
+
+**Warning:** For now, LLVM/Clang trunk is not supported for LanguageKit.
 
 GCC is not supported, although it can be used to build some modules within the repository (especially GCC 4.6 which supports the main Objective-C 2 features). 
 
@@ -19,7 +21,7 @@ compile and use Etoile. The core packages are, at a minimum:
  * gnustep-base trunk (1.24 doesn't support the non-fragile ABI required by CoreObject)
  * gnustep-gui trunk
  * gnustep-back trunk
- * libobjc2 trunk (other ObjC runtimes such as the one packaged with GCC won't work and libobjc2 1.6.1 has several important issues)
+ * libobjc2 1.7 or higher (other ObjC runtimes such as the one packaged with GCC won't work and libobjc2 1.6.1 has several important issues)
 
 **Warning:** libobjc2 is also known as the GNUstep runtime. It's a new runtime unrelated to the GCC libobjc and the old GNUstep libobjc (which was a just patched GCC libobjc). Linux distributions such as Debian or Ubuntu include packages named libobjc2 or libobjc3 which are completely unrelated to the GNUstep runtime, and are just recent GCC libobjc packaged under a new name. More details in [GNUstep Objective-2 FAQ](http://wiki.gnustep.org/index.php/ObjC2_FAQ)
 
