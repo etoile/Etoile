@@ -9,7 +9,7 @@ Time to time, we indicate dependencies which could be omitted because another pa
 
 We only install hal and omit libhal-dev because we access HAL through D-Bus (we don't link HAL library).
 
-Discount (markdown tool) isn't available as a package on Ubuntu, you should compile and install the version downloadable at <http://www.pell.portland.or.us/~orc/Code/discount/>
+Discount (markdown tool) isn't available as a package on Ubuntu prior to 12.04 (Precise Pangolin), in this case you should compile and install the version downloadable at <http://www.pell.portland.or.us/~orc/Code/discount/>
 
 The LLVM version (llvm-dev) that is currently required by Smalltalk and LanguageKit is either the latest release or the developement trunk version of the LLVM repository (See INSTALL). In other words, the LLVM versions packaged in Ubuntu are always too old to be used. You can download the latest LLVM release from <http://llvm.org>
 
@@ -17,10 +17,8 @@ The LLVM version (llvm-dev) that is currently required by Smalltalk and Language
 Main Dependencies
 =================
 
-Ubuntu 10.4 to 11.10 (Lucid Lynx to Oneiric Ocelot)
----------------------------------------------------
-
-libmp4v2-dev is missing in Oneiric Ocelot (but will be back in the next Ubuntu release), in the meantime you can get libmp4v2 source from <http://code.google.com/p/mp4v2/>.
+Ubuntu 10.4 to 13.04 (Lucid Lynx to Raring Ringtail)
+----------------------------------------------------
 
  * gobjc
  * libxml2-dev
@@ -50,52 +48,10 @@ libmp4v2-dev is missing in Oneiric Ocelot (but will be back in the next Ubuntu r
  * libonig-dev
  * lemon
  * libgmp3-dev
- * postgresql
- * libpq-dev
+ * libsqlite3-dev
  * libavcodec-dev
  * libavformat-dev
  * libtagc0-dev
- * libmp4v2-dev (multiverse)
- * libgraphviz-dev
-
-
-Ubuntu 8.04 (Hardy Heron)
--------------------------
-
-Both make and openssl should be now installed by default.
-libffi is now available in Ubuntu (better to use it rather than ffcall).
-
- * gobjc-4.2
- * libxml2-dev
- * libxslt1-dev
- * libffi4-dev
- * libssl-dev
- * libgnutls-dev
- * libjpeg62-dev
- * libtiff4-dev
- * libpng12-dev
- * libgif-dev
- * libfreetype6-dev
- * libx11-dev
- * libcairo2-dev
- * libxft-dev
- * libxmu-dev
- * dbus
- * libdbus-1-dev
- * hal
- * libstartup-notification0-dev
- * libxcursor-dev
- * libxss-dev
- * xscreensaver
- * g++
- * libpoppler-dev
- * libonig-dev
- * lemon
- * libgmp3-dev
- * postgresql
- * libpq-dev
- * libavcodec-dev
- * libavformat-dev
- * libtagc0-dev
- * libmp4v2-dev (multiverse)
+ * libmp4v2-dev (multiverse package in Lucid Lynx)
+ * discount (available in Precise Pangolin or later)
  * libgraphviz-dev

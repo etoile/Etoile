@@ -130,7 +130,7 @@ related dependencies, you should read about GNUstep install on
 
     * From Freedesktop: D-Bus, HAL, startup-notification, Xcursor
 
-    * libpng, zlib, OniGuruma, XScreenSaver, LLVM, GMP, Lemon, PostgreSQL, 
+    * libpng, zlib, OniGuruma, XScreenSaver, LLVM, GMP, Lemon, SQLite, 
       OSS, FFmpeg (libavcodec and libavformat), TagLib, MPEG4IP (libmp4v2), 
       Graphviz, Discount
 
