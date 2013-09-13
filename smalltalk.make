@@ -5,7 +5,7 @@
 # Created: April 2012
 #
 # Written by Niels Grewe <niels.grewe@halbordnung.de>
-
+# Modify by Mathieu Suen <mathieu@nebu.li>
 
 # Place smalltalk files into the GNUSTEP_OBJ_INSTANCE_DIR, eventhough
 # gnustep-make hides the variable from us.
@@ -14,6 +14,8 @@ GNUSTEP_OBJ_INSTANCE_DIR=$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).obj
 endif
 SMALLTALK_BITCODES = $(patsubst %.st,%.st.bc,$($(GNUSTEP_INSTANCE)_SMALLTALK_FILES))
 SMALLTALK_BITCODE_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(SMALLTALK_BITCODES))
+SMALLTALK_BUNDLE_LIB = $(patsubst %.bundle,%.bundle/Resources/out.so,$($(GNUSTEP_INSTANCE)_SMALLTALK_BUNDLES))
+SMALLTALK_BUNDLE_LIB_FILES = $(addprefix $(GNUSTEP_BUILD_DIR)/,$(SMALLTALK_BUNDLE_LIB))
 
 # The bitcode location for MsgSendSmallInt can be overridden, e.g. if
 # LanguageKit was installed into a different installation domain.
@@ -22,6 +24,10 @@ LK_SMALL_INT_BITCODE?= $(firstword $(wildcard $(foreach framework_dir,${GNUSTEP_
 $(GNUSTEP_OBJ_INSTANCE_DIR)/%.st.bc : %.st
 	@echo "Compiling Pragmatic Smalltalk file $< to LLVM bitcode ..."
 	@edlc -c -f $< -o $@
+
+$(GNUSTEP_BUILD_DIR)/%.bundle/Resources/out.so : %.bundle
+	@echo "Compiling smalltalk bundle $< to shared library ..."
+	@edlc -c -b $< -o $@
 
 ifneq ($(strip $(SMALLTALK_BITCODE_FILES)),)
 
@@ -46,10 +52,10 @@ $(GNUSTEP_OBJ_INSTANCE_DIR)/smalltalk.opt.o : $(GNUSTEP_OBJ_INSTANCE_DIR)/smallt
 
 # Adding smalltalk.opt.o to _OBJ_FILES connects the above targets to the build.
 $(GNUSTEP_INSTANCE)_OBJ_FILES+=$(GNUSTEP_OBJ_INSTANCE_DIR)/smalltalk.opt.o 
-
 # Statically compiled Smalltalk code needs the LK runtime and the Smalltalk
 # support libraries.
 $(GNUSTEP_INSTANCE)_LDFLAGS+=-lLanguageKitRuntime -lSmalltalkSupport
 endif
 
+$(GNUSTEP_INSTANCE)_OBJ_FILES+=$(SMALLTALK_BUNDLE_LIB_FILES)
 
