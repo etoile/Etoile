@@ -27,9 +27,11 @@ $(GNUSTEP_OBJ_INSTANCE_DIR)/%.st.bc : %.st
 	@echo "Compiling Pragmatic Smalltalk file $< to LLVM bitcode ..."
 	@edlc -c -f $< -o $@
 
-$(GNUSTEP_BUILD_DIR)/obj/%.bundle/Resources/out.so : %.bundle | $(SMALLTALK_BUNDLE_LIB_DIR)
+$(GNUSTEP_BUILD_DIR)/obj/%.bundle/Resources/out.so : %.bundle
 	@echo "Compiling smalltalk bundle $< to shared library ..."
 	@edlc -c -b $< -o $@
+
+$(SMALLTALK_BUNDLE_LIB_FILES) :: $(SMALLTALK_BUNDLE_ST_FILES) | $(SMALLTALK_BUNDLE_LIB_DIR)
 
 $(SMALLTALK_BUNDLE_LIB_DIR) :
 	@mkdir -p $@
