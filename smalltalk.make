@@ -14,20 +14,25 @@ GNUSTEP_OBJ_INSTANCE_DIR=$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).obj
 endif
 SMALLTALK_BITCODES = $(patsubst %.st,%.st.bc,$($(GNUSTEP_INSTANCE)_SMALLTALK_FILES))
 SMALLTALK_BITCODE_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(SMALLTALK_BITCODES))
-SMALLTALK_BUNDLE_LIB = $(patsubst %.bundle,%.bundle/Resources/out.so,$($(GNUSTEP_INSTANCE)_SMALLTALK_BUNDLES))
-SMALLTALK_BUNDLE_LIB_FILES = $(addprefix $(GNUSTEP_BUILD_DIR)/,$(SMALLTALK_BUNDLE_LIB))
+SMALLTALK_BUNDLE_LIB = $(patsubst %.bundle,obj/%.bundle/Resources/,$($(GNUSTEP_INSTANCE)_SMALLTALK_BUNDLES))
+SMALLTALK_BUNDLE_LIB_DIR = $(addprefix $(GNUSTEP_BUILD_DIR)/,$(SMALLTALK_BUNDLE_LIB))
+SMALLTALK_BUNDLE_LIB_FILES = $(addsuffix out.so,$(SMALLTALK_BUNDLE_LIB_DIR))
 
 # The bitcode location for MsgSendSmallInt can be overridden, e.g. if
 # LanguageKit was installed into a different installation domain.
 LK_SMALL_INT_BITCODE?= $(firstword $(wildcard $(foreach framework_dir,${GNUSTEP_FRAMEWORK_DIRS},$(framework_dir)/LanguageKitCodeGen.framework/Versions/Current/Resources/MsgSendSmallInt.bc))) 
 
+
 $(GNUSTEP_OBJ_INSTANCE_DIR)/%.st.bc : %.st
 	@echo "Compiling Pragmatic Smalltalk file $< to LLVM bitcode ..."
 	@edlc -c -f $< -o $@
 
-$(GNUSTEP_BUILD_DIR)/%.bundle/Resources/out.so : %.bundle
+$(GNUSTEP_BUILD_DIR)/obj/%.bundle/Resources/out.so : %.bundle | $(SMALLTALK_BUNDLE_LIB_DIR)
 	@echo "Compiling smalltalk bundle $< to shared library ..."
 	@edlc -c -b $< -o $@
+
+$(SMALLTALK_BUNDLE_LIB_DIR) :
+	@mkdir -p $@
 
 ifneq ($(strip $(SMALLTALK_BITCODE_FILES)),)
 
