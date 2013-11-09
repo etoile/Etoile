@@ -47,6 +47,7 @@ environment or the whole repository:
  * [LLVM](http://www.llvm.org) (LanguageKit)
  * [Lemon](http://www.hwaci.com/sw/lemon/) (Smalltalk and EScript)
  * [GMP](http://gmplib.org/) (Smalltalk)
+ * [libdispatch](http://nickhutchinson.me/libdispatch/) (CoreObject)
  * [SQLite](http://www.sqlite.org) 3.7 or higher (CoreObject)
  * [libavcodec and libavformat](http://ffmpeg.mplayerhq.hu/) (MediaKit)
  * [OSS](http://www.opensound.com/) (MediaKit)
