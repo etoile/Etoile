@@ -6,7 +6,7 @@
 Required software
 -----------------
 
- * LLVM/Clang 3.2 or 3.3 is required to build Etoile
+ * LLVM/Clang 3.3 is required to build Etoile
 
 LLVM/Clang 3.3 binaries can be downloaded [here](http://llvm.org/releases/download.html#3.3).
 
