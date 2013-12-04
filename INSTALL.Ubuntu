@@ -9,9 +9,20 @@ Time to time, we indicate dependencies which could be omitted because another pa
 
 We only install hal and omit libhal-dev because we access HAL through D-Bus (we don't link HAL library).
 
+Discount Package
+----------------
+
 Discount (markdown tool) isn't available as a package on Ubuntu prior to 12.04 (Precise Pangolin), in this case you should compile and install the version downloadable at <http://www.pell.portland.or.us/~orc/Code/discount/>
 
+
+LLVM and libdispatch Dependencies
+=================================
+
+**Warning:** You must install LLVM and libdispatch dependencies manually (versions packaged in Ubuntu are incompatible with Etoile).
+
 The LLVM version (llvm-dev) that is currently required by Smalltalk and LanguageKit is either the latest release or the developement trunk version of the LLVM repository (See INSTALL). In other words, the LLVM versions packaged in Ubuntu are always too old to be used. You can download the latest LLVM release from <http://llvm.org>
+
+libdispatch packages are not compatible with libobjc2, so build and install the custom version provided by Etoile as explained in INSTALL.
 
 
 Main Dependencies
@@ -20,6 +31,7 @@ Main Dependencies
 Ubuntu 10.4 to 13.04 (Lucid Lynx to Raring Ringtail)
 ----------------------------------------------------
 
+ * cmake
  * gobjc
  * libxml2-dev
  * libxslt1-dev
@@ -49,6 +61,8 @@ Ubuntu 10.4 to 13.04 (Lucid Lynx to Raring Ringtail)
  * lemon
  * libgmp3-dev
  * libsqlite3-dev
+ * libkqueue-dev
+ * libpthread-workqueue-dev
  * libavcodec-dev
  * libavformat-dev
  * libtagc0-dev

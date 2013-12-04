@@ -47,7 +47,7 @@ environment or the whole repository:
  * [LLVM](http://www.llvm.org) (LanguageKit)
  * [Lemon](http://www.hwaci.com/sw/lemon/) (Smalltalk and EScript)
  * [GMP](http://gmplib.org/) (Smalltalk)
- * [libdispatch](http://nickhutchinson.me/libdispatch/) (CoreObject)
+ * [libdispatch](https://libdispatch.macosforge.org/) (CoreObject)
  * [SQLite](http://www.sqlite.org) 3.7 or higher (CoreObject)
  * [libavcodec and libavformat](http://ffmpeg.mplayerhq.hu/) (MediaKit)
  * [OSS](http://www.opensound.com/) (MediaKit)
@@ -55,6 +55,10 @@ environment or the whole repository:
  * [libmp4v2](http://www.mpeg4ip.net/) (Melodie)
  * [Graphviz](http://www.graphviz.org/) (DocGenerator)
  * [Discount](http://www.pell.portland.or.us/~orc/Code/discount/) (DocGenerator)
+
+For libdispatch, packaged versions on Linux or FreeBSD are not compatible with libobjc2. For now, we maintain our own libdispatch. To install it, check out and follow the libdispatch-objc2/INSTALL document (you must install libobjc2 first, see Build and Install GNUstep section):
+
+	svn co http://svn.gna.org/svn/etoile/trunk/Dependencies/libdispatch-objc2
 
 If you are using LLVM/Clang and GNUstep packages rather than building them manually, 
 you can jump directly to the section **Build and Install Etoile**.
@@ -151,15 +155,15 @@ The special sudo invocation for 'make install' is required if sudo uses a secure
 
 - Build and Install GNUstep Base, Gui and Back:
 
-	cd core/base
+	cd ../../core/base
 	# For Linux e.g. Ubuntu, --with-ffi-include is usually required
 	./configure --disable-mixedabi --disable-unicodeconstants [--with-ffi-include=/usr/include/`gcc -dumpmachine`]
 	make && sudo -E make install
 
-	cd core/gui
+	cd ../../core/gui
 	./configure && make && sudo -E make install
 
-	cd core/back
+	cd ../../core/back
 	./configure && make && sudo -E make install
 
 You can check you are really using Clang and not GCC with 'make messages=yes' instead of 'make' when building a GNUstep module.
@@ -177,6 +181,15 @@ Build and Install Etoile
 GNUstep.csh in your shell, read the GNUstep documentation to know more about 
 this topic.
 
+- Build and Install libdispatch (requires CMake 2.8 or higher)
+
+	svn co http://svn.gna.org/svn/etoile/trunk/Dependencies/libdispatch-objc2
+	# For more detailed instructions, see libdispatch-lobjc2/INSTALL
+	mkdir libdispatch/Build
+	cd libdispatch/Build
+	cmake -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
+	make && sudo -E make install
+
 Steps to build:
 
 	make # Don't use -j flag
@@ -187,6 +200,7 @@ Steps to build:
 
 Uninstall Etoile
 ----------------
+
 Steps to uninstall:
 
 	[sudo] [-E] make uninstall
@@ -194,6 +208,7 @@ Steps to uninstall:
 
 Custom Build and Install
 ------------------------
+
 In order to build and install the whole project (with the exception of
 developers tools like UnitKit), you can just type in the root directory (named
 Etoile):
@@ -227,6 +242,7 @@ check' but this is not implemented currently.
 
 Generate Documentation
 ----------------------
+
 To build both the code and the documentation at the same time in any directory, type: 
 
 	make documentation=yes
@@ -251,5 +267,6 @@ which also discards the code previously built.
 
 Trouble
 -------
+
 Give us feedback! Tell us what you like; tell us what you think
 could be better. Send bug reports and patches to <etoile-track@gna.org>.
