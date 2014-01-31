@@ -13,7 +13,7 @@
 # $(DOC_NAME)_DOC_FILES = .h and .m paths relative to $(PROJECT_DIR)
 # $(DOC_NAME)_EXCLUDED_DOC_FILES = .h and .m paths relative to $(PROJECT_DIR)
 # $(DOC_NAME)_AGSDOC_EXTRA_FLAGS = autogsdoc options
-# where $(DOC_NAME)is your project name suffixed with 'Doc'.
+# where $(DOC_NAME) is your project name suffixed with 'Doc'.
 
 # For example, to get a more verbose output:
 # EtoileFoundationDoc_AGSDOC_EXTRA_FLAGS = -Verbose YES
@@ -66,13 +66,19 @@ DOC_NAME ?= $(PROJECT_NAME)Doc
 $(DOC_NAME)_DOCUMENTATION_DIR ?= $(PROJECT_DIR)/Documentation
 $(DOC_NAME)_HEADER_DIRS ?= $(PROJECT_DIR)/Headers $(PROJECT_DIR)
 $(DOC_NAME)_SOURCE_DIRS ?= $(PROJECT_DIR)/Source $(PROJECT_DIR)
+
 # OTHER_SOURCE_DIR is deprecated 
 $(DOC_NAME)_OTHER_SOURCE_DIR =
+
+# Some shortcut variables
+DEV_DOC_DIR = $(PREFIX)/Developer/Documentation
+PROJECT_DOC_DIR = $($(DOC_NAME)_DOCUMENTATION_DIR)
 
 # Expand relative paths in variables which allows it
 ifdef $(DOC_NAME)_DOC_FILES
   $(DOC_NAME)_DOC_FILES := $(foreach file, $($(DOC_NAME)_DOC_FILES), $(PROJECT_DIR)/$(wildcard $(file)))
 endif
+
 $(DOC_NAME)_EXCLUDED_DOC_FILES := $(foreach file, $($(DOC_NAME)_EXCLUDED_DOC_FILES), $(PROJECT_DIR)/$(wildcard $(file)))
 
 # Collect .h and .m paths in header and source directories
@@ -85,7 +91,8 @@ $(DOC_NAME)_DOC_FILES := $(foreach file, $($(DOC_NAME)_DOC_FILES), \
   $(if $(findstring $(file), $($(DOC_NAME)_EXCLUDED_DOC_FILES)),, $(file)))
 
 # autogsdoc variables (do not use or override)
-$(DOC_NAME)_AGSDOC_FILES := $($(DOC_NAME)_DOC_FILES)
+# Without rewriting, $(DOC_NAME)_AGSDOC_FILES := $($(DOC_NAME)_DOC_FILES)
+$(DOC_NAME)_AGSDOC_FILES := $(foreach file, $($(DOC_NAME)_DOC_FILES), $(PROJECT_DOC_DIR)/ObjC/$(notdir $(file)))
 
 # etdocgen variables
 $(DOC_NAME)_IMAGES_DIR ?= $(PREFIX)/Developer/Services/DocGenerator/Templates/images
@@ -99,9 +106,9 @@ $(DOC_NAME)_README_FILE ?= $(wildcard $(PROJECT_DIR)/README)
 $(DOC_NAME)_INSTALL_FILE ?= $(wildcard $(PROJECT_DIR)/INSTALL)
 $(DOC_NAME)_NEWS_FILE ?= $(wildcard $(PROJECT_DIR)/NEWS) 
 
-# Some shortcut variables
-DEV_DOC_DIR = $(PREFIX)/Developer/Documentation
-PROJECT_DOC_DIR = $($(DOC_NAME)_DOCUMENTATION_DIR)
+# An optional rewriter for supporting Objective-C properties (objcrewriter.io is 
+# bundled in DocGenerator but must be installed manually in the shell PATH)
+OBJC_REWRITER = objcrewriter.io
 
 # We pass -Project otherwise the title is DOC_NAME with the Doc suffix
 $(DOC_NAME)_AGSDOC_FLAGS = \
@@ -111,10 +118,21 @@ $(DOC_NAME)_AGSDOC_FLAGS = \
 	-GenerateParagraphMarkup YES \
 	-Warn NO
 
-.PHONY: doc before-doc gsdocgen etdocgen after-doc debug-doc
+.PHONY: doc before-doc objcrewriter gsdocgen etdocgen after-doc debug-doc
 
 # The user-visible target used to build the documentation
-doc: before-doc gsdoc etdoc after-doc
+doc: before-doc objcrewriter gsdoc etdoc after-doc
+
+objcrewriter:
+	$(ECHO_NOTHING) \
+	if command -v $(OBJC_REWRITER) >/dev/null 2>&1; then \
+		cd $(PROJECT_DOC_DIR)/ObjC && $(OBJC_REWRITER); \
+	else \
+		echo ""; \
+		echo "WARNING: Found no $(OBJC_REWRITER) installed. Objective-C properties won't be rewritten into accessors."; \
+		echo ""; \
+	fi \
+	$(END_ECHO)
 
 # The main target that invokes autogsdoc to output .gsdoc and .html files
 gsdoc:
@@ -138,6 +156,8 @@ space := $(blank) $(blank)
 $(DOC_NAME)_AGSDOC_FILES := $(strip $($(DOC_NAME)_AGSDOC_FILES))
 AGSDOC_FILE_ARRAY := $(subst $(space),$(comma)$(space),($($(DOC_NAME)_AGSDOC_FILES)))
 
+PROJECT_DOC_FILES := $(strip $($(DOC_NAME)_DOC_FILES))
+
 ifeq ($(debug-doc), yes)
   $(warning $(DOC_NAME)_HEADER_DIRS=$($(DOC_NAME)_HEADER_DIRS))
   $(warning $(DOC_NAME)_SOURCE_DIRS=$($(DOC_NAME)_SOURCE_DIRS))
@@ -158,12 +178,21 @@ before-doc:
 	if [ ! -d $(PROJECT_DOC_DIR)/GSDoc ];  then \
 		mkdir $(PROJECT_DOC_DIR)/GSDoc; \
 	fi; \
+	if [ ! -d $(PROJECT_DOC_DIR)/ObjC ];  then \
+		mkdir $(PROJECT_DOC_DIR)/ObjC; \
+	fi; \
 	if [ ! -e images ];  then \
 		ln -s $($(DOC_NAME)_IMAGES_DIR) images; \
 	fi; \
 	if [ ! -e $_includes ];  then \
 		ln -s $($(DOC_NAME)_WEBINCLUDES_DIR) _includes; \
 	fi; \
+	rm -f $(PROJECT_DOC_DIR)/ObjC/*.h; \
+	rm -f $(PROJECT_DOC_DIR)/ObjC/*.m; \
+	rm -f $(PROJECT_DOC_DIR)/ObjC/*.c; \
+	for sourceFile in $(PROJECT_DOC_FILES); do \
+		cp $$sourceFile $(PROJECT_DOC_DIR)/ObjC; \
+	done; \
 	echo "$(AGSDOC_FILE_ARRAY)" > $(PROJECT_DOC_DIR)/doc-make-dependencies \
 	$(END_ECHO)
 
@@ -202,6 +231,9 @@ clean-doc:
 	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.gsdoc \
 	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.html \
 	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.plist \
+	rm -f $(PROJECT_DOC_DIR)/ObjC/*.h \
+	rm -f $(PROJECT_DOC_DIR)/ObjC/*.m \
+	rm -f $(PROJECT_DOC_DIR)/ObjC/*.c \
 	rm -f $(PROJECT_DOC_DIR)/*.igsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.gsdoc \
 	rm -f $(PROJECT_DOC_DIR)/*.html \
