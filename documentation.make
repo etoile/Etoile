@@ -86,6 +86,10 @@ ifdef $(DOC_NAME)_INSTALL_FILES
   $(DOC_NAME)_INSTALL_FILES := $(foreach file, $($(DOC_NAME)_INSTALL_FILES), $(PROJECT_DIR)/$(wildcard $(file)))
 endif
 
+ifdef $(DOC_NAME)_NEWS_FILE
+  $(DOC_NAME)_NEWS_FILE := $(foreach file, $($(DOC_NAME)_NEWS_FILE), $(PROJECT_DIR)/$(wildcard $(file)))
+endif
+
 # Collect .h and .m paths in header and source directories
 $(DOC_NAME)_DOC_FILES += $(foreach headerdir, $($(DOC_NAME)_HEADER_DIRS), $(wildcard $(headerdir)/*.h))
 $(DOC_NAME)_DOC_FILES += $(foreach sourcedir, $($(DOC_NAME)_SOURCE_DIRS), $(wildcard $(sourcedir)/[^T]?[^e]?[^s]?[^t]?*.m))
