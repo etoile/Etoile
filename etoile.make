@@ -73,24 +73,33 @@ BUILD_DIR = $(PREFIX)/Build
 
 # We create a temporary header directory to support #import <PROJECT_NAME/header.h>
 # from within the library/framework project itself.
+#
+# If the project contains subprojects, the headers are all collected in the 
+# same directory in the main project.
+#
+# For embedded projects such as EtoileFoundation/EtoileXML, resetting 
+# PROJECT_DIR is enough to create a collected header directory just for the 
+# embedded project e.g. EtoileFoundation/EtoileXML/EtoileXML
+export COLLECTED_HEADER_DIR = $(PROJECT_DIR)/$(PROJECT_NAME)
+
 define create-local-header-dir
-  if [ ! -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
-    if [ -d $(PROJECT_DIR)/Headers ]; then \
-      $(LN_S) $(PROJECT_DIR)/Headers $(PROJECT_DIR)/$(PROJECT_NAME); \
-    elif [ -n "$(LIBRARY_NAME)" -o -n "$(FRAMEWORK_NAME)" ]; then \
-      $(LN_S) $(PROJECT_DIR) $(PROJECT_DIR)/$(PROJECT_NAME); \
+  if [ ! -d $(COLLECTED_HEADER_DIR) ]; then \
+    if [ -n "$(LIBRARY_NAME)" -o -n "$(FRAMEWORK_NAME)" ]; then \
+      mkdir $(COLLECTED_HEADER_DIR); \
     fi; \
   fi;
 endef 
 
 define collect-headers-in-subdirs
-	for headerDir in $(OTHER_HEADER_DIRS); do \
-		for header in `ls -1 $$headerDir/*.h`; do \
-			if [ ! -e Headers/`basename $$header` ]; then \
-				ln -s ../$$header Headers; \
-			fi; \
-		done; \
-	done;
+  if [ -d $(COLLECTED_HEADER_DIR) ]; then \
+    for headerDir in "." "Headers" $(OTHER_HEADER_DIRS); do \
+      for header in `ls -1 $$headerDir/*.h 2> /dev/null`; do \
+        if [ ! -e $(COLLECTED_HEADER_DIR)/`basename $$header` ]; then \
+          ln -s $(CURDIR)/$$header $(COLLECTED_HEADER_DIR); \
+        fi; \
+      done; \
+    done; \
+  fi;
 endef
 
 before-all::
@@ -99,8 +108,8 @@ before-all::
 	if [ "$(PRINT_PROJECT_NAME)" != "NO" ]; then \
 	  echo "Build Project: $(PROJECT_NAME)"; \
 	  echo ""; \
-	$(collect-headers-in-subdirs) \
 	$(create-local-header-dir) \
+	$(collect-headers-in-subdirs) \
 	fi; \
 	if [ ! -d $(BUILD_DIR) ]; then \
 	  mkdir $(BUILD_DIR); \
@@ -158,8 +167,8 @@ endef
 # framework or a library in a module and we have to export the related headers.
 define export-headers
   if [ "$${exported}" = "yes" ]; then \
-    if [ -d $(PROJECT_DIR)/Headers -a ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
-      $(LN_S) $(PROJECT_DIR)/Headers $(BUILD_DIR)/$(PROJECT_NAME); \
+    if [ -d $(COLLECTED_HEADER_DIR) -a ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
+      $(LN_S) $(COLLECTED_HEADER_DIR) $(BUILD_DIR)/$(PROJECT_NAME); \
     elif [ ! -L $(BUILD_DIR)/$(PROJECT_NAME) ]; then \
       $(LN_S) $(PROJECT_DIR) $(BUILD_DIR)/$(PROJECT_NAME); \
     fi; \
@@ -182,8 +191,11 @@ after-all::
 	$(END_ECHO)
 
 define remove-local-header-dir
-  if [ -L $(PROJECT_DIR)/$(PROJECT_NAME) ]; then \
-    rm -f $(PROJECT_DIR)/$(PROJECT_NAME); \
+  if [ -L $(COLLECTED_HEADER_DIR) ]; then \
+    rm -f $(COLLECTED_HEADER_DIR); \
+  elif [ -d $(COLLECTED_HEADER_DIR) ]; then \
+    rm -f $(COLLECTED_HEADER_DIR)/*.h; \
+    rmdir $(COLLECTED_HEADER_DIR); \
   fi;
 endef
 
@@ -208,19 +220,10 @@ define remove-exported-framework
   fi;
 endef
 
-define remove-collected-headers
-	for header in `ls -1 Headers/*.h`; do \
-		if [ -L $$header ]; then \
-			rm $$header; \
-		fi; \
-	done;
-endef
-
 after-clean::
 	$(ECHO_NOTHING) \
 	echo ""; \
 	$(check-variables) \
-	$(remove-collected-headers) \
 	$(remove-local-header-dir) \
 	$(remove-exported-headers) \
 	$(remove-exported-library-files) \
@@ -270,6 +273,9 @@ export ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR) -I$(PROJECT_DI
 
 # For Clang, see http://llvm.org/bugs/show_bug.cgi?id=7005
 export ADDITIONAL_INCLUDE_DIRS += -I/usr/include/`gcc -dumpmachine`/
+
+# For libdispatch-objc2, see Dependencies/libdispatch-objc2/INSTALL
+export ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_LOCAL_ROOT)/Library/Headers/dispatch
 
 # If we have dependency, we need to link its resulting object file. Well, we
 # have to look for a library or a framework most of time.
