@@ -174,6 +174,8 @@ ifeq ($(debug-doc), yes)
   $(warning AGSDOC_FILE_ARRAY = $(AGSDOC_FILE_ARRAY))
   $(warning DEV_DOC_DIR = $(DEV_DOC_DIR))
   $(warning PROJECT_DOC_DIR = $(PROJECT_DOC_DIR))
+  $(warning PROJECT_DIR = $(PROJECT_DIR))
+  $(warning PREFIX = $(PREFIX))
 endif
 
 # Create the Documentation directory and a file that contains the .h and .m file list
@@ -189,10 +191,10 @@ before-doc:
 		mkdir $(PROJECT_DOC_DIR)/ObjC; \
 	fi; \
 	if [ ! -e images ];  then \
-		ln -s $($(DOC_NAME)_IMAGES_DIR) images; \
+		ln -s $($(DOC_NAME)_IMAGES_DIR) $(PROJECT_DOC_DIR)/../images; \
 	fi; \
 	if [ ! -e $_includes ];  then \
-		ln -s $($(DOC_NAME)_WEBINCLUDES_DIR) _includes; \
+		ln -s $($(DOC_NAME)_WEBINCLUDES_DIR) $(PROJECT_DOC_DIR)/../_includes; \
 	fi; \
 	rm -f $(PROJECT_DOC_DIR)/ObjC/*.h; \
 	rm -f $(PROJECT_DOC_DIR)/ObjC/*.m; \
@@ -231,8 +233,8 @@ after-doc:
 # We also remove stuff previously copied to Developer/Documentation 
 clean-doc:
 	$(ECHO_NOTHING) \
-	rm _includes \
-	rm images \
+	rm $(PROJECT_DOC_DIR)../_includes \
+	rm $(PROJECT_DOC_DIR)/../images \
 	rm -f $(PROJECT_DOC_DIR)/doc-make-dependencies \
 	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.igsdoc \
 	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.gsdoc \
