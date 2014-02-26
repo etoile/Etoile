@@ -190,10 +190,10 @@ before-doc:
 	if [ ! -d $(PROJECT_DOC_DIR)/ObjC ];  then \
 		mkdir $(PROJECT_DOC_DIR)/ObjC; \
 	fi; \
-	if [ ! -e images ];  then \
+	if [ ! -e $(PROJECT_DOC_DIR)/../images ];  then \
 		ln -s $($(DOC_NAME)_IMAGES_DIR) $(PROJECT_DOC_DIR)/../images; \
 	fi; \
-	if [ ! -e $_includes ];  then \
+	if [ ! -e $(PROJECT_DOC_DIR)/../_includes ];  then \
 		ln -s $($(DOC_NAME)_WEBINCLUDES_DIR) $(PROJECT_DOC_DIR)/../_includes; \
 	fi; \
 	rm -f $(PROJECT_DOC_DIR)/ObjC/*.h; \
@@ -233,7 +233,7 @@ after-doc:
 # We also remove stuff previously copied to Developer/Documentation 
 clean-doc:
 	$(ECHO_NOTHING) \
-	rm $(PROJECT_DOC_DIR)../_includes \
+	rm $(PROJECT_DOC_DIR)/../_includes \
 	rm $(PROJECT_DOC_DIR)/../images \
 	rm -f $(PROJECT_DOC_DIR)/doc-make-dependencies \
 	rm -f $(PROJECT_DOC_DIR)/GSDoc/*.igsdoc \
