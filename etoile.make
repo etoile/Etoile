@@ -269,7 +269,7 @@ check::
 #
 # By default we also look for headers in PROJECT_DIR and PROJECT_DIR/Headers, 
 # this conveniency avoids to take care of such flags over and over.
-export ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR) -I$(PROJECT_DIR)/Headers 
+export ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR) -I$(COLLECTED_HEADER_DIR) -I$(PROJECT_DIR)/Headers 
 
 # For Clang, see http://llvm.org/bugs/show_bug.cgi?id=7005
 export ADDITIONAL_INCLUDE_DIRS += -I/usr/include/`gcc -dumpmachine`/
