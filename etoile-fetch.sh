@@ -22,11 +22,6 @@ etoilefetch() {
 	fi
 }
 
-# Bootstrap
-
-etoilefetch Bootstrap EtoileFoundation
-etoilefetch Bootstrap UnitKit
-
 # Languages
 
 etoilefetch . Languages
@@ -69,3 +64,9 @@ etoilefetch Developer/Services ModelBuilder
 # Dependencies
 
 etoilefetch Dependencies libdispatch-objc2
+
+# Bootstrap
+
+ln -s ../Frameworks/UnitKit Bootstrap
+ln -s ../Frameworks/EtoileFoundation Bootstrap
+
