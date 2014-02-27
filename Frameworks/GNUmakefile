@@ -9,15 +9,15 @@ PACKAGE_NAME = Frameworks
 
 -include ../modules.make
 
-export addresseskit ?= yes
+export addresseskit ?= no
 export bookmarkkit ?= no
 export coreobject ?= yes
 export etoilefoundation ?= yes
 export etoileui ?= yes
-export etoileserialize ?= yes
+export etoileserialize ?= no
 export iconkit ?= yes
 export mediakit ?= no
-export ogrekit ?= yes
+export ogrekit ?= no
 export opmlkit ?= no
 export panekit ?= no
 export popplerkit ?= no
@@ -26,8 +26,8 @@ export unitkit ?= yes
 export rsskit ?= no
 export menukit ?= no
 export systemconfig ?= yes
-export xmppkit ?= yes
-export xwindowserverkit ?= yes
+export xmppkit ?= no
+export xwindowserverkit ?= no
 
 #
 # Projects (listed by dependency order, then alphabetical order)

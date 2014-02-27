@@ -9,14 +9,14 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 -include ../../modules.make
 
-export azbackground ?= yes
-export azswitch ?= yes
+export azbackground ?= no
+export azswitch ?= no
 export busy ?= no
-export corner ?= yes
-export idle ?= yes
+export corner ?= no
+export idle ?= no
 export login ?= no
-export menuserver ?= yes
-export scriptservices ?= yes
+export menuserver ?= no
+export scriptservices ?= no
 export system ?= yes
 
 #

@@ -9,16 +9,16 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 -include ../../modules.make
 
-export addressmanager ?= yes
+export addressmanager ?= no
 export dictionaryreader ?= yes
 export fontmanager ?= yes
 export hardware ?= no
 export lookandbehavior ?= no
 export melodie ?= no
-export microblog ?= yes
-export stepchat ?= yes
+export microblog ?= no
+export stepchat ?= no
 export termx ?= no
-export typewriter ?= yes
+export typewriter ?= no
 export vindaloo ?= no
 
 #
