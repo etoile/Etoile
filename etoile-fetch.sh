@@ -9,16 +9,22 @@ etoilefetch() {
 	if [[ ! -e "$DESTDIR" ]]; then
 		echo "Error, $DESTDIR is missing. Skipping $REPONAME"	
 	else
+		PREVIOUSDIR=$PWD
+
 		cd "$DESTDIR"
 	
 		if [[ ! -e "$REPONAME" ]]; then
 			echo "Repo $REPONAME is not present. Fetching it..."
 			git clone http://github.com/etoile/$REPONAME
 		else
-			echo "Have $REPONAME"
+			echo "Have $REPONAME. Pulling changes..."
+			cd $REPONAME
+			# TODO: Support 'pull' or 'fetch' and passing options
+			git pull
+			cd ..
 		fi
 	
-		cd "$OLDPWD"
+		cd $PREVIOUSDIR
 	fi
 }
 
@@ -67,6 +73,6 @@ etoilefetch Dependencies libdispatch-objc2
 
 # Bootstrap
 
-ln -s ../Frameworks/UnitKit Bootstrap
-ln -s ../Frameworks/EtoileFoundation Bootstrap
+ln -sfn ../Frameworks/UnitKit Bootstrap
+ln -sfn ../Frameworks/EtoileFoundation Bootstrap
 
