@@ -224,7 +224,9 @@ after-doc:
 			cp $$file $(DEV_DOC_DIR)/$(PROJECT_NAME); \
 		fi; \
 	done; \
-	cd $(DEV_DOC_DIR) && $(DEV_DOC_DIR)/create-project-doc-index.sh > $(DEV_DOC_DIR)/index.html; \
+	if [ -x $(DEV_DOC_DIR)/create-project-doc-index.sh ]; then \
+		cd $(DEV_DOC_DIR) && $(DEV_DOC_DIR)/create-project-doc-index.sh > $(DEV_DOC_DIR)/index.html; \
+	fi; \
 	$(END_ECHO)
 
 # The user-visible target to remove generated content
