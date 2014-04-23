@@ -48,9 +48,9 @@
 #
 # Presentation, Installation and Revision History sections in the default menu 
 # represent respectively the Markdown files below if not overriden:
-# $(DOC_NAME)_README_FILE = ./README
+# $(DOC_NAME)_README_FILES = ./README
 # $(DOC_NAME)_INSTALL_FILES = ./INSTALL
-# $(DOC_NAME)_NEWS_FILE = ./NEWS
+# $(DOC_NAME)_NEWS_FILES = ./NEWS
 #
 # This makefile creates a Documentation directory inside your project unless 
 # you override $(DOC_NAME)_DOCUMENTATION_DIR.
@@ -78,16 +78,16 @@ endif
 
 $(DOC_NAME)_EXCLUDED_DOC_FILES := $(foreach file, $($(DOC_NAME)_EXCLUDED_DOC_FILES), $(PROJECT_DIR)/$(wildcard $(file)))
 
-ifdef $(DOC_NAME)_README_FILE
-  $(DOC_NAME)_README_FILE := $(foreach file, $($(DOC_NAME)_README_FILE), $(PROJECT_DIR)/$(wildcard $(file)))
+ifdef $(DOC_NAME)_README_FILES
+  $(DOC_NAME)_README_FILES := $(foreach file, $($(DOC_NAME)_README_FILES), $(PROJECT_DIR)/$(wildcard $(file)))
 endif
 
 ifdef $(DOC_NAME)_INSTALL_FILES
   $(DOC_NAME)_INSTALL_FILES := $(foreach file, $($(DOC_NAME)_INSTALL_FILES), $(PROJECT_DIR)/$(wildcard $(file)))
 endif
 
-ifdef $(DOC_NAME)_NEWS_FILE
-  $(DOC_NAME)_NEWS_FILE := $(foreach file, $($(DOC_NAME)_NEWS_FILE), $(PROJECT_DIR)/$(wildcard $(file)))
+ifdef $(DOC_NAME)_NEWS_FILES
+  $(DOC_NAME)_NEWS_FILES := $(foreach file, $($(DOC_NAME)_NEWS_FILES), $(PROJECT_DIR)/$(wildcard $(file)))
 endif
 
 # Collect .h and .m paths in header and source directories
@@ -111,9 +111,9 @@ $(DOC_NAME)_MENU_TEMPLATE_FILE ?= $(PREFIX)/Developer/Services/DocGenerator/Temp
 $(DOC_NAME)_EXTERNAL_INDEX_UNIT_FILES += $(PREFIX)/Developer/Services/DocGenerator/TestFiles/class-mapping.plist
 $(DOC_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOC_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
 $(DOC_NAME)_GSDOC_FILES += $(foreach sourcedir, $($(DOC_NAME)_DOCUMENTATION_DIR)/GSDoc, $(wildcard $(sourcedir)/*.gsdoc))
-$(DOC_NAME)_README_FILE ?= $(wildcard $(PROJECT_DIR)/README)
+$(DOC_NAME)_README_FILES ?= $(wildcard $(PROJECT_DIR)/README*)
 $(DOC_NAME)_INSTALL_FILES ?= $(wildcard $(PROJECT_DIR)/INSTALL*)
-$(DOC_NAME)_NEWS_FILE ?= $(wildcard $(PROJECT_DIR)/NEWS) 
+$(DOC_NAME)_NEWS_FILES ?= $(wildcard $(PROJECT_DIR)/NEWS*) 
 
 # An optional rewriter for supporting Objective-C properties (objcrewriter.io is 
 # bundled in DocGenerator but must be installed manually in the shell PATH)
@@ -148,7 +148,7 @@ gsdoc:
 	autogsdoc $($(DOC_NAME)_AGSDOC_FLAGS) $($(DOC_NAME)_AGSDOC_EXTRA_FLAGS) -Files $($(DOC_NAME)_DOCUMENTATION_DIR)/doc-make-dependencies
 
 etdoc:
-	etdocgen -n $(PROJECT_NAME) -c $(PROJECT_DOC_DIR)/GSDoc -t $($(DOC_NAME)_MAIN_TEMPLATE_FILE) -m $($(DOC_NAME)_MENU_TEMPLATE_FILE) -e $($(DOC_NAME)_EXTERNAL_INDEX_UNIT_FILES) -o $(PROJECT_DOC_DIR) $($(DOC_NAME)_README_FILE) $($(DOC_NAME)_INSTALL_FILES) $($(DOC_NAME)_NEWS_FILE)
+	etdocgen -n $(PROJECT_NAME) -c $(PROJECT_DOC_DIR)/GSDoc -t $($(DOC_NAME)_MAIN_TEMPLATE_FILE) -m $($(DOC_NAME)_MENU_TEMPLATE_FILE) -e $($(DOC_NAME)_EXTERNAL_INDEX_UNIT_FILES) -o $(PROJECT_DOC_DIR) $($(DOC_NAME)_README_FILES) $($(DOC_NAME)_INSTALL_FILES) $($(DOC_NAME)_NEWS_FILES)
 
 # A debugging target useful to print out the documentation.make variables without 
 # any tool invocation
