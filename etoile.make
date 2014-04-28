@@ -108,9 +108,9 @@ before-all::
 	if [ "$(PRINT_PROJECT_NAME)" != "NO" ]; then \
 	  echo "Build Project: $(PROJECT_NAME)"; \
 	  echo ""; \
+	fi; \
 	$(create-local-header-dir) \
 	$(collect-headers-in-subdirs) \
-	fi; \
 	if [ ! -d $(BUILD_DIR) ]; then \
 	  mkdir $(BUILD_DIR); \
 	fi; \
