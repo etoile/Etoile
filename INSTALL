@@ -17,11 +17,11 @@ GCC is not supported, although it can be used to build some modules within the r
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
- * gnustep-make trunk (2.6.1 should work but doesn't enable native exceptions for the non-fragile ABI)
- * gnustep-base trunk (1.24 doesn't support the non-fragile ABI required by CoreObject)
+ * gnustep-make 2.6.6 or higher
+ * gnustep-base trunk (1.24.6 misses some APIs required by CoreObject)
  * gnustep-gui trunk
  * gnustep-back trunk
- * libobjc2 1.7 or higher (other ObjC runtimes such as the one packaged with GCC won't work and libobjc2 1.6.1 has several important issues)
+ * libobjc2 trunk (other ObjC runtimes such as the one packaged with GCC won't work, and libobjc2 1.7 has buggy weak reference support)
 
 **Warning:** libobjc2 is also known as the GNUstep runtime. It's a new runtime unrelated to the GCC libobjc and the old GNUstep libobjc (which was a just patched GCC libobjc). Linux distributions such as Debian or Ubuntu include packages named libobjc2 or libobjc3 which are completely unrelated to the GNUstep runtime, and are just recent GCC libobjc packaged under a new name. More details in [GNUstep Objective-2 FAQ](http://wiki.gnustep.org/index.php/ObjC2_FAQ)
 
@@ -58,7 +58,7 @@ environment or the whole repository:
 
 For libdispatch, packaged versions on Linux or FreeBSD are not compatible with libobjc2. For now, we maintain our own libdispatch. To install it, check out and follow the libdispatch-objc2/INSTALL document (you must install libobjc2 first, see Build and Install GNUstep section):
 
-	svn co http://svn.gna.org/svn/etoile/trunk/Dependencies/libdispatch-objc2
+	git clone https://github.com/etoile/libdispatch-objc2
 
 If you are using LLVM/Clang and GNUstep packages rather than building them manually, 
 you can jump directly to the section **Build and Install Etoile**.
@@ -109,12 +109,6 @@ A good choice is put the two lines above in ~/.bashrc or similar and open a new 
 Build and Install GNUstep
 -------------------------
 
-To build GNUstep with GCC, follow the instructions [here](http://wiki.gnustep.org/index.php/GNUstep_SVN_installation_guide).
-
-You can compile gnustep-back with the Cairo backend by configuring it as follows:
-./configure --enable-graphics=cairo
-
-
 To build GNUstep with Clang:
 
 - Check out GNUstep core modules and libobjc2:
@@ -136,20 +130,25 @@ A good choice is to put this last line above in ~/.bashrc or similar. This way y
 
 - Build libobjc2
 
-strip=yes ensures you can debug ObjC code without stepping inside runtime functions each time a message is sent.
+install/strip ensures you can debug ObjC code without stepping inside runtime functions each time a message is sent.
 
 	cd ../../libobjc2
-	make debug=no && sudo sh -c ". $GNUSTEP_MAKEFILES/GNUstep.sh; make strip=yes install" 
+	mkdir Build
+	cd Build
+	cmake -DCMAKE_CXX_COMPILER=clang++ -DTESTS=FALSE ..
+	make && sudo -E make install/strip 
 
-The special sudo invocation for 'make install' is required if sudo uses a secure PATH variable. You can also edit /etc/sudoers using visudo and comment out the line 'Defaults secure_path=XXX'. Which means 'sudo -E' now inherits the PATH variable as customized by GNUstep.sh and the gnustep-config tool can be found (by the libobjc2 GNUmakefile). If the secure path support has been disabled, the line below can be used to build and install libobjc2:
+A special sudo invocation for 'make install' will be required if sudo uses a secure PATH variable:
 
-	make debug=no && sudo -E make install
+	make && sudo sh -c ". $GNUSTEP_MAKEFILES/GNUstep.sh; make install/strip
+
+You can also edit /etc/sudoers using visudo and comment out the line 'Defaults secure_path=XXX'. Which means 'sudo -E' now inherits the PATH variable as customized by GNUstep.sh and the gnustep-config tool can be found (by the libobjc2 GNUmakefile). If the secure path support has been disabled, 'sudo -E make install' will work as is to install GNUstep and Etoile, in the next instructions.
 
 **Warning**: The new runtime is the GNU runtime version 2 but its library version is libobjc.so.4. libobjc.so.2 corresponds to the GNU runtime version 1 which comes with GCC and is also available at http://svn.gna.org/svn/gnustep/dev-libs/libobjc.
 
 - Install GNUstep Make a second time so it can detect the new ObjC runtime just installed:
 
-	cd ../../core/make
+	cd ../../../core/make
 	./configure --enable-debug-by-default --enable-objc-nonfragile-abi --with-layout=gnustep [--prefix=/]
 	make && sudo -E make install
 
@@ -157,7 +156,7 @@ The special sudo invocation for 'make install' is required if sudo uses a secure
 
 	cd ../../core/base
 	# For Linux e.g. Ubuntu, --with-ffi-include is usually required
-	./configure --disable-mixedabi --disable-unicodeconstants [--with-ffi-include=/usr/include/`gcc -dumpmachine`]
+	./configure --disable-mixedabi [--with-ffi-include=/usr/include/`gcc -dumpmachine`]
 	make && sudo -E make install
 
 	cd ../../core/gui
@@ -183,14 +182,16 @@ this topic.
 
 - Build and Install libdispatch (requires CMake 2.8 or higher)
 
-	svn co http://svn.gna.org/svn/etoile/trunk/Dependencies/libdispatch-objc2
+	cd ../..
+	git clone https://github.com/etoile/libdispatch-objc2
+	cd libdispatch-objc2
 	# For more detailed instructions, see libdispatch-lobjc2/INSTALL
-	mkdir libdispatch/Build
-	cd libdispatch/Build
+	mkdir libdispatch-objc2/Build
+	cd libdispatch-objc2/Build
 	cmake -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
 	make && sudo -E make install
 
-Steps to build:
+- Build and Install Etoile:
 
 	make # Don't use -j flag
 	[sudo] [-E] make install
@@ -200,8 +201,6 @@ Steps to build:
 
 Uninstall Etoile
 ----------------
-
-Steps to uninstall:
 
 	[sudo] [-E] make uninstall
 
@@ -269,4 +268,4 @@ Trouble
 -------
 
 Give us feedback! Tell us what you like; tell us what you think
-could be better. Send bug reports and patches to <etoile-track@gna.org>.
+could be better. Send bug reports and patches to <https://github.com/etoile/Etoile>.
