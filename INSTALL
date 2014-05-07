@@ -184,7 +184,6 @@ this topic.
 
 	cd ../..
 	git clone https://github.com/etoile/libdispatch-objc2
-	cd libdispatch-objc2
 	# For more detailed instructions, see libdispatch-lobjc2/INSTALL
 	mkdir libdispatch-objc2/Build
 	cd libdispatch-objc2/Build
@@ -193,6 +192,7 @@ this topic.
 
 - Build and Install Etoile:
 
+	# Go to the Etoile directory that contains this INSTALL document
 	make # Don't use -j flag
 	[sudo] [-E] make install
 
@@ -202,6 +202,7 @@ this topic.
 Uninstall Etoile
 ----------------
 
+	# Go to the Etoile directory that contains this INSTALL document
 	[sudo] [-E] make uninstall
 
 
