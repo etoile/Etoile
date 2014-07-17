@@ -69,3 +69,16 @@ Ubuntu 10.4 to 13.04 (Lucid Lynx to Raring Ringtail)
  * libmp4v2-dev (multiverse package in Lucid Lynx)
  * discount (available in Precise Pangolin or later)
  * libgraphviz-dev
+
+
+ProjectManager Dependencies
+===========================
+
+Ubuntu 10.4 to 13.04 (Lucid Lynx to Raring Ringtail)
+----------------------------------------------------
+
+* libxcb-damage0-dev
+* libxcb-composite0-dev
+* libxcb-render-util0-dev
+* libxcb-util0-dev (or libxcb-event1-dev in Lucid Lynx)
+
