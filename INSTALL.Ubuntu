@@ -50,7 +50,6 @@ Ubuntu 10.4 to 13.04 (Lucid Lynx to Raring Ringtail)
  * libxmu-dev
  * dbus
  * libdbus-1-dev
- * hal
  * libstartup-notification0-dev
  * libxcursor-dev
  * libxss-dev
