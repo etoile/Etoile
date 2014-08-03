@@ -20,7 +20,7 @@ Manuel Guesdon, Quentin Mathe, Lennart Melzer, Guenther Noack, Nicolas Roard,
 Jesse Ross, Eric Wasylishen,
 
 
-To know more about Étoilé:
+To learn more about Étoilé:
 <http://www.etoile-project.org>
 
 **WARNING**: As it stands now, Étoilé is more or less a development environment and not a desktop environment. We have no working theme since we are still in the process of migrating from our Camaelon theme engine to the new one bundled with GNUstep. User-oriented applications such as Melodie can fail to launch or behave correctly because their development have been put on hold.
@@ -29,7 +29,7 @@ To know more about Étoilé:
 Build and Install
 -----------------
 
-Read [INSTALL](INSTALL.md) document.
+Read the [install](INSTALL.md) documentation.
 
 
 Mac OS X support
