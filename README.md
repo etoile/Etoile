@@ -1,7 +1,7 @@
-Etoile 0.4.2
+Étoilé 0.4.2
 ============
 
-Etoile intends to be an innovative GNUstep based user environnement built from
+Étoilé intends to be an innovative GNUstep based user environnement built from
 the ground up on highly modular and light components with project and document
 orientation in mind, in order to allow users to create their own workflow by
 reshaping or recombining provided Services (aka Applications), Components etc.
@@ -20,16 +20,16 @@ Manuel Guesdon, Quentin Mathe, Lennart Melzer, Guenther Noack, Nicolas Roard,
 Jesse Ross, Eric Wasylishen,
 
 
-To know more about Etoile:
+To know more about Étoilé:
 <http://www.etoile-project.org>
 
-**WARNING**: As it stands now, Etoile is more or less a development environment and not a desktop environment. We have no working theme since we are still in the process of migrating from our Camaelon theme engine to the new one bundled with GNUstep. User-oriented applications such as Melodie can fail to launch or behave correctly because their development have been put on hold.
+**WARNING**: As it stands now, Étoilé is more or less a development environment and not a desktop environment. We have no working theme since we are still in the process of migrating from our Camaelon theme engine to the new one bundled with GNUstep. User-oriented applications such as Melodie can fail to launch or behave correctly because their development have been put on hold.
 
 
 Build and Install
 -----------------
 
-Read INSTALL document.
+Read [INSTALL](INSTALL.md) document.
 
 
 Mac OS X support
@@ -56,7 +56,7 @@ Here are modules with supported Cocoa compatibility:
 Maintained Modules
 ------------------
 
-The Etoile repository contains a large number of modules, but some of them have
+The Étoilé repository contains a large number of modules, but some of them have
 no maintainer or might be deprecated in the near future. Here is a list of the
 maintained modules, for which a long term support can be expected:
 
@@ -100,7 +100,7 @@ Developer notes
 Tests suite
 -----------
 
-UnitKit (bundled with Etoile) is required.
+UnitKit (bundled with Étoilé) is required.
 
 Steps to produce test bundles for every modules which supports it in the
 repository and run tests suites:
@@ -126,11 +126,12 @@ related dependencies, you should read about GNUstep install on
   OSS, FFmpeg (libavcodec and libavformat), TagLib, MPEG4IP (libmp4v2),
   Graphviz, Discount
 
-More details about Etoile dependencies can be found in INSTALL document (in the
+More details about Étoilé dependencies can be found in INSTALL document (in the
 same directory than README one).
 
 
 Contribute
 ----------
 
-Read this link <http://www.etoile-project.org/dev/contribute/>
+Read about [contributing](http://www.etoile-project.org/dev/contribute/) or
+[hacking](HACKING.md) Étoilé.
