@@ -122,17 +122,17 @@ To build GNUstep with Clang:
 - Check out GNUstep core modules and libobjc2:
 
 
-	svn co http://svn.gna.org/svn/gnustep/modules/core
-	svn co http://svn.gna.org/svn/gnustep/libs/libobjc2/trunk libobjc2
+		svn co http://svn.gna.org/svn/gnustep/modules/core
+		svn co http://svn.gna.org/svn/gnustep/libs/libobjc2/trunk libobjc2
 
 - Install GNUstep Make a first time:
 
 
-	cd core/make
-	./configure --enable-debug-by-default --with-layout=gnustep [--prefix=/]
-	make && sudo -E make install
-	. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
-	# Or . /System/Library/Makefiles/GNUstep.sh if --prefix=/ was passed
+		cd core/make
+		./configure --enable-debug-by-default --with-layout=gnustep [--prefix=/]
+		make && sudo -E make install
+		. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+		# Or . /System/Library/Makefiles/GNUstep.sh if --prefix=/ was passed
 
   A good choice is to put this last line above in `~/.bashrc` or similar. This way
   you won't have to source `GNUstep.sh` every time you want to compile GNUstep or
@@ -145,15 +145,15 @@ To build GNUstep with Clang:
   Install/strip ensures you can debug ObjC code without stepping inside runtime functions each time a message is sent.
 
 
-	cd ../../libobjc2
-	mkdir Build
-	cd Build
-	cmake -DCMAKE_CXX_COMPILER=clang++ -DTESTS=FALSE ..
-	make && sudo -E make install/strip
+		cd ../../libobjc2
+		mkdir Build
+		cd Build
+		cmake -DCMAKE_CXX_COMPILER=clang++ -DTESTS=FALSE ..
+		make && sudo -E make install/strip
 
   A special sudo invocation for `make install` will be required if sudo uses a secure `PATH` variable:
 
-	make && sudo sh -c "." $GNUSTEP_MAKEFILES/GNUstep.sh; make install/strip
+		make && sudo sh -c "." $GNUSTEP_MAKEFILES/GNUstep.sh; make install/strip
 
   You can also edit `/etc/sudoers` using visudo and comment out the line `Defaults secure_path=XXX`. Which means `sudo -E` now inherits the `PATH` variable as customized by `GNUstep.sh` and the gnustep-config tool can be found (by the libobjc2 GNUmakefile). If the secure path support has been disabled, `sudo -E make install` will work as is to install GNUstep and Etoile, in the next instructions.
 
@@ -162,17 +162,17 @@ To build GNUstep with Clang:
 - Install GNUstep Make a second time so it can detect the new ObjC runtime just installed:
 
 
-	cd ../../../core/make
-	./configure --enable-debug-by-default --enable-objc-nonfragile-abi --with-layout=gnustep [--prefix=/]
-	make && sudo -E make install
+		cd ../../../core/make
+		./configure --enable-debug-by-default --enable-objc-nonfragile-abi --with-layout=gnustep [--prefix=/]
+		make && sudo -E make install
 
 - Build and Install GNUstep Base, Gui and Back:
 
 
-	cd ../../core/base
-	# For Linux e.g. Ubuntu, --with-ffi-include is usually required
-	./configure --disable-mixedabi [--with-ffi-include=/usr/include/`gcc -dumpmachine`]
-    make && sudo -E make install
+		cd ../../core/base
+		# For Linux e.g. Ubuntu, --with-ffi-include is usually required
+		./configure --disable-mixedabi [--with-ffi-include=/usr/include/`gcc -dumpmachine`]
+		make && sudo -E make install
 
 	cd ../../core/gui
 	./configure && make && sudo -E make install
@@ -197,21 +197,21 @@ this topic.
 - Build and Install libdispatch (requires CMake 2.8 or higher)
 
 
-	cd ../..
-	git clone https://github.com/etoile/libdispatch-objc2
-	# For more detailed instructions, see libdispatch-lobjc2/INSTALL
-	mkdir libdispatch-objc2/Build
-	cd libdispatch-objc2/Build
-	cmake -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
-	make && sudo -E make install
+		cd ../..
+		git clone https://github.com/etoile/libdispatch-objc2
+		# For more detailed instructions, see libdispatch-lobjc2/INSTALL
+		mkdir libdispatch-objc2/Build
+		cd libdispatch-objc2/Build
+		cmake -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release ..
+		make && sudo -E make install
 
 - Build and Install Etoile:
 
-Go to the Etoile directory that contains this INSTALL document
+  Go to the Etoile directory that contains this INSTALL document
 
 
-	make # Don't use -j flag
-	[sudo] [-E] make install
+		make # Don't use -j flag
+		[sudo] [-E] make install
 
   **Warning:** If *Smalltalk.h not found* is reported, then it is usually because the `-j`flag was passed to GNUstep Make. GNUstep Make sometimes doesn't track the dependencies correctly for compiling SmalltalkParser.
 
