@@ -85,7 +85,7 @@ Build LLVM and Clang
 
 - Build both projects but don't install them
 
-It's a good idea to build LLVM in parallel, so use `-j` if you can
+  It's a good idea to build LLVM in parallel, so use `-j` if you can
 
 
 		cd .. # Back to llvm directory
