@@ -79,17 +79,17 @@ Build LLVM and Clang
 - First check out the projects
 
 
-	svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm
-	cd llvm/tools
-	svn co http://llvm.org/svn/llvm-project/cfe/trunk clang
+		svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm
+		cd llvm/tools
+		svn co http://llvm.org/svn/llvm-project/cfe/trunk clang
 
 - Build both projects but don't install them
 
-  It's a good idea to build LLVM in parallel, so use `-j` if you can
+It's a good idea to build LLVM in parallel, so use `-j` if you can
 
 
-	cd .. # Back to llvm directory
-	./configure [--enable-optimized] && make [-j4]
+		cd .. # Back to llvm directory
+		./configure [--enable-optimized] && make [-j4]
 
   Both LLVM and Clang have been built in debug mode.
 
@@ -103,8 +103,8 @@ Build LLVM and Clang
 - Finally expose LLVM and Clang:
 
 
-	export PATH=$PATH:$PWD/Debug/bin: # llvm/Debug/bin contains the clang binary
-	export CC=clang # Make Clang the C/ObjC compiler rather than GCC
+		export PATH=$PATH:$PWD/Debug/bin: # llvm/Debug/bin contains the clang binary
+		export CC=clang # Make Clang the C/ObjC compiler rather than GCC
 
   A good choice is put the two lines above in `~/.bashrc` or similar and open a new shell.
   This way you won't have to export these variable every time you want to compile GNUstep or Étoilé stuff.
@@ -112,7 +112,7 @@ Build LLVM and Clang
 - Check Clang is ready:
 
 
-    clang -v
+		clang -v
 
 Build and Install GNUstep
 -------------------------
