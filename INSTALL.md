@@ -174,11 +174,11 @@ To build GNUstep with Clang:
 		./configure --disable-mixedabi [--with-ffi-include=/usr/include/`gcc -dumpmachine`]
 		make && sudo -E make install
 
-	cd ../../core/gui
-	./configure && make && sudo -E make install
+		cd ../../core/gui
+		./configure && make && sudo -E make install
 
-	cd ../../core/back
-	./configure && make && sudo -E make install
+		cd ../../core/back
+		./configure && make && sudo -E make install
 
   You can check you are really using Clang and not GCC with `make messages=yes` instead of `make` when building a GNUstep module.
   You can switch back to GCC for a given project with `make CC=gcc` (or alternatively `./configure CC=gcc`).
