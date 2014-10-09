@@ -79,16 +79,16 @@ Build LLVM and Clang
 - First check out the projects
 
 
-  	svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm
-  	cd llvm/tools
-  	svn co http://llvm.org/svn/llvm-project/cfe/trunk clang
+		svn co http://llvm.org/svn/llvm-project/llvm/trunk llvm
+		cd llvm/tools
+		svn co http://llvm.org/svn/llvm-project/cfe/trunk clang
 
 - Build both projects but don't install them
 
   It's a good idea to build LLVM in parallel, so use `-j` if you can
 
-  	cd .. # Back to llvm directory
-  	./configure [--enable-optimized] && make [-j4]
+		cd .. # Back to llvm directory
+		./configure [--enable-optimized] && make [-j4]
 
   Both LLVM and Clang have been built in debug mode.
 
