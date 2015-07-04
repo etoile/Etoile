@@ -272,7 +272,7 @@ check::
 export ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR) -I$(COLLECTED_HEADER_DIR) -I$(PROJECT_DIR)/Headers 
 
 # For Clang, see http://llvm.org/bugs/show_bug.cgi?id=7005
-export ADDITIONAL_INCLUDE_DIRS += -I/usr/include/`gcc -dumpmachine`/
+export ADDITIONAL_INCLUDE_DIRS += -I/usr/include/`${CC} -dumpmachine`/
 
 # For libdispatch-objc2, see Dependencies/libdispatch-objc2/INSTALL
 export ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_LOCAL_ROOT)/Library/Headers/dispatch
