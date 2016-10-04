@@ -275,7 +275,7 @@ export ADDITIONAL_INCLUDE_DIRS += -I$(BUILD_DIR) -I$(PROJECT_DIR) -I$(COLLECTED_
 export ADDITIONAL_INCLUDE_DIRS += -I/usr/include/`${CC} -dumpmachine`/
 
 # For libdispatch-objc2, see Dependencies/libdispatch-objc2/INSTALL
-export ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_LOCAL_ROOT)/Library/Headers/dispatch
+export ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_LOCAL_LIBRARIES)/Headers/dispatch
 
 # If we have dependency, we need to link its resulting object file. Well, we
 # have to look for a library or a framework most of time.
@@ -332,9 +332,9 @@ endif
 ifndef GNU_RUNTIME_VERSION
 LIBOBJC = libobjc.so.4
 GNU_RUNTIME_VERSION = 1
-GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_SYSTEM_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
-GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_LOCAL_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
-GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_USER_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
+GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_SYSTEM_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
+GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_LOCAL_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
+GNU_RUNTIME_VERSION := $(if $(wildcard $(GNUSTEP_USER_LIBRARIES)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
 GNU_RUNTIME_VERSION := $(if $(wildcard /usr/lib/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
 GNU_RUNTIME_VERSION := $(if $(wildcard /usr/local/lib/$(LIBOBJC)),2,$(GNU_RUNTIME_VERSION))
 endif
