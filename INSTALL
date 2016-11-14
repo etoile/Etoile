@@ -6,22 +6,20 @@
 Required software
 -----------------
 
- * LLVM/Clang 3.3 is required to build Etoile
+ * LLVM/Clang 3.7 is required to build Etoile
 
-LLVM/Clang 3.3 binaries can be downloaded [here](http://llvm.org/releases/download.html#3.3).
-
-**Warning:** For now, LLVM/Clang trunk is not supported for LanguageKit.
+LLVM/Clang 3.7 binaries can be downloaded [here](http://llvm.org/releases/download.html#3.7).
 
 GCC is not supported, although it can be used to build some modules within the repository (especially GCC 4.6 which supports the main Objective-C 2 features). 
 
 You need to have the GNUstep core libraries installed in order to
 compile and use Etoile. The core packages are, at a minimum:
 
- * gnustep-make 2.6.6 or higher
- * gnustep-base trunk (1.24.6 misses some APIs required by CoreObject)
- * gnustep-gui trunk
- * gnustep-back trunk
- * libobjc2 trunk (other ObjC runtimes such as the one packaged with GCC won't work, and libobjc2 1.7 has buggy weak reference support)
+ * gnustep-make 2.6.6 or 2.6.7 (the latest version 2.6.8 is unsupported currently)
+ * gnustep-base trunk 1.24.7 or higher
+ * gnustep-gui 0.25 or higher
+ * gnustep-back 0.25 or higher
+ * libobjc2 1.8 or higher (other ObjC runtimes such as the one packaged with GCC won't work)
 
 **Warning:** libobjc2 is also known as the GNUstep runtime. It's a new runtime unrelated to the GCC libobjc and the old GNUstep libobjc (which was a just patched GCC libobjc). Linux distributions such as Debian or Ubuntu include packages named libobjc2 or libobjc3 which are completely unrelated to the GNUstep runtime, and are just recent GCC libobjc packaged under a new name. More details in [GNUstep Objective-2 FAQ](http://wiki.gnustep.org/index.php/ObjC2_FAQ)
 
@@ -114,7 +112,7 @@ To build GNUstep with Clang:
 - Check out GNUstep core modules and libobjc2:
 
 	svn co http://svn.gna.org/svn/gnustep/modules/core
-	svn co http://svn.gna.org/svn/gnustep/libs/libobjc2/trunk libobjc2
+	git clone https://github.com/gnustep/libobjc2.git
 
 - Install GNUstep Make a first time:
 
@@ -125,6 +123,8 @@ To build GNUstep with Clang:
 	# Or . /System/Library/Makefiles/GNUstep.sh if --prefix=/ was passed
 
 A good choice is to put this last line above in ~/.bashrc or similar. This way you won't have to source GNUstep.sh every time you want to compile GNUstep or Etoile stuff.
+
+If you omit --with-layout=gnustep, GNUstep will use the host system hierarchy and built applications/libraries will be installed in /usr/local/bin, /usr/local/lib etc. In this case, libobjc2 can be compiled directly without installing GNUstep Make first. If GNUstep.sh has been sourced, libobjc2 will install itself according to the filesystem layout used by GNUstep Make (either GNUstep or host system).
 
 **Note**: If you use a C shell, you should source GNUstep.csh rather than GNUstep.sh.
 
